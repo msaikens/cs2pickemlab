@@ -24,24 +24,24 @@ return new class extends Migration
                 ->constrained()
                 ->cascadeOnDelete();
 
-            $table->string('slot_type');
+            $table->string('slot_type', 100);
             // safe_3_0, risky_3_0, safe_advancement, risky_advancement,
             // likely_0_3, upset_watch, avoid
 
-            $table->string('risk_level')->default('medium');
+            $table->string('risk_level', 100)->default('medium');
             // low, medium, high
 
             $table->unsignedTinyInteger('confidence_score')->default(50);
             // 0-100
 
-            $table->string('status')->default('draft');
+            $table->string('status', 100)->default('draft');
             // draft, published, archived
 
             $table->boolean('is_premium')->default(false);
 
             $table->integer('sort_order')->default(0);
 
-            $table->string('headline')->nullable();
+            $table->string('headline', 255)->nullable();
             $table->text('summary')->nullable();
             $table->longText('reasoning')->nullable();
 

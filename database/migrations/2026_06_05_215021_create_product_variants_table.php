@@ -15,7 +15,7 @@ return new class extends Migration
                 ->constrained()
                 ->cascadeOnDelete();
 
-            $table->string('sku')->nullable()->unique();
+            $table->string('sku', 191)->nullable()->unique();
             $table->string('name');
 
             $table->unsignedInteger('price')->default(0); // cents

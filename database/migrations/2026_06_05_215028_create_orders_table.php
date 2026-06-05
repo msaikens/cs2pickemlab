@@ -11,22 +11,22 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
 
-            $table->string('order_number')->unique();
+            $table->string('order_number', 191)->unique();
 
             $table->foreignId('user_id')
                 ->nullable()
                 ->constrained()
                 ->nullOnDelete();
 
-            $table->string('customer_name');
-            $table->string('customer_email');
-            $table->string('customer_phone')->nullable();
+            $table->string('customer_name', 100);
+            $table->string('customer_email', 100);
+            $table->string('customer_phone', 100)->nullable();
 
-            $table->string('status')->default('draft');
+            $table->string('status', 100)->default('draft');
             // draft, pending_payment, paid, design_needed, design_ready,
             // printing, quality_check, shipped, completed, cancelled, refunded
 
-            $table->string('payment_status')->default('unpaid');
+            $table->string('payment_status', 100)->default('unpaid');
             // unpaid, pending, paid, failed, refunded
 
             $table->unsignedInteger('subtotal')->default(0);

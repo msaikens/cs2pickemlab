@@ -12,16 +12,16 @@ return new class extends Migration
             $table->id();
 
             $table->string('name');
-            $table->string('slug')->unique();
+            $table->string('slug', 100)->unique();
 
             $table->string('short_name')->nullable();
-            $table->string('region')->nullable();
+            $table->string('region', 100)->nullable();
             $table->string('country')->nullable();
 
             $table->string('logo_path')->nullable();
 
             $table->integer('picklab_rating')->default(1500);
-            $table->string('status')->default('active');
+            $table->string('status', 100)->default('active');
             // active, inactive, archived
 
             $table->text('summary')->nullable();

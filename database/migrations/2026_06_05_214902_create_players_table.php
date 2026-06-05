@@ -17,11 +17,11 @@ return new class extends Migration
                 ->nullOnDelete();
 
             $table->string('handle');
-            $table->string('slug')->unique();
+            $table->string('slug', 100)->unique();
 
             $table->string('real_name')->nullable();
             $table->string('country')->nullable();
-            $table->string('role')->nullable();
+            $table->string('role', 100)->nullable();
             // awper, rifler, igl, support, lurker, entry, coach, substitute
 
             $table->string('photo_path')->nullable();
@@ -30,7 +30,7 @@ return new class extends Migration
             $table->decimal('kd_ratio', 5, 2)->nullable();
             $table->decimal('impact_rating', 5, 2)->nullable();
 
-            $table->string('status')->default('active');
+            $table->string('status', 100)->default('active');
             // active, benched, inactive, retired
 
             $table->text('summary')->nullable();

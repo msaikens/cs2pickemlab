@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
 
             $table->string('name');
-            $table->string('slug')->unique();
+            $table->string('slug', 191)->unique();
 
             $table->string('organizer')->nullable();
             $table->string('location')->nullable();
