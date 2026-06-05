@@ -1,4 +1,6 @@
 <?php
+/// This migration creates the 'products' table with fields for product details, pricing, status,
+/// type, and other attributes.
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;

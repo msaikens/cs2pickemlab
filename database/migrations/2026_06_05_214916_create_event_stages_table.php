@@ -6,20 +6,37 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('event_stages', function (Blueprint $table) {
             $table->id();
+
+            $table->foreignId('event_id')
+                ->constrained()
+                ->cascadeOnDelete();
+
+            $table->string('name');
+            $table->string('slug');
+
+            $table->date('starts_on')->nullable();
+            $table->date('ends_on')->nullable();
+
+            $table->string('format')->nullable();
+            // swiss, groups, playoffs, single_elim, double_elim
+
+            $table->boolean('has_pickem')->default(false);
+            $table->integer('sort_order')->default(0);
+
+            $table->text('summary')->nullable();
+            $table->text('notes')->nullable();
+
             $table->timestamps();
+
+            $table->unique(['event_id', 'slug']);
+            $table->index(['event_id', 'sort_order']);
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('event_stages');

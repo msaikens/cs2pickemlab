@@ -6,20 +6,32 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('product_options', function (Blueprint $table) {
             $table->id();
+
+            $table->foreignId('product_id')
+                ->constrained()
+                ->cascadeOnDelete();
+
+            $table->string('name');
+            $table->string('slug');
+
+            $table->string('type')->default('select');
+            // select, radio, checkbox, text, textarea, file, number, date
+
+            $table->boolean('is_required')->default(false);
+            $table->integer('sort_order')->default(0);
+            $table->string('help_text')->nullable();
+
             $table->timestamps();
+
+            $table->unique(['product_id', 'slug']);
+            $table->index(['product_id', 'sort_order']);
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('product_options');

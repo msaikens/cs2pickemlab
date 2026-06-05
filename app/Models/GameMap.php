@@ -6,5 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class GameMap extends Model
 {
-    //
+    protected $fillable = [
+        'name',
+        'slug',
+        'status',
+        'notes',
+    ];
 }

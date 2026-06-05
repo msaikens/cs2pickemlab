@@ -6,20 +6,34 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('teams', function (Blueprint $table) {
             $table->id();
+
+            $table->string('name');
+            $table->string('slug')->unique();
+
+            $table->string('short_name')->nullable();
+            $table->string('region')->nullable();
+            $table->string('country')->nullable();
+
+            $table->string('logo_path')->nullable();
+
+            $table->integer('picklab_rating')->default(1500);
+            $table->string('status')->default('active');
+            // active, inactive, archived
+
+            $table->text('summary')->nullable();
+            $table->text('notes')->nullable();
+
             $table->timestamps();
+
+            $table->index(['status', 'region']);
+            $table->index('picklab_rating');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('teams');
