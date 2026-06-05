@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\TeamController as AdminTeamController;
 use App\Http\Controllers\Admin\ProductOptionController as AdminProductOptionController;
 use App\Http\Controllers\Admin\ProductVariantController as AdminProductVariantController;
+use App\Http\Controllers\Admin\EventStageController as AdminEventStageController;
 use App\Http\Controllers\Public\HomeController;
 use App\Http\Controllers\Public\MatchController;
 use App\Http\Controllers\Public\PickemController;
@@ -36,6 +37,24 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     Route::resource('teams', AdminTeamController::class);
     Route::resource('players', AdminPlayerController::class);
+    Route::get('events/{event}/stages', [AdminEventStageController::class, 'index'])
+        ->name('events.stages.index');
+
+    Route::get('events/{event}/stages/create', [AdminEventStageController::class, 'create'])
+        ->name('events.stages.create');
+
+    Route::post('events/{event}/stages', [AdminEventStageController::class, 'store'])
+        ->name('events.stages.store');
+
+    Route::get('events/{event}/stages/{stage}/edit', [AdminEventStageController::class, 'edit'])
+        ->name('events.stages.edit');
+
+    Route::put('events/{event}/stages/{stage}', [AdminEventStageController::class, 'update'])
+        ->name('events.stages.update');
+
+    Route::delete('events/{event}/stages/{stage}', [AdminEventStageController::class, 'destroy'])
+        ->name('events.stages.destroy');
+
     Route::resource('events', AdminEventController::class);
     Route::resource('matches', AdminMatchController::class);
     Route::resource('predictions', AdminPredictionController::class);
@@ -77,5 +96,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         ->name('products.options.destroy');
 
     Route::resource('products', AdminProductController::class);
+
+    Route::patch('orders/{order}/status', [AdminOrderController::class, 'updateStatus'])
+        ->name('orders.update-status');
+
     Route::resource('orders', AdminOrderController::class)->only(['index', 'show']);
 });
