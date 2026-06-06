@@ -19,6 +19,9 @@ class Matches extends Model
         'starts_at',
         'status',
         'format',
+        'bracket_group',
+        'round_label',
+        'bracket_position',
         'team_one_score',
         'team_two_score',
         'summary',
@@ -32,6 +35,7 @@ class Matches extends Model
         'team_two_id' => 'integer',
         'winner_team_id' => 'integer',
         'starts_at' => 'datetime',
+        'bracket_position' => 'integer',
         'team_one_score' => 'integer',
         'team_two_score' => 'integer',
     ];

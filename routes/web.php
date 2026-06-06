@@ -2,16 +2,16 @@
 
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\EventController as AdminEventController;
+use App\Http\Controllers\Admin\EventStageController as AdminEventStageController;
 use App\Http\Controllers\Admin\MatchController as AdminMatchController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\PickemRecommendationController as AdminPickemRecommendationController;
 use App\Http\Controllers\Admin\PlayerController as AdminPlayerController;
 use App\Http\Controllers\Admin\PredictionController as AdminPredictionController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
-use App\Http\Controllers\Admin\TeamController as AdminTeamController;
 use App\Http\Controllers\Admin\ProductOptionController as AdminProductOptionController;
 use App\Http\Controllers\Admin\ProductVariantController as AdminProductVariantController;
-use App\Http\Controllers\Admin\EventStageController as AdminEventStageController;
+use App\Http\Controllers\Admin\TeamController as AdminTeamController;
 use App\Http\Controllers\Public\HomeController;
 use App\Http\Controllers\Public\MatchController;
 use App\Http\Controllers\Public\PickemController;
@@ -28,6 +28,7 @@ Route::get('/teams', [TeamController::class, 'index'])->name('teams.index');
 Route::get('/teams/{team}', [TeamController::class, 'show'])->name('teams.show');
 
 Route::get('/pickem', [PickemController::class, 'index'])->name('pickem.index');
+Route::get('/pickem/{event}', [PickemController::class, 'show'])->name('pickem.show');
 
 Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
 Route::get('/shop/{product}', [ShopController::class, 'show'])->name('shop.show');
@@ -37,6 +38,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     Route::resource('teams', AdminTeamController::class);
     Route::resource('players', AdminPlayerController::class);
+
     Route::get('events/{event}/stages', [AdminEventStageController::class, 'index'])
         ->name('events.stages.index');
 
@@ -59,6 +61,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('matches', AdminMatchController::class);
     Route::resource('predictions', AdminPredictionController::class);
     Route::resource('pickem', AdminPickemRecommendationController::class);
+
     Route::get('products/{product}/variants', [AdminProductVariantController::class, 'index'])
         ->name('products.variants.index');
 

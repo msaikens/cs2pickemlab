@@ -105,6 +105,56 @@
     </div>
 
     <div>
+        <label class="form-label" for="bracket_group">Bracket Group</label>
+        <select id="bracket_group" name="bracket_group" class="form-input">
+            <option value="">None / General Match</option>
+            <option value="swiss" @selected(old('bracket_group', $match->bracket_group) === 'swiss')>
+                Swiss
+            </option>
+            <option value="playoffs" @selected(old('bracket_group', $match->bracket_group) === 'playoffs')>
+                Playoffs
+            </option>
+        </select>
+        <p class="form-help">Use Playoffs for standard bracket display.</p>
+    </div>
+
+    <div>
+        <label class="form-label" for="round_label">Round Label</label>
+        <select id="round_label" name="round_label" class="form-input">
+            <option value="">None</option>
+
+            @foreach([
+                'Swiss Round 1',
+                'Swiss Round 2',
+                'Swiss Round 3',
+                'Swiss Round 4',
+                'Swiss Round 5',
+                'Quarterfinals',
+                'Semifinals',
+                'Grand Final',
+            ] as $round)
+                <option value="{{ $round }}" @selected(old('round_label', $match->round_label) === $round)>
+                    {{ $round }}
+                </option>
+            @endforeach
+        </select>
+        <p class="form-help">For bracket display, use Quarterfinals, Semifinals, or Grand Final.</p>
+    </div>
+
+    <div>
+        <label class="form-label" for="bracket_position">Bracket Position</label>
+        <input
+            id="bracket_position"
+            name="bracket_position"
+            type="number"
+            min="0"
+            value="{{ old('bracket_position', $match->bracket_position ?? 0) }}"
+            class="form-input"
+        >
+        <p class="form-help">Quarterfinals: 1-4. Semifinals: 1-2. Grand Final: 1.</p>
+    </div>
+
+    <div>
         <label class="form-label" for="team_one_score">Team One Score</label>
         <input
             id="team_one_score"

@@ -7,7 +7,7 @@
 <div class="page-header">
     <div>
         <h2 class="page-title">Matches</h2>
-        <p class="page-subtitle">Manage scheduled, live, and completed CS2 matches.</p>
+        <p class="page-subtitle">Manage scheduled, live, completed, Swiss, and playoff bracket CS2 matches.</p>
     </div>
 
     <a href="{{ route('admin.matches.create') }}" class="btn-primary">
@@ -24,6 +24,7 @@
                 <th>Start</th>
                 <th>Status</th>
                 <th>Format</th>
+                <th>Bracket</th>
                 <th>Prediction</th>
                 <th class="text-right">Actions</th>
             </tr>
@@ -33,7 +34,7 @@
                 <tr>
                     <td>
                         <p class="font-bold text-white">
-                            {{ $match->teamOne->name }} vs {{ $match->teamTwo->name }}
+                            {{ $match->teamOne?->name ?? 'TBD' }} vs {{ $match->teamTwo?->name ?? 'TBD' }}
                         </p>
                         <p class="text-muted-xs">
                             @if($match->status === 'completed')
@@ -58,6 +59,22 @@
                     </td>
 
                     <td class="text-slate-300">{{ strtoupper($match->format) }}</td>
+
+                    <td class="text-slate-300">
+                        @if(! empty($match->bracket_group) || ! empty($match->round_label))
+                            <p class="font-bold text-white">
+                                {{ ucfirst($match->bracket_group ?? 'General') }}
+                            </p>
+                            <p class="text-muted-xs">
+                                {{ $match->round_label ?? 'No round' }}
+                                @if(! empty($match->bracket_position))
+                                    · Slot {{ $match->bracket_position }}
+                                @endif
+                            </p>
+                        @else
+                            —
+                        @endif
+                    </td>
 
                     <td class="text-slate-300">
                         @if($match->prediction)
@@ -89,7 +106,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="7" class="empty-row">No matches yet.</td>
+                    <td colspan="8" class="empty-row">No matches yet.</td>
                 </tr>
             @endforelse
         </tbody>

@@ -1,110 +1,94 @@
-@extends('layouts.admin', [
-    'title' => 'Admin Dashboard | CS2 PickLab',
-    'pageTitle' => 'Dashboard',
-])
+@php
+    $title = $title ?? 'Admin | CS2 PickLab';
+    $pageTitle = $pageTitle ?? 'Admin';
+@endphp
 
-@section('content')
-<div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-    <a href="{{ route('admin.teams.index') }}" class="card hover:border-cyan-400">
-        <p class="text-xs font-bold uppercase tracking-widest text-slate-500">Teams</p>
-        <p class="mt-2 text-4xl font-black text-white">{{ $stats['teams'] }}</p>
-    </a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ $title }}</title>
 
-    <a href="{{ route('admin.players.index') }}" class="card hover:border-cyan-400">
-        <p class="text-xs font-bold uppercase tracking-widest text-slate-500">Players</p>
-        <p class="mt-2 text-4xl font-black text-white">{{ $stats['players'] }}</p>
-    </a>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
 
-    <a href="{{ route('admin.events.index') }}" class="card hover:border-cyan-400">
-        <p class="text-xs font-bold uppercase tracking-widest text-slate-500">Events</p>
-        <p class="mt-2 text-4xl font-black text-white">{{ $stats['events'] }}</p>
-    </a>
-
-    <a href="{{ route('admin.matches.index') }}" class="card hover:border-cyan-400">
-        <p class="text-xs font-bold uppercase tracking-widest text-slate-500">Matches</p>
-        <p class="mt-2 text-4xl font-black text-white">{{ $stats['matches'] }}</p>
-    </a>
-
-    <a href="{{ route('admin.predictions.index') }}" class="card hover:border-cyan-400">
-        <p class="text-xs font-bold uppercase tracking-widest text-slate-500">Predictions</p>
-        <p class="mt-2 text-4xl font-black text-white">{{ $stats['predictions'] }}</p>
-    </a>
-
-    <a href="{{ route('admin.pickem.index') }}" class="card hover:border-cyan-400">
-        <p class="text-xs font-bold uppercase tracking-widest text-slate-500">Pick’em</p>
-        <p class="mt-2 text-4xl font-black text-white">{{ $stats['pickem'] }}</p>
-    </a>
-
-    <a href="{{ route('admin.products.index') }}" class="card hover:border-cyan-400">
-        <p class="text-xs font-bold uppercase tracking-widest text-slate-500">Products</p>
-        <p class="mt-2 text-4xl font-black text-white">{{ $stats['products'] }}</p>
-    </a>
-
-    <a href="{{ route('admin.orders.index') }}" class="card hover:border-cyan-400">
-        <p class="text-xs font-bold uppercase tracking-widest text-slate-500">Orders</p>
-        <p class="mt-2 text-4xl font-black text-white">{{ $stats['orders'] }}</p>
-    </a>
-</div>
-
-<div class="mt-10 grid gap-8 lg:grid-cols-3">
-    <section class="card">
-        <div class="mb-4 flex items-center justify-between">
-            <h2 class="text-xl font-black text-white">Latest Matches</h2>
-            <a href="{{ route('admin.matches.index') }}" class="link-accent">Manage</a>
-        </div>
-
-        <div class="space-y-3">
-            @forelse($latestMatches as $match)
-                <div class="rounded-lg bg-slate-950 p-3">
-                    <p class="font-bold text-white">{{ $match->teamOne->name }} vs {{ $match->teamTwo->name }}</p>
-                    <p class="text-muted-sm">
-                        {{ $match->event?->name ?? 'No event' }} · {{ ucfirst($match->status) }}
-                    </p>
+<body class="min-h-screen bg-slate-950 text-slate-100">
+    <div class="min-h-screen">
+        <aside class="fixed inset-y-0 left-0 z-40 hidden w-72 border-r border-slate-800 bg-slate-900/95 p-6 lg:block">
+            <a href="{{ route('admin.dashboard') }}" class="block">
+                <div class="text-2xl font-black tracking-tight text-white">
+                    CS2 PickLab
                 </div>
-            @empty
-                <p class="text-muted">No matches yet.</p>
-            @endforelse
-        </div>
-    </section>
-
-    <section class="card">
-        <div class="mb-4 flex items-center justify-between">
-            <h2 class="text-xl font-black text-white">Latest Products</h2>
-            <a href="{{ route('admin.products.index') }}" class="link-accent">Manage</a>
-        </div>
-
-        <div class="space-y-3">
-            @forelse($latestProducts as $product)
-                <div class="rounded-lg bg-slate-950 p-3">
-                    <p class="font-bold text-white">{{ $product->name }}</p>
-                    <p class="text-muted-sm">
-                        {{ ucfirst($product->status) }} · ${{ $product->base_price_dollars }}
-                    </p>
+                <div class="mt-1 text-xs font-bold uppercase tracking-widest text-cyan-400">
+                    Admin Panel
                 </div>
-            @empty
-                <p class="text-muted">No products yet.</p>
-            @endforelse
-        </div>
-    </section>
+            </a>
 
-    <section class="card">
-        <div class="mb-4 flex items-center justify-between">
-            <h2 class="text-xl font-black text-white">Latest Orders</h2>
-            <a href="{{ route('admin.orders.index') }}" class="link-accent">Manage</a>
-        </div>
+            <nav class="mt-8 space-y-2">
+                <a href="{{ route('admin.dashboard') }}" class="block rounded-lg px-4 py-2 font-bold text-slate-200 hover:bg-slate-800 hover:text-white">
+                    Dashboard
+                </a>
 
-        <div class="space-y-3">
-            @forelse($latestOrders as $order)
-                <div class="rounded-lg bg-slate-950 p-3">
-                    <p class="font-bold text-white">{{ $order->order_number }}</p>
-                    <p class="text-muted-sm">
-                        {{ $order->customer_email }} · ${{ $order->total_dollars }}
-                    </p>
+                <a href="{{ route('admin.teams.index') }}" class="block rounded-lg px-4 py-2 font-bold text-slate-200 hover:bg-slate-800 hover:text-white">
+                    Teams
+                </a>
+
+                <a href="{{ route('admin.players.index') }}" class="block rounded-lg px-4 py-2 font-bold text-slate-200 hover:bg-slate-800 hover:text-white">
+                    Players
+                </a>
+
+                <a href="{{ route('admin.events.index') }}" class="block rounded-lg px-4 py-2 font-bold text-slate-200 hover:bg-slate-800 hover:text-white">
+                    Events
+                </a>
+
+                <a href="{{ route('admin.matches.index') }}" class="block rounded-lg px-4 py-2 font-bold text-slate-200 hover:bg-slate-800 hover:text-white">
+                    Matches
+                </a>
+
+                <a href="{{ route('admin.predictions.index') }}" class="block rounded-lg px-4 py-2 font-bold text-slate-200 hover:bg-slate-800 hover:text-white">
+                    Predictions
+                </a>
+
+                <a href="{{ route('admin.pickem.index') }}" class="block rounded-lg px-4 py-2 font-bold text-slate-200 hover:bg-slate-800 hover:text-white">
+                    Pick’em
+                </a>
+
+                <a href="{{ route('admin.products.index') }}" class="block rounded-lg px-4 py-2 font-bold text-slate-200 hover:bg-slate-800 hover:text-white">
+                    Products
+                </a>
+
+                <a href="{{ route('admin.orders.index') }}" class="block rounded-lg px-4 py-2 font-bold text-slate-200 hover:bg-slate-800 hover:text-white">
+                    Orders
+                </a>
+            </nav>
+        </aside>
+
+        <main class="lg:pl-72">
+            <header class="border-b border-slate-800 bg-slate-900/80 px-6 py-5">
+                <div class="mx-auto max-w-7xl">
+                    <h1 class="text-3xl font-black text-white">
+                        {{ $pageTitle }}
+                    </h1>
                 </div>
-            @empty
-                <p class="text-muted">No orders yet.</p>
-            @endforelse
-        </div>
-    </section>
-</div>
-@endsection
+            </header>
+
+            <section class="mx-auto max-w-7xl px-6 py-8">
+                @if(session('success'))
+                    <div class="mb-6 rounded-lg border border-emerald-500/40 bg-emerald-500/10 px-4 py-3 font-bold text-emerald-200">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                @if(session('error'))
+                    <div class="mb-6 rounded-lg border border-red-500/40 bg-red-500/10 px-4 py-3 font-bold text-red-200">
+                        {{ session('error') }}
+                    </div>
+                @endif
+
+                @yield('content')
+            </section>
+        </main>
+    </div>
+</body>
+</html>

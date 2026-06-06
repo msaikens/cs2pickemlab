@@ -29,6 +29,7 @@ class MatchController extends Controller
         $match = new Matches([
             'status' => 'scheduled',
             'format' => 'bo3',
+            'bracket_position' => 0,
         ]);
 
         return view('admin.matches.create', $this->formData($match));
@@ -38,17 +39,7 @@ class MatchController extends Controller
     {
         $data = $this->validatedData($request);
 
-        if (empty($data['event_stage_id'])) {
-            $data['event_stage_id'] = null;
-        }
-
-        if (empty($data['event_id'])) {
-            $data['event_id'] = null;
-        }
-
-        if (empty($data['winner_team_id'])) {
-            $data['winner_team_id'] = null;
-        }
+        $data = $this->normalizeNullableFields($data);
 
         Matches::create($data);
 
@@ -66,17 +57,7 @@ class MatchController extends Controller
     {
         $data = $this->validatedData($request, $match);
 
-        if (empty($data['event_stage_id'])) {
-            $data['event_stage_id'] = null;
-        }
-
-        if (empty($data['event_id'])) {
-            $data['event_id'] = null;
-        }
-
-        if (empty($data['winner_team_id'])) {
-            $data['winner_team_id'] = null;
-        }
+        $data = $this->normalizeNullableFields($data);
 
         $match->update($data);
 
@@ -105,11 +86,37 @@ class MatchController extends Controller
             'starts_at' => ['nullable', 'date'],
             'status' => ['required', 'in:scheduled,live,completed,postponed,cancelled'],
             'format' => ['required', 'in:bo1,bo3,bo5'],
+
+            'bracket_group' => ['nullable', 'in:swiss,playoffs'],
+            'round_label' => ['nullable', 'string', 'max:100'],
+            'bracket_position' => ['nullable', 'integer', 'min:0'],
+
             'team_one_score' => ['nullable', 'integer', 'min:0', 'max:5'],
             'team_two_score' => ['nullable', 'integer', 'min:0', 'max:5'],
             'summary' => ['nullable', 'string'],
             'notes' => ['nullable', 'string'],
         ]);
+    }
+
+    private function normalizeNullableFields(array $data): array
+    {
+        foreach ([
+            'event_id',
+            'event_stage_id',
+            'winner_team_id',
+            'bracket_group',
+            'round_label',
+        ] as $field) {
+            if (empty($data[$field])) {
+                $data[$field] = null;
+            }
+        }
+
+        $data['bracket_position'] = isset($data['bracket_position'])
+            ? (int) $data['bracket_position']
+            : 0;
+
+        return $data;
     }
 
     private function formData(Matches $match): array
