@@ -1,4 +1,6 @@
 <?php
+use App\Http\Controllers\Account\ProfileController;
+use App\Http\Controllers\Account\SecurityController;
 
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\EventController as AdminEventController;
@@ -12,11 +14,20 @@ use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\ProductOptionController as AdminProductOptionController;
 use App\Http\Controllers\Admin\ProductVariantController as AdminProductVariantController;
 use App\Http\Controllers\Admin\TeamController as AdminTeamController;
+use App\Http\Controllers\Admin\ContentGateController as AdminContentGateController;
+
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\Auth\SocialAuthController;
+
 use App\Http\Controllers\Public\HomeController;
 use App\Http\Controllers\Public\MatchController;
 use App\Http\Controllers\Public\PickemController;
 use App\Http\Controllers\Public\ShopController;
 use App\Http\Controllers\Public\TeamController;
+
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -33,11 +44,52 @@ Route::get('/pickem/{event}', [PickemController::class, 'show'])->name('pickem.s
 Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
 Route::get('/shop/{product}', [ShopController::class, 'show'])->name('shop.show');
 
+Route::middleware('auth')->prefix('account')->name('account.')->group(function () {
+    Route::get('/', [ProfileController::class, 'show'])->name('show');
+    Route::get('/edit', [ProfileController::class, 'edit'])->name('edit');
+    Route::put('/edit', [ProfileController::class, 'update'])->name('update');
+
+    Route::get('/security', [SecurityController::class, 'edit'])->name('security');
+    Route::put('/security/password', [SecurityController::class, 'updatePassword'])->name('password.update');
+});
+
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [LoginController::class, 'create'])->name('login');
+    Route::post('/login', [LoginController::class, 'store'])->name('login.store');
+
+    Route::get('/register', [RegisterController::class, 'create'])->name('register');
+    Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
+
+    Route::get('/forgot-password', [ForgotPasswordController::class, 'create'])->name('password.request');
+    Route::post('/forgot-password', [ForgotPasswordController::class, 'store'])->name('password.email');
+
+    Route::get('/reset-password/{token}', [ResetPasswordController::class, 'create'])->name('password.reset');
+    Route::post('/reset-password', [ResetPasswordController::class, 'store'])->name('password.update');
+
+    Route::get('/auth/{provider}/redirect', [SocialAuthController::class, 'redirect'])
+        ->whereIn('provider', ['google', 'apple', 'orcid'])
+        ->name('social.redirect');
+
+    Route::get('/auth/{provider}/callback', [SocialAuthController::class, 'callback'])
+        ->whereIn('provider', ['google', 'apple', 'orcid'])
+        ->name('social.callback');
+});
+
+Route::post('/logout', [LoginController::class, 'destroy'])
+    ->middleware('auth')
+    ->name('logout');
+
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
 
     Route::resource('teams', AdminTeamController::class);
     Route::resource('players', AdminPlayerController::class);
+
+    Route::get('content-gates', [AdminContentGateController::class, 'index'])
+        ->name('content-gates.index');
+
+    Route::put('content-gates/{contentGate}', [AdminContentGateController::class, 'update'])
+        ->name('content-gates.update');
 
     Route::get('events/{event}/stages', [AdminEventStageController::class, 'index'])
         ->name('events.stages.index');
