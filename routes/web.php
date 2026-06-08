@@ -16,6 +16,8 @@ use App\Http\Controllers\Admin\ProductVariantController as AdminProductVariantCo
 use App\Http\Controllers\Admin\TeamController as AdminTeamController;
 use App\Http\Controllers\Admin\ContentGateController as AdminContentGateController;
 
+use App\Http\Controllers\Public\LegalPageController;
+
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -43,6 +45,21 @@ Route::get('/pickem/{event}', [PickemController::class, 'show'])->name('pickem.s
 
 Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
 Route::get('/shop/{product}', [ShopController::class, 'show'])->name('shop.show');
+
+Route::get('/privacy-policy', [LegalPageController::class, 'privacyPolicy'])
+    ->name('legal.privacy');
+
+Route::get('/data-usage-collection-policy', [LegalPageController::class, 'dataUsageCollectionPolicy'])
+    ->name('legal.data');
+
+Route::get('/terms-of-service', [LegalPageController::class, 'termsOfService'])
+    ->name('legal.terms');
+
+Route::get('/affiliate-disclosures', [LegalPageController::class, 'affiliateDisclosures'])
+    ->name('legal.affiliate');
+
+Route::get('/disclaimer', [LegalPageController::class, 'disclaimer'])
+    ->name('legal.disclaimer');
 
 Route::middleware('auth')->prefix('account')->name('account.')->group(function () {
     Route::get('/', [ProfileController::class, 'show'])->name('show');

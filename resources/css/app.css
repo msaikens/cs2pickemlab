@@ -252,4 +252,64 @@
     .hero-button-secondary {
         @apply rounded-lg border border-slate-700 px-5 py-3 font-bold text-white hover:bg-slate-900;
     }
+
+    .legal-page {
+    @apply mx-auto max-w-4xl px-6 py-12;
+}
+
+.legal-card {
+    @apply rounded-2xl border border-slate-800 bg-slate-900/70 p-6 shadow-xl md:p-8;
+}
+
+.legal-kicker {
+    @apply text-xs font-black uppercase tracking-[0.3em] text-cyan-400;
+}
+
+.legal-title {
+    @apply mt-3 text-4xl font-black text-white;
+}
+
+.legal-updated {
+    @apply mt-3 text-sm text-slate-500;
+}
+
+.legal-content {
+    @apply mt-8 space-y-6 text-base leading-8 text-slate-300;
+}
+
+.legal-content h2 {
+    @apply pt-4 text-2xl font-black text-white;
+}
+
+.legal-content h3 {
+    @apply pt-2 text-xl font-black text-white;
+}
+
+.legal-content p {
+    @apply text-slate-300;
+}
+
+.legal-content ul {
+    @apply ml-6 list-disc space-y-2;
+}
+
+.legal-content ol {
+    @apply ml-6 list-decimal space-y-2;
+}
+
+.legal-content li {
+    @apply pl-1 text-slate-300;
+}
+
+.legal-content strong {
+    @apply font-black text-white;
+}
+
+.legal-content a {
+    @apply font-bold text-cyan-300 hover:text-cyan-200;
+}
+
+.legal-content .legal-note {
+    @apply rounded-xl border border-cyan-400/20 bg-cyan-400/5 p-4 text-sm text-cyan-100;
+}
 }
