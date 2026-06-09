@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\ProductVariantController as AdminProductVariantCo
 use App\Http\Controllers\Admin\TeamController as AdminTeamController;
 use App\Http\Controllers\Admin\ContentGateController as AdminContentGateController;
 
+use App\Http\Controllers\Public\ContactController;
 use App\Http\Controllers\Public\LegalPageController;
 
 use App\Http\Controllers\Auth\ForgotPasswordController;
@@ -33,6 +34,13 @@ use App\Http\Controllers\Public\TeamController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+Route::get('/contact', [ContactController::class, 'create'])
+    ->name('contact.create');
+
+Route::post('/contact', [ContactController::class, 'store'])
+    ->middleware('throttle:contact')
+    ->name('contact.store');
 
 Route::get('/matches', [MatchController::class, 'index'])->name('matches.index');
 Route::get('/matches/{match}', [MatchController::class, 'show'])->name('matches.show');

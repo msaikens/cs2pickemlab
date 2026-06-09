@@ -52,4 +52,10 @@ return [
         'client_secret' => env('ORCID_CLIENT_SECRET'),
         'redirect' => env('ORCID_REDIRECT_URI'),
     ],
+
+    'turnstile' => [
+        'site_key' => env('TURNSTILE_SITE_KEY'),
+        'secret_key' => env('TURNSTILE_SECRET_KEY'),
+    ],
+
 ];

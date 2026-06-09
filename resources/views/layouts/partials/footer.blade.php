@@ -54,6 +54,9 @@
                     <a href="{{ route('shop.index') }}" class="block hover:text-slate-300">
                         Shop
                     </a>
+                    <a href="{{ route('contact.create') }}" class="block hover:text-slate-300">
+                        Contact Us
+                    </a>
                 </nav>
             </div>
 
