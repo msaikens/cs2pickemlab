@@ -59,6 +59,11 @@
                         </a>
                     @endif
                 @endif
+                @if (Route::has('users.search'))
+                    <a href="{{ route('users.search') }}" class="hover:text-white">
+                        Users
+                    </a>
+                @endif
             @endauth
 
             {{-- Guest account actions --}}

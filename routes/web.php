@@ -34,6 +34,7 @@ use App\Http\Controllers\SkinListingController;
 use App\Http\Controllers\SteamOpenIdController;
 use App\Http\Controllers\SteamProfileController;
 use App\Http\Controllers\TradeRequestController;
+use App\Http\Controllers\UserSearchController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -223,6 +224,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/profile/steam', [SteamProfileController::class, 'show'])
         ->name('profile.steam');
+
+    Route::get('/users/search', [UserSearchController::class, 'index'])
+        ->name('users.search');
 
     Route::get('/profile/steam/callback', [SteamOpenIdController::class, 'callback'])
         ->name('profile.steam.callback');

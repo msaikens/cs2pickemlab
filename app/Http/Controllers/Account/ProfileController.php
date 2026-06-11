@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\UserProfile;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
@@ -41,7 +42,10 @@ class ProfileController extends Controller
         $data = $request->validate([
             'name' => ['nullable', 'string', 'max:255'],
             'avatar_url' => ['nullable', 'url', 'max:2048'],
+            'avatar_file' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,gif', 'max:2048'],
 
+            'first_name' => ['nullable', 'string', 'max:255'],
+            'last_name' => ['nullable', 'string', 'max:255'],
             'display_name' => ['nullable', 'string', 'max:255'],
             'about' => ['nullable', 'string', 'max:2000'],
 
@@ -56,13 +60,27 @@ class ProfileController extends Controller
             'timezone' => ['nullable', 'string', 'max:100'],
         ]);
 
+        $avatarUrl = $data['avatar_url'] ?? $user->avatar_url;
+
+        if ($request->hasFile('avatar_file')) {
+            if ($user->avatar_url && str_starts_with($user->avatar_url, '/storage/avatars/')) {
+                $oldPath = str_replace('/storage/', '', $user->avatar_url);
+                Storage::disk('public')->delete($oldPath);
+            }
+
+            $path = $request->file('avatar_file')->store('avatars', 'public');
+            $avatarUrl = Storage::url($path);
+        }
+
         $user->update([
             'name' => $data['name'] ?? null,
-            'avatar_url' => $data['avatar_url'] ?? null,
+            'avatar_url' => $avatarUrl,
         ]);
 
         $profileData = collect($data)
             ->only([
+                'first_name',
+                'last_name',
                 'display_name',
                 'about',
                 'steam_name',

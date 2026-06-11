@@ -20,7 +20,7 @@
             <div class="grid gap-5 md:grid-cols-2">
                 <div>
                     <label class="form-label" for="name">Account Name</label>
-                    <input id="name" name="name" class="form-input" value="{{ old('name', $user->name) }}">
+                    <input id="name" name="name" class="form-input" value="{{ old('name', $user->name) }}" enctype="multipart/form-data">
                     @error('name') <p class="form-error">{{ $message }}</p> @enderror
                 </div>
 
@@ -30,11 +30,23 @@
                     @error('display_name') <p class="form-error">{{ $message }}</p> @enderror
                 </div>
 
+                <div>
+                    <label class="form-label" for="first_name">First Name</label>
+                    <input id="first_name" name="first_name" class="form-input" value="{{ old('first_name', $user->profile?->first_name) }}">
+                    @error('first_name') <p class="form-error">{{ $message }}</p> @enderror
+                </div>
+
+                <div>
+                    <label class="form-label" for="last_name">Last Name</label>
+                    <input id="last_name" name="last_name" class="form-input" value="{{ old('last_name', $user->profile?->last_name) }}">
+                    @error('last_name') <p class="form-error">{{ $message }}</p> @enderror
+                </div>
+
                 <div class="md:col-span-2">
-                    <label class="form-label" for="avatar_url">Avatar URL</label>
-                    <input id="avatar_url" name="avatar_url" class="form-input" value="{{ old('avatar_url', $user->avatar_url) }}">
-                    <p class="form-help">For now, paste an image URL. File upload can come later.</p>
-                    @error('avatar_url') <p class="form-error">{{ $message }}</p> @enderror
+                    <label class="form-label" for="avatar_file">Avatar File - Click the box to Upload</label>
+                    <input id="avatar_file" name="avatar_file" type="file" class="form-input" accept="image/png,image/jpeg,image/webp,image.gif,image/svg+xml">
+                    <p class="form-help">Upload an image file for your avatar. Supported formats: PNG, JPEG, WebP, GIF, SVG.</p>
+                    @error('avatar_file') <p class="form-error">{{ $message }}</p> @enderror
                 </div>
 
                 <div class="md:col-span-2">
