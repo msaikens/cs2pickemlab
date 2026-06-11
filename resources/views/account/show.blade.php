@@ -55,6 +55,7 @@
                 <p class="mx-auto mt-2 max-w-2xl text-slate-300">
                     We sent a verification link and one-time code to
                     <strong class="text-white">{{ $user->email }}</strong>.
+                    Delivery can take up to a minute. Check spam if it does not arrive.
                     Click the email link or enter the six-digit code below.
                 </p>
             </div>
@@ -89,7 +90,7 @@
                 @csrf
 
                 <button type="submit" class="btn-secondary">
-                    Send New Verification Email
+                    Send New Code
                 </button>
             </form>
         </section>
@@ -113,32 +114,54 @@
         <section class="card lg:col-span-1">
             <div class="flex flex-col items-center text-center">
                 @if($user->avatar_url)
-                    <img src="{{ $user->avatar_url }}" alt="{{ $user->displayName() }}" class="h-28 w-28 rounded-full border border-slate-700 object-cover">
+                    <img
+                        src="{{ $user->avatar_url }}"
+                        alt="{{ $user->displayName() }}"
+                        class="h-28 w-28 rounded-full border border-slate-700 object-cover"
+                    >
                 @else
                     <div class="flex h-28 w-28 items-center justify-center rounded-full border border-slate-700 bg-slate-900 text-4xl font-black text-cyan-300">
                         {{ strtoupper(mb_substr($user->displayName(), 0, 1)) }}
                     </div>
                 @endif
 
-                <h2 class="mt-4 text-2xl font-black text-white">
-                    {{ $user->displayName() }}
-                </h2>
+                <div class="mt-4 flex flex-wrap items-center justify-center gap-2">
+                    <h2 class="text-2xl font-black text-white">
+                        {{ $user->displayName() }}
+                    </h2>
+
+                    @include('components.user-role-badge', [
+                        'user' => $user,
+                        'showFree' => false,
+                        'showPremium' => false,
+                    ])
+                </div>
 
                 <p class="mt-1 text-sm text-slate-500">{{ $user->email }}</p>
 
-                @if ($user->hasVerifiedEmail())
-                    <span class="mt-3 rounded-full border border-emerald-500/40 bg-emerald-500/10 px-3 py-1 text-xs font-black uppercase text-emerald-200">
-                        Email Verified
-                    </span>
-                @else
-                    <span class="mt-3 rounded-full border border-amber-400/40 bg-amber-400/10 px-3 py-1 text-xs font-black uppercase text-amber-200">
-                        Email Not Verified
-                    </span>
+                @if($user->profile?->first_name || $user->profile?->last_name)
+                    <p class="mt-1 text-sm text-slate-400">
+                        {{ trim(($user->profile?->first_name ?? '') . ' ' . ($user->profile?->last_name ?? '')) }}
+                    </p>
                 @endif
 
-                <span class="mt-3 rounded-full border border-cyan-400/40 bg-cyan-400/10 px-3 py-1 text-xs font-black uppercase text-cyan-200">
-                    {{ $user->subscription_status === 'active' ? 'Subscribed' : 'Free Account' }}
-                </span>
+                <div class="mt-3 flex flex-wrap justify-center gap-2">
+                    @if ($user->hasVerifiedEmail())
+                        <span class="rounded-full border border-emerald-500/40 bg-emerald-500/10 px-3 py-1 text-xs font-black uppercase text-emerald-200">
+                            Email Verified
+                        </span>
+                    @else
+                        <span class="rounded-full border border-amber-400/40 bg-amber-400/10 px-3 py-1 text-xs font-black uppercase text-amber-200">
+                            Email Not Verified
+                        </span>
+                    @endif
+
+                    @include('components.user-role-badge', [
+                        'user' => $user,
+                        'showFree' => true,
+                        'showPremium' => true,
+                    ])
+                </div>
             </div>
         </section>
 
@@ -150,6 +173,26 @@
             </p>
 
             <div class="mt-6 grid gap-4 md:grid-cols-2">
+                <div>
+                    <p class="text-xs font-bold uppercase tracking-widest text-slate-500">Account Name</p>
+                    <p class="mt-1 text-white">{{ $user->name ?: '—' }}</p>
+                </div>
+
+                <div>
+                    <p class="text-xs font-bold uppercase tracking-widest text-slate-500">Display Name</p>
+                    <p class="mt-1 text-white">{{ $user->displayName() ?: '—' }}</p>
+                </div>
+
+                <div>
+                    <p class="text-xs font-bold uppercase tracking-widest text-slate-500">First Name</p>
+                    <p class="mt-1 text-white">{{ $user->profile?->first_name ?: '—' }}</p>
+                </div>
+
+                <div>
+                    <p class="text-xs font-bold uppercase tracking-widest text-slate-500">Last Name</p>
+                    <p class="mt-1 text-white">{{ $user->profile?->last_name ?: '—' }}</p>
+                </div>
+
                 <div>
                     <p class="text-xs font-bold uppercase tracking-widest text-slate-500">Steam</p>
                     <p class="mt-1 text-white">{{ $user->profile?->steam_name ?: '—' }}</p>

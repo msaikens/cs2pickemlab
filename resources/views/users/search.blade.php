@@ -8,7 +8,9 @@
     <div class="mb-6 flex flex-wrap items-center justify-between gap-4">
         <div>
             <h1 class="text-4xl font-black text-white">User Search</h1>
-            <p class="mt-2 text-slate-400">Find CS2 PickLab users by account name, display name, Steam name, or Discord name.</p>
+            <p class="mt-2 text-slate-400">
+                Find CS2 PickLab users by account name, display name, Steam name, or Discord name.
+            </p>
         </div>
     </div>
 
@@ -40,61 +42,22 @@
     @else
         <div class="grid gap-4">
             @foreach ($users as $resultUser)
-                @php
-                    $accountType = match (true) {
-                        $resultUser->role === 'admin' => 'Administrator',
-                        $resultUser->role === 'moderator' => 'Moderator',
-                        $resultUser->hasActiveSubscription() => 'Premium User',
-                        default => 'Free User',
-                    };
-
-                    $badgeClass = match ($accountType) {
-                        'Administrator' => 'border-red-400/50 bg-red-500/10 text-red-200',
-                        'Moderator' => 'border-violet-400/50 bg-violet-500/10 text-violet-200',
-                        'Premium User' => 'border-cyan-400/50 bg-cyan-400/10 text-cyan-200',
-                        default => 'border-slate-600 bg-slate-800 text-slate-300',
-                    };
-                @endphp
-
                 <article class="flex flex-col gap-4 rounded-2xl border border-slate-800 bg-slate-900/60 p-4 md:flex-row md:items-center md:justify-between">
-                    <div class="flex min-w-0 items-center gap-4">
-                        @if ($resultUser->avatar_url)
-                            <img
-                                src="{{ $resultUser->avatar_url }}"
-                                alt="{{ $resultUser->displayName() }}"
-                                class="h-16 w-16 shrink-0 rounded-full border border-slate-700 object-cover"
-                            >
-                        @else
-                            <div class="flex h-16 w-16 shrink-0 items-center justify-center rounded-full border border-slate-700 bg-slate-950 text-2xl font-black text-cyan-300">
-                                {{ strtoupper(mb_substr($resultUser->displayName(), 0, 1)) }}
-                            </div>
-                        @endif
-
-                        <div class="min-w-0">
-                            <h2 class="truncate text-xl font-black text-white">
-                                {{ $resultUser->name ?: 'Unnamed Account' }}
-                            </h2>
-
-                            <p class="truncate text-sm text-slate-400">
-                                Display: {{ $resultUser->displayName() }}
-                            </p>
-
-                            @if ($resultUser->profile?->first_name || $resultUser->profile?->last_name)
-                                <p class="truncate text-sm text-slate-500">
-                                    {{ trim(($resultUser->profile?->first_name ?? '') . ' ' . ($resultUser->profile?->last_name ?? '')) }}
-                                </p>
-                            @endif
-                        </div>
-                    </div>
+                    @include('components.user-identity', [
+                        'user' => $resultUser,
+                        'size' => 'lg',
+                        'showAccountType' => true,
+                        'showAccountName' => true,
+                    ])
 
                     <div class="flex shrink-0 flex-wrap items-center gap-2">
-                        <span class="rounded-full border px-3 py-1 text-xs font-black uppercase {{ $badgeClass }}">
-                            {{ $accountType }}
-                        </span>
-
                         @if ($resultUser->hasVerifiedEmail())
                             <span class="rounded-full border border-emerald-500/40 bg-emerald-500/10 px-3 py-1 text-xs font-black uppercase text-emerald-200">
                                 Verified
+                            </span>
+                        @else
+                            <span class="rounded-full border border-amber-400/40 bg-amber-400/10 px-3 py-1 text-xs font-black uppercase text-amber-200">
+                                Unverified
                             </span>
                         @endif
                     </div>

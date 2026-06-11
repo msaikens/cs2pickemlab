@@ -61,7 +61,11 @@
                         <td class="px-4 py-4">
                             <div class="flex items-center gap-3">
                                 @if($listing->image_url)
-                                    <img src="{{ $listing->image_url }}" alt="{{ $listing->market_hash_name }}" class="h-12 w-12 rounded-lg object-contain">
+                                    <img
+                                        src="{{ $listing->image_url }}"
+                                        alt="{{ $listing->market_hash_name }}"
+                                        class="h-12 w-12 rounded-lg object-contain"
+                                    >
                                 @endif
 
                                 <div>
@@ -71,9 +75,14 @@
                             </div>
                         </td>
 
-                        <td class="px-4 py-4 text-slate-300">
-                            {{ $listing->user?->displayName() ?? 'Unknown' }}
-                            <div class="text-xs text-slate-500">{{ $listing->user?->email }}</div>
+                        <td class="px-4 py-4">
+                            @include('components.user-identity', [
+                                'user' => $listing->user,
+                                'size' => 'sm',
+                                'showEmail' => true,
+                                'showAccountType' => true,
+                                'showAccountName' => false,
+                            ])
                         </td>
 
                         <td class="px-4 py-4">
@@ -93,7 +102,11 @@
                                 </a>
 
                                 @if(in_array($listing->status, ['draft', 'active', 'pending'], true))
-                                    <form method="POST" action="{{ route('admin.marketplace.listings.cancel', $listing) }}" onsubmit="return confirm('Cancel this listing and open requests?');">
+                                    <form
+                                        method="POST"
+                                        action="{{ route('admin.marketplace.listings.cancel', $listing) }}"
+                                        onsubmit="return confirm('Cancel this listing and open requests?');"
+                                    >
                                         @csrf
 
                                         <button type="submit" class="btn-danger">

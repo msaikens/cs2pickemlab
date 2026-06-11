@@ -32,13 +32,35 @@
                             {{ $tradeRequest->listing?->market_hash_name ?? 'Removed Listing' }}
                         </h2>
 
-                        <p class="mt-1 text-sm text-slate-400">
-                            Buyer:
-                            {{ $tradeRequest->buyer?->displayName() ?? 'Unknown' }}
-                            ·
-                            Seller:
-                            {{ $tradeRequest->seller?->displayName() ?? 'Unknown' }}
-                        </p>
+                        <div class="mt-4 grid gap-4 md:grid-cols-2">
+                            <div class="rounded-xl border border-slate-800 bg-slate-950 p-3">
+                                <p class="mb-2 text-xs font-black uppercase tracking-widest text-slate-500">
+                                    Buyer
+                                </p>
+
+                                @include('components.user-identity', [
+                                    'user' => $tradeRequest->buyer,
+                                    'size' => 'sm',
+                                    'showEmail' => true,
+                                    'showAccountType' => true,
+                                    'showAccountName' => false,
+                                ])
+                            </div>
+
+                            <div class="rounded-xl border border-slate-800 bg-slate-950 p-3">
+                                <p class="mb-2 text-xs font-black uppercase tracking-widest text-slate-500">
+                                    Seller
+                                </p>
+
+                                @include('components.user-identity', [
+                                    'user' => $tradeRequest->seller,
+                                    'size' => 'sm',
+                                    'showEmail' => true,
+                                    'showAccountType' => true,
+                                    'showAccountName' => false,
+                                ])
+                            </div>
+                        </div>
                     </div>
 
                     <span class="h-fit rounded-full border border-slate-700 px-3 py-1 text-xs font-black uppercase text-slate-200">
@@ -59,16 +81,34 @@
 
                     @forelse($tradeRequest->events as $event)
                         <div class="rounded-xl border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-slate-300">
-                            <strong class="text-white">{{ str($event->event_type)->replace('_', ' ')->title() }}</strong>
-                            by
-                            {{ $event->actor?->displayName() ?? 'System' }}
-                            ·
-                            {{ $event->created_at?->format('M j, Y g:i A') }}
+                            <div class="flex flex-wrap items-center gap-2">
+                                <strong class="text-white">
+                                    {{ str($event->event_type)->replace('_', ' ')->title() }}
+                                </strong>
+
+                                <span class="text-slate-500">by</span>
+
+                                @if($event->actor)
+                                    @include('components.user-role-badge', [
+                                        'user' => $event->actor,
+                                        'showFree' => false,
+                                        'showPremium' => true,
+                                    ])
+
+                                    <span>{{ $event->actor->displayName() }}</span>
+                                @else
+                                    <span>System</span>
+                                @endif
+
+                                <span class="text-slate-500">
+                                    · {{ $event->created_at?->format('M j, Y g:i A') }}
+                                </span>
+                            </div>
 
                             @if($event->old_status || $event->new_status)
-                                <span class="text-slate-500">
-                                    · {{ $event->old_status ?? 'none' }} → {{ $event->new_status ?? 'none' }}
-                                </span>
+                                <div class="mt-1 text-xs text-slate-500">
+                                    {{ $event->old_status ?? 'none' }} → {{ $event->new_status ?? 'none' }}
+                                </div>
                             @endif
                         </div>
                     @empty

@@ -189,4 +189,35 @@ class User extends Authenticatable implements CanResetPasswordContract, MustVeri
             && $this->hasPublicSteamInventory()
             && $this->hasTradeProfileReady();
     }
+
+    public function isModerator(): bool
+{
+    return $this->role === 'moderator';
+}
+
+public function publicRoleLabel(): ?string
+{
+    return match ($this->role) {
+        'admin' => 'Administrator',
+        'moderator' => 'Moderator',
+        default => null,
+    };
+}
+
+public function publicAccountLabel(): string
+{
+    if ($this->isAdmin()) {
+        return 'Administrator';
+    }
+
+    if ($this->isModerator()) {
+        return 'Moderator';
+    }
+
+    if ($this->hasActiveSubscription()) {
+        return 'Premium User';
+    }
+
+    return 'Free User';
+}
 }

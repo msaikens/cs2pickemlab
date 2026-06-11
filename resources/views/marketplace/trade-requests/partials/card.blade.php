@@ -27,6 +27,7 @@
         'listing_completed' => 'Listing completed',
         'auto_declined_due_to_other_acceptance' => 'Auto-declined',
         'cancelled_due_to_listing_cancelled' => 'Cancelled because listing was cancelled',
+        'cancelled_by_admin' => 'Cancelled by administrator',
     ];
 @endphp
 
@@ -52,13 +53,23 @@
                     @endif
                 </h3>
 
-                <p>
+                <div class="mt-2">
                     @if ($mode === 'incoming')
-                        From {{ $buyer?->steamAccount?->persona_name ?? $buyer?->displayName() ?? 'Buyer' }}
+                        @include('components.user-identity', [
+                            'user' => $buyer,
+                            'size' => 'sm',
+                            'showAccountType' => true,
+                            'showAccountName' => false,
+                        ])
                     @else
-                        To {{ $seller?->steamAccount?->persona_name ?? $seller?->displayName() ?? 'Seller' }}
+                        @include('components.user-identity', [
+                            'user' => $seller,
+                            'size' => 'sm',
+                            'showAccountType' => true,
+                            'showAccountName' => false,
+                        ])
                     @endif
-                </p>
+                </div>
             </div>
 
             <span class="trade-status {{ $statusClass }}">
@@ -145,11 +156,22 @@
                                 </div>
 
                                 <p>
-                                    By {{ $actorName }}
+                                    By
+
+                                    @if($event->actor)
+                                        {{ $actorName }}
+
+                                        @include('components.user-role-badge', [
+                                            'user' => $event->actor,
+                                            'showFree' => false,
+                                            'showPremium' => true,
+                                        ])
+                                    @else
+                                        System
+                                    @endif
 
                                     @if ($event->old_status || $event->new_status)
-                                        ·
-                                        Status:
+                                        · Status:
                                         <strong>{{ $event->old_status ?? 'none' }}</strong>
                                         →
                                         <strong>{{ $event->new_status ?? 'none' }}</strong>
