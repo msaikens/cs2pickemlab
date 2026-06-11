@@ -3,19 +3,24 @@
 namespace App\Models;
 
 use App\Models\SkinListing;
+use App\Models\SocialAccount;
 use App\Models\SteamAccount;
+use App\Models\SteamInventoryItem;
 use App\Models\SteamTradeProfile;
 use App\Models\TradeRequest;
-use App\Models\SteamInventoryItem;
+use App\Models\UserEmailVerificationCode;
+use App\Models\UserProfile;
+use App\Notifications\VerifyEmailWithCode;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable implements CanResetPasswordContract
+class User extends Authenticatable implements CanResetPasswordContract, MustVerifyEmail
 {
     use HasFactory;
     use Notifiable;
@@ -59,9 +64,74 @@ class User extends Authenticatable implements CanResetPasswordContract
         return $this->hasMany(SocialAccount::class);
     }
 
+    public function emailVerificationCodes(): HasMany
+    {
+        return $this->hasMany(UserEmailVerificationCode::class);
+    }
+
+    public function steamAccount(): HasOne
+    {
+        return $this->hasOne(SteamAccount::class);
+    }
+
+    public function steamTradeProfile(): HasOne
+    {
+        return $this->hasOne(SteamTradeProfile::class);
+    }
+
+    public function steamInventoryItems(): HasMany
+    {
+        return $this->hasMany(SteamInventoryItem::class);
+    }
+
+    public function skinListings(): HasMany
+    {
+        return $this->hasMany(SkinListing::class);
+    }
+
+    public function sentTradeRequests(): HasMany
+    {
+        return $this->hasMany(TradeRequest::class, 'buyer_user_id');
+    }
+
+    public function receivedTradeRequests(): HasMany
+    {
+        return $this->hasMany(TradeRequest::class, 'seller_user_id');
+    }
+
+    public function displayName(): string
+    {
+        return $this->profile?->display_name
+            ?: $this->name
+            ?: $this->email;
+    }
+
+    public function sendEmailVerificationNotification(): void
+    {
+        $code = str_pad((string) random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+
+        $this->emailVerificationCodes()
+            ->whereNull('consumed_at')
+            ->update([
+                'consumed_at' => now(),
+            ]);
+
+        $this->emailVerificationCodes()->create([
+            'code_hash' => hash('sha256', $code),
+            'expires_at' => now()->addMinutes(30),
+        ]);
+
+        $this->notify(new VerifyEmailWithCode($code));
+    }
+
     public function isAdmin(): bool
     {
         return $this->role === 'admin';
+    }
+
+    public function isActive(): bool
+    {
+        return $this->status === 'active';
     }
 
     public function hasActiveSubscription(): bool
@@ -76,95 +146,47 @@ class User extends Authenticatable implements CanResetPasswordContract
 
         return false;
     }
-    
-    public function steamInventoryItems(): HasMany
+
+    public function hasAcceptedMarketplaceTerms(): bool
     {
-        return $this->hasMany(SteamInventoryItem::class);
-    }
-    
-    public function displayName(): string
-    {
-        return $this->profile?->display_name
-            ?: $this->name
-            ?: $this->email;
+        return $this->marketplace_terms_accepted_at !== null;
     }
 
-    public function steamAccount(): HasOne
-{
-    return $this->hasOne(SteamAccount::class);
-}
+    public function hasVerifiedSteamAccount(): bool
+    {
+        return $this->steamAccount !== null
+            && $this->steamAccount->steam_id_64 !== null
+            && $this->steamAccount->last_verified_at !== null;
+    }
 
-public function steamTradeProfile(): HasOne
-{
-    return $this->hasOne(SteamTradeProfile::class);
-}
+    public function hasTradeProfileReady(): bool
+    {
+        return $this->steamTradeProfile !== null
+            && filled($this->steamTradeProfile->steam_trade_url)
+            && filled($this->steamTradeProfile->trade_partner_id)
+            && filled($this->steamTradeProfile->trade_token);
+    }
 
-public function skinListings(): HasMany
-{
-    return $this->hasMany(SkinListing::class);
-}
+    public function hasPublicSteamProfile(): bool
+    {
+        return $this->steamAccount !== null
+            && (string) $this->steamAccount->profile_visibility === '3';
+    }
 
-public function sentTradeRequests(): HasMany
-{
-    return $this->hasMany(TradeRequest::class, 'buyer_user_id');
-}
+    public function hasPublicSteamInventory(): bool
+    {
+        return $this->steamTradeProfile !== null
+            && $this->steamTradeProfile->inventory_public === true;
+    }
 
-public function receivedTradeRequests(): HasMany
-{
-    return $this->hasMany(TradeRequest::class, 'seller_user_id');
-}
-
-public function isActive(): bool
-{
-    return $this->status === 'active';
-}
-
-public function hasAcceptedMarketplaceTerms(): bool
-{
-    return $this->marketplace_terms_accepted_at !== null;
-}
-
-public function hasVerifiedSteamAccount(): bool
-{
-    return $this->steamAccount !== null
-        && $this->steamAccount->steam_id_64 !== null
-        && $this->steamAccount->last_verified_at !== null;
-}
-
-public function hasTradeProfileReady(): bool
-{
-    return $this->steamTradeProfile !== null
-        && filled($this->steamTradeProfile->steam_trade_url)
-        && filled($this->steamTradeProfile->trade_partner_id)
-        && filled($this->steamTradeProfile->trade_token);
-}
-
-public function hasPublicSteamProfile(): bool
-{
-    return $this->steamAccount !== null
-        && (string) $this->steamAccount->profile_visibility === '3';
-}
-
-public function hasPublicSteamInventory(): bool
-{
-    return $this->steamTradeProfile !== null
-        && $this->steamTradeProfile->inventory_public === true;
-}
-
-public function canUseMarketplace(): bool
-{
-    return $this->isActive()
-        && $this->email_verified_at !== null
-        && $this->hasAcceptedMarketplaceTerms()
-        && $this->hasVerifiedSteamAccount()
-        && $this->hasPublicSteamProfile()
-        && $this->hasPublicSteamInventory()
-        && $this->hasTradeProfileReady();
-}
-
-protected $casts = [
-    'email_verified_at' => 'datetime',
-    'marketplace_terms_accepted_at' => 'datetime',
-    'password' => 'hashed',
-];
+    public function canUseMarketplace(): bool
+    {
+        return $this->isActive()
+            && $this->hasVerifiedEmail()
+            && $this->hasAcceptedMarketplaceTerms()
+            && $this->hasVerifiedSteamAccount()
+            && $this->hasPublicSteamProfile()
+            && $this->hasPublicSteamInventory()
+            && $this->hasTradeProfileReady();
+    }
 }

@@ -28,6 +28,12 @@
                 @if ($isMarketplaceReady)
                     @if (Route::has('marketplace.listings.create'))
                         <a
+                            href="{{ route('marketplace.listings.index') }}"
+                            class="hover:text-white"
+                        >
+                            My Listings
+                        </a>
+                        <a
                             href="{{ route('marketplace.listings.create') }}"
                             class="rounded-full border border-cyan-400/40 bg-cyan-400/10 px-4 py-2 font-black text-cyan-200 hover:bg-cyan-400 hover:text-slate-950"
                         >

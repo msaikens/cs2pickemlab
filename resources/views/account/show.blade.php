@@ -23,6 +23,92 @@
         </div>
     @endif
 
+    @if(session('error'))
+        <div class="mb-6 rounded-lg border border-red-500/40 bg-red-500/10 px-4 py-3 text-red-200">
+            {{ session('error') }}
+        </div>
+    @endif
+
+    @if ($errors->any())
+        <div class="mb-6 rounded-lg border border-red-500/40 bg-red-500/10 px-4 py-3 text-red-200">
+            <p class="font-bold">Fix the following:</p>
+
+            <ul class="mt-2 list-inside list-disc text-sm">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    @if (! $user->hasVerifiedEmail())
+        <section class="mb-6 rounded-2xl border border-amber-400/40 bg-amber-400/10 p-6">
+            <div class="text-center">
+                <p class="text-xs font-black uppercase tracking-widest text-amber-200">
+                    Account Verification
+                </p>
+
+                <h2 class="mt-2 text-2xl font-black text-white">
+                    Verify Your Email
+                </h2>
+
+                <p class="mx-auto mt-2 max-w-2xl text-slate-300">
+                    We sent a verification link and one-time code to
+                    <strong class="text-white">{{ $user->email }}</strong>.
+                    Click the email link or enter the six-digit code below.
+                </p>
+            </div>
+
+            <form method="POST" action="{{ route('verification.code.verify') }}" class="mx-auto mt-6 grid max-w-md gap-4">
+                @csrf
+
+                <div>
+                    <label for="verification_code" class="mb-2 block text-sm font-bold text-slate-200">
+                        One-Time Verification Code
+                    </label>
+
+                    <input
+                        id="verification_code"
+                        name="verification_code"
+                        type="text"
+                        inputmode="numeric"
+                        autocomplete="one-time-code"
+                        maxlength="6"
+                        placeholder="123456"
+                        required
+                        class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-center text-2xl font-black tracking-[0.35em] text-white outline-none focus:border-amber-400"
+                    >
+                </div>
+
+                <button type="submit" class="btn-primary justify-center">
+                    Verify Email
+                </button>
+            </form>
+
+            <form method="POST" action="{{ route('verification.send') }}" class="mt-4 flex justify-center">
+                @csrf
+
+                <button type="submit" class="btn-secondary">
+                    Send New Verification Email
+                </button>
+            </form>
+        </section>
+    @else
+        <section class="mb-6 rounded-2xl border border-emerald-500/40 bg-emerald-500/10 p-6 text-center">
+            <p class="text-xs font-black uppercase tracking-widest text-emerald-200">
+                Account Verification
+            </p>
+
+            <h2 class="mt-2 text-2xl font-black text-white">
+                E-mail successfully verified.
+            </h2>
+
+            <p class="mt-2 text-slate-300">
+                Your account email is verified and marketplace verification can continue.
+            </p>
+        </section>
+    @endif
+
     <div class="grid gap-6 lg:grid-cols-3">
         <section class="card lg:col-span-1">
             <div class="flex flex-col items-center text-center">
@@ -40,7 +126,17 @@
 
                 <p class="mt-1 text-sm text-slate-500">{{ $user->email }}</p>
 
-                <span class="mt-4 rounded-full border border-cyan-400/40 bg-cyan-400/10 px-3 py-1 text-xs font-black uppercase text-cyan-200">
+                @if ($user->hasVerifiedEmail())
+                    <span class="mt-3 rounded-full border border-emerald-500/40 bg-emerald-500/10 px-3 py-1 text-xs font-black uppercase text-emerald-200">
+                        Email Verified
+                    </span>
+                @else
+                    <span class="mt-3 rounded-full border border-amber-400/40 bg-amber-400/10 px-3 py-1 text-xs font-black uppercase text-amber-200">
+                        Email Not Verified
+                    </span>
+                @endif
+
+                <span class="mt-3 rounded-full border border-cyan-400/40 bg-cyan-400/10 px-3 py-1 text-xs font-black uppercase text-cyan-200">
                     {{ $user->subscription_status === 'active' ? 'Subscribed' : 'Free Account' }}
                 </span>
             </div>

@@ -4,12 +4,35 @@ namespace App\Http\Controllers;
 
 use App\Models\SkinListing;
 use App\Models\SteamInventoryItem;
+use App\Models\TradeRequest;
+use App\Models\TradeRequestEvent;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class SkinListingController extends Controller
 {
+    public function index(Request $request): View
+    {
+        $listings = SkinListing::query()
+            ->with([
+                'tradeRequests.buyer.steamAccount',
+                'tradeRequests.seller.steamAccount',
+            ])
+            ->where('user_id', $request->user()->id)
+            ->when($request->filled('status'), function ($query) use ($request) {
+                $query->where('status', $request->string('status'));
+            })
+            ->latest()
+            ->paginate(15)
+            ->withQueryString();
+
+        return view('marketplace.listings.index', [
+            'listings' => $listings,
+        ]);
+    }
+
     public function create(Request $request): View
     {
         $listedAssetIds = SkinListing::where('user_id', $request->user()->id)
@@ -37,6 +60,12 @@ class SkinListingController extends Controller
             'asking_price' => ['nullable', 'numeric', 'min:0'],
         ]);
 
+        if ($validated['listing_type'] === 'sale' && ! config('marketplace.paid_sales_enabled')) {
+            return back()
+                ->with('error', 'Paid skin sales are not enabled yet. Use trade-only listings for now.')
+                ->withInput();
+        }
+
         $item = SteamInventoryItem::where('user_id', $request->user()->id)
             ->where('asset_id', $validated['asset_id'])
             ->where('tradable', true)
@@ -55,7 +84,13 @@ class SkinListingController extends Controller
 
         $askingPriceCents = null;
 
-        if (($validated['listing_type'] ?? 'trade') === 'sale' && $request->filled('asking_price')) {
+        if ($validated['listing_type'] === 'sale') {
+            if (! $request->filled('asking_price')) {
+                return back()
+                    ->with('error', 'Sale listings require an asking price.')
+                    ->withInput();
+            }
+
             $askingPriceCents = (int) round(((float) $validated['asking_price']) * 100);
         }
 
@@ -76,7 +111,52 @@ class SkinListingController extends Controller
         ]);
 
         return redirect()
-            ->route('marketplace.index')
+            ->route('marketplace.listings.index')
             ->with('success', 'Listing created.');
+    }
+
+    public function cancel(Request $request, SkinListing $listing): RedirectResponse
+    {
+        abort_unless($listing->user_id === $request->user()->id, 403);
+
+        if (! in_array($listing->status, ['draft', 'active', 'pending'], true)) {
+            return back()->with('error', 'That listing cannot be cancelled.');
+        }
+
+        DB::transaction(function () use ($request, $listing): void {
+            $oldListingStatus = $listing->status;
+
+            $listing->update([
+                'status' => 'cancelled',
+            ]);
+
+            $openTradeRequests = TradeRequest::where('skin_listing_id', $listing->id)
+                ->whereIn('status', ['pending', 'accepted'])
+                ->get();
+
+            foreach ($openTradeRequests as $tradeRequest) {
+                $oldTradeStatus = $tradeRequest->status;
+
+                $tradeRequest->update([
+                    'status' => 'cancelled',
+                    'cancelled_at' => now(),
+                ]);
+
+                TradeRequestEvent::create([
+                    'trade_request_id' => $tradeRequest->id,
+                    'actor_user_id' => $request->user()->id,
+                    'event_type' => 'cancelled_due_to_listing_cancelled',
+                    'old_status' => $oldTradeStatus,
+                    'new_status' => 'cancelled',
+                    'metadata' => [
+                        'listing_id' => $listing->id,
+                        'old_listing_status' => $oldListingStatus,
+                        'new_listing_status' => 'cancelled',
+                    ],
+                ]);
+            }
+        });
+
+        return back()->with('success', 'Listing cancelled.');
     }
 }

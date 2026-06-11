@@ -12,7 +12,11 @@ class ProfileController extends Controller
 {
     public function show(Request $request): View
     {
-        $user = $request->user()->load(['profile', 'socialAccounts']);
+        $user = $request->user()->load([
+            'profile',
+            'socialAccounts',
+            'emailVerificationCodes',
+        ]);
 
         return view('account.show', compact('user'));
     }

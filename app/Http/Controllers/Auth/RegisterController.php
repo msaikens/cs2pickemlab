@@ -31,7 +31,9 @@ class RegisterController extends Controller
             'password' => $data['password'],
             'role' => 'user',
         ]);
-
+        
+        event(new \Illuminate\Auth\Events\Registered($user));
+        
         Auth::login($user);
 
         return redirect()
