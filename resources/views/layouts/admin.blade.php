@@ -61,6 +61,14 @@
                 <a href="{{ route('admin.orders.index') }}" class="block rounded-lg px-4 py-2 font-bold text-slate-200 hover:bg-slate-800 hover:text-white">
                     Orders
                 </a>
+                
+                <a href="{{ route('admin.marketplace.listings') }}" class="block rounded-lg px-4 py-2 font-bold text-slate-200 hover:bg-slate-800 hover:text-white">
+                    Marketplace Listings
+                </a>
+
+                <a href="{{ route('admin.marketplace.trade-requests') }}" class="block rounded-lg px-4 py-2 font-bold text-slate-200 hover:bg-slate-800 hover:text-white">
+                    Marketplace Trades
+                </a>
             </nav>
         </aside>
 

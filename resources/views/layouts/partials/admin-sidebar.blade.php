@@ -22,5 +22,7 @@
 
         <a href="{{ route('admin.products.index') }}" class="admin-nav-link">Products</a>
         <a href="{{ route('admin.orders.index') }}" class="admin-nav-link">Orders</a>
+        <a href="{{ route('admin.marketplace.listings') }}" class="admin-nav-link">Marketplace Listings</a>
+        <a href="{{ route('admin.marketplace.trade-requests') }}" class="admin-nav-link">Marketplace Trades</a>
     </nav>
 </aside>

@@ -307,6 +307,21 @@ Route::prefix('admin')
         Route::resource('products', AdminProductController::class);
         Route::resource('teams', AdminTeamController::class);
 
+        Route::get('marketplace/listings', [\App\Http\Controllers\Admin\MarketplaceModerationController::class, 'listings'])
+            ->name('marketplace.listings');
+
+        Route::post('marketplace/listings/{listing}/cancel', [\App\Http\Controllers\Admin\MarketplaceModerationController::class, 'cancelListing'])
+            ->name('marketplace.listings.cancel');
+
+        Route::get('marketplace/trade-requests', [\App\Http\Controllers\Admin\MarketplaceModerationController::class, 'tradeRequests'])
+            ->name('marketplace.trade-requests');
+
+        Route::post('marketplace/users/{user}/suspend', [\App\Http\Controllers\Admin\MarketplaceModerationController::class, 'suspendUser'])
+            ->name('marketplace.users.suspend');
+
+        Route::post('marketplace/users/{user}/restore', [\App\Http\Controllers\Admin\MarketplaceModerationController::class, 'restoreUser'])
+            ->name('marketplace.users.restore');
+
         Route::get('content-gates', [AdminContentGateController::class, 'index'])
             ->name('content-gates.index');
 
@@ -372,4 +387,5 @@ Route::prefix('admin')
 
         Route::delete('products/{product}/variants/{variant}', [AdminProductVariantController::class, 'destroy'])
             ->name('products.variants.destroy');
+        
     });

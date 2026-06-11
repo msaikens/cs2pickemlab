@@ -15,6 +15,19 @@
     $viewerIsBuyer = auth()->id() === $tradeRequest->buyer_user_id;
     $viewerIsSeller = auth()->id() === $tradeRequest->seller_user_id;
     $sellerTradeUrl = $seller?->steamTradeProfile?->steam_trade_url;
+
+    $eventLabels = [
+        'requested' => 'Trade requested',
+        'accepted' => 'Trade accepted',
+        'declined' => 'Trade declined',
+        'cancelled' => 'Trade cancelled',
+        'completed' => 'Trade completed',
+        'listing_pending' => 'Listing moved to pending',
+        'listing_reopened' => 'Listing reopened',
+        'listing_completed' => 'Listing completed',
+        'auto_declined_due_to_other_acceptance' => 'Auto-declined',
+        'cancelled_due_to_listing_cancelled' => 'Cancelled because listing was cancelled',
+    ];
 @endphp
 
 <article class="trade-request-card">
@@ -104,11 +117,70 @@
             @endif
         </div>
 
+        @if ($tradeRequest->events->count() > 0)
+            <details class="trade-activity" open>
+                <summary>
+                    Activity History
+                    <span>{{ $tradeRequest->events->count() }} event(s)</span>
+                </summary>
+
+                <div class="trade-activity-list">
+                    @foreach ($tradeRequest->events as $event)
+                        @php
+                            $label = $eventLabels[$event->event_type] ?? str($event->event_type)->replace('_', ' ')->title();
+
+                            $actorName = $event->actor?->displayName()
+                                ?? ($event->actor_user_id ? 'User #' . $event->actor_user_id : 'System');
+
+                            $metadata = is_array($event->metadata) ? $event->metadata : [];
+                        @endphp
+
+                        <div class="trade-activity-item">
+                            <div class="trade-activity-dot"></div>
+
+                            <div class="trade-activity-body">
+                                <div class="trade-activity-topline">
+                                    <strong>{{ $label }}</strong>
+                                    <span>{{ $event->created_at?->diffForHumans() }}</span>
+                                </div>
+
+                                <p>
+                                    By {{ $actorName }}
+
+                                    @if ($event->old_status || $event->new_status)
+                                        ·
+                                        Status:
+                                        <strong>{{ $event->old_status ?? 'none' }}</strong>
+                                        →
+                                        <strong>{{ $event->new_status ?? 'none' }}</strong>
+                                    @endif
+                                </p>
+
+                                @if (! empty($metadata))
+                                    <div class="trade-activity-metadata">
+                                        @foreach ($metadata as $key => $value)
+                                            @continue(is_array($value) || is_object($value))
+
+                                            <span>
+                                                {{ str($key)->replace('_', ' ')->title() }}:
+                                                <strong>{{ $value }}</strong>
+                                            </span>
+                                        @endforeach
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </details>
+        @endif
+
         <div class="trade-request-actions">
             @if ($mode === 'incoming')
                 @if ($tradeRequest->status === 'pending')
                     <form method="POST" action="{{ route('marketplace.trade-requests.accept', $tradeRequest) }}">
                         @csrf
+
                         <button type="submit" class="marketplace-button primary">
                             Accept
                         </button>
@@ -116,6 +188,7 @@
 
                     <form method="POST" action="{{ route('marketplace.trade-requests.decline', $tradeRequest) }}">
                         @csrf
+
                         <button type="submit" class="marketplace-button danger">
                             Decline
                         </button>
@@ -129,6 +202,7 @@
                         onsubmit="return confirm('Only mark this completed after the Steam trade is actually finished. Continue?');"
                     >
                         @csrf
+
                         <button type="submit" class="marketplace-button primary">
                             Mark Completed
                         </button>
@@ -140,6 +214,7 @@
                         onsubmit="return confirm('Declining this accepted request will reopen the listing. Continue?');"
                     >
                         @csrf
+
                         <button type="submit" class="marketplace-button danger">
                             Cancel Accepted Trade
                         </button>
@@ -153,6 +228,7 @@
                         onsubmit="return confirm('Cancel this trade request?');"
                     >
                         @csrf
+
                         <button type="submit" class="marketplace-button danger">
                             Cancel Request
                         </button>
@@ -166,6 +242,7 @@
                         onsubmit="return confirm('Only mark this completed after the Steam trade is actually finished. Continue?');"
                     >
                         @csrf
+
                         <button type="submit" class="marketplace-button primary">
                             Mark Completed
                         </button>

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\SkinListing;
+use App\Models\TradeRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
@@ -19,6 +21,16 @@ class DashboardController extends Controller
             'pickem' => DB::table('pickem_recommendations')->count(),
             'products' => DB::table('products')->count(),
             'orders' => DB::table('orders')->count(),
+
+            'marketplace_listings_total' => SkinListing::count(),
+            'marketplace_listings_active' => SkinListing::where('status', 'active')->count(),
+            'marketplace_listings_pending' => SkinListing::where('status', 'pending')->count(),
+            'marketplace_listings_cancelled' => SkinListing::where('status', 'cancelled')->count(),
+
+            'trade_requests_total' => TradeRequest::count(),
+            'trade_requests_pending' => TradeRequest::where('status', 'pending')->count(),
+            'trade_requests_accepted' => TradeRequest::where('status', 'accepted')->count(),
+            'trade_requests_completed' => TradeRequest::where('status', 'completed')->count(),
         ];
 
         $latestMatches = DB::table('matches')
@@ -74,11 +86,25 @@ class DashboardController extends Controller
             ->map(fn ($order) => (array) $order)
             ->all();
 
+        $latestListings = SkinListing::query()
+            ->with(['user.profile', 'user.steamAccount'])
+            ->latest()
+            ->limit(5)
+            ->get();
+
+        $latestTradeRequests = TradeRequest::query()
+            ->with(['listing', 'buyer.profile', 'seller.profile'])
+            ->latest()
+            ->limit(5)
+            ->get();
+
         return view('admin.dashboard', compact(
             'stats',
             'latestMatches',
             'latestProducts',
-            'latestOrders'
+            'latestOrders',
+            'latestListings',
+            'latestTradeRequests'
         ));
     }
 }

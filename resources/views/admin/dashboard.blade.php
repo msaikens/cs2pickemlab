@@ -44,6 +44,24 @@
         <p class="text-xs font-bold uppercase tracking-widest text-slate-500">Orders</p>
         <p class="mt-2 text-4xl font-black text-white">{{ $stats['orders'] }}</p>
     </a>
+
+    <a href="{{ route('admin.marketplace.listings') }}" class="card hover:border-cyan-400">
+        <p class="text-xs font-bold uppercase tracking-widest text-slate-500">Marketplace Listings</p>
+        <p class="mt-2 text-4xl font-black text-white">{{ $stats['marketplace_listings_total'] }}</p>
+        <p class="mt-2 text-sm text-slate-400">
+            {{ $stats['marketplace_listings_active'] }} active ·
+            {{ $stats['marketplace_listings_pending'] }} pending
+        </p>
+    </a>
+
+    <a href="{{ route('admin.marketplace.trade-requests') }}" class="card hover:border-cyan-400">
+        <p class="text-xs font-bold uppercase tracking-widest text-slate-500">Trade Requests</p>
+        <p class="mt-2 text-4xl font-black text-white">{{ $stats['trade_requests_total'] }}</p>
+        <p class="mt-2 text-sm text-slate-400">
+            {{ $stats['trade_requests_pending'] }} pending ·
+            {{ $stats['trade_requests_accepted'] }} accepted
+        </p>
+    </a>
 </div>
 
 <div class="mt-10 grid gap-8 lg:grid-cols-3">
@@ -131,6 +149,64 @@
                 </div>
             @empty
                 <p class="text-muted">No orders yet.</p>
+            @endforelse
+        </div>
+    </section>
+</div>
+
+<div class="mt-10 grid gap-8 lg:grid-cols-2">
+    <section class="card">
+        <div class="mb-4 flex items-center justify-between">
+            <h2 class="text-xl font-black text-white">Latest Marketplace Listings</h2>
+            <a href="{{ route('admin.marketplace.listings') }}" class="link-accent">Manage</a>
+        </div>
+
+        <div class="space-y-3">
+            @forelse($latestListings as $listing)
+                <div class="rounded-lg bg-slate-950 p-3">
+                    <p class="font-bold text-white">{{ $listing->market_hash_name }}</p>
+
+                    <p class="text-muted-sm">
+                        {{ $listing->user?->displayName() ?? 'Unknown seller' }}
+                        · {{ ucfirst($listing->status ?? 'unknown') }}
+                        · {{ $listing->display_price }}
+                    </p>
+
+                    <p class="text-muted-xs">
+                        Asset: {{ $listing->steam_asset_id ?? '—' }}
+                    </p>
+                </div>
+            @empty
+                <p class="text-muted">No marketplace listings yet.</p>
+            @endforelse
+        </div>
+    </section>
+
+    <section class="card">
+        <div class="mb-4 flex items-center justify-between">
+            <h2 class="text-xl font-black text-white">Latest Trade Requests</h2>
+            <a href="{{ route('admin.marketplace.trade-requests') }}" class="link-accent">Manage</a>
+        </div>
+
+        <div class="space-y-3">
+            @forelse($latestTradeRequests as $tradeRequest)
+                <div class="rounded-lg bg-slate-950 p-3">
+                    <p class="font-bold text-white">
+                        {{ $tradeRequest->listing?->market_hash_name ?? 'Removed Listing' }}
+                    </p>
+
+                    <p class="text-muted-sm">
+                        Buyer: {{ $tradeRequest->buyer?->displayName() ?? 'Unknown' }}
+                        · Seller: {{ $tradeRequest->seller?->displayName() ?? 'Unknown' }}
+                    </p>
+
+                    <p class="text-muted-xs">
+                        {{ ucfirst($tradeRequest->status ?? 'unknown') }}
+                        · {{ $tradeRequest->created_at?->diffForHumans() }}
+                    </p>
+                </div>
+            @empty
+                <p class="text-muted">No trade requests yet.</p>
             @endforelse
         </div>
     </section>

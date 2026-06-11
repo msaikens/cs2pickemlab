@@ -45,6 +45,6 @@ class TradeRequest extends Model
 
     public function events(): HasMany
     {
-    return $this->hasMany(TradeRequestEvent::class);
+    return $this->hasMany(TradeRequestEvent::class)->latest();
     }
 }

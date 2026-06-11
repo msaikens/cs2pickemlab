@@ -21,6 +21,7 @@ class TradeRequestController extends Controller
                 'buyer.steamTradeProfile',
                 'seller.steamAccount',
                 'seller.steamTradeProfile',
+                'events.actor',
             ])
             ->where('seller_user_id', $request->user()->id)
             ->latest()
@@ -33,6 +34,7 @@ class TradeRequestController extends Controller
                 'buyer.steamTradeProfile',
                 'seller.steamAccount',
                 'seller.steamTradeProfile',
+                'events.actor',
             ])
             ->where('buyer_user_id', $request->user()->id)
             ->latest()

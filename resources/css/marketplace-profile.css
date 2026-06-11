@@ -1060,4 +1060,112 @@
     justify-content: center;
     margin-top: 16px;
 }
+.trade-activity {
+    overflow: hidden;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    background: rgba(255, 255, 255, 0.035);
+}
+
+.trade-activity summary {
+    display: flex;
+    cursor: pointer;
+    list-style: none;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    color: #e2e8f0;
+    font-weight: 900;
+}
+
+.trade-activity summary::-webkit-details-marker {
+    display: none;
+}
+
+.trade-activity summary span {
+    color: #8b95a7;
+    font-size: 0.82rem;
+    font-weight: 800;
+}
+
+.trade-activity-list {
+    display: grid;
+    gap: 0;
+    padding: 0 14px 14px;
+}
+
+.trade-activity-item {
+    position: relative;
+    display: grid;
+    grid-template-columns: 18px minmax(0, 1fr);
+    gap: 10px;
+    padding: 12px 0;
+}
+
+.trade-activity-item + .trade-activity-item {
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.trade-activity-dot {
+    width: 10px;
+    height: 10px;
+    margin-top: 6px;
+    border-radius: 999px;
+    background: #67e8f9;
+    box-shadow: 0 0 0 5px rgba(103, 232, 249, 0.12);
+}
+
+.trade-activity-body {
+    min-width: 0;
+}
+
+.trade-activity-topline {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+}
+
+.trade-activity-topline strong {
+    color: #f8fafc;
+}
+
+.trade-activity-topline span {
+    flex: 0 0 auto;
+    color: #8b95a7;
+    font-size: 0.82rem;
+}
+
+.trade-activity-body p {
+    margin: 4px 0 0;
+    color: #94a3b8;
+    font-size: 0.9rem;
+}
+
+.trade-activity-metadata {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 8px;
+}
+
+.trade-activity-metadata span {
+    border-radius: 999px;
+    padding: 4px 8px;
+    background: rgba(255, 255, 255, 0.055);
+    color: #94a3b8;
+    font-size: 0.78rem;
+}
+
+.trade-activity-metadata strong {
+    color: #cbd5e1;
+}
+
+@media (max-width: 640px) {
+    .trade-activity-topline {
+        flex-direction: column;
+        gap: 2px;
+    }
+}
 }
