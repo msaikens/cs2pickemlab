@@ -6,6 +6,9 @@
     <title>{{ $title ?? 'CS2 PickLab' }}</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    @stack('styles')
+
     @if(config('monetization.adsense.enabled') && config('monetization.adsense.client'))
         <script
             async
@@ -23,5 +26,7 @@
     </main>
 
     @include('layouts.partials.footer')
+
+    @stack('scripts')
 </body>
 </html>

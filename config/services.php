@@ -52,6 +52,10 @@ return [
         'client_secret' => env('ORCID_CLIENT_SECRET'),
         'redirect' => env('ORCID_REDIRECT_URI'),
     ],
+    'steam' => [
+        'openid_url' => env('STEAM_OPENID_URL', 'https://steamcommunity.com/openid/login'),
+        'api_key' => env('STEAM_WEB_API_KEY'),
+    ],
 
     'turnstile' => [
         'site_key' => env('TURNSTILE_SITE_KEY'),

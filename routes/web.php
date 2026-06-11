@@ -19,6 +19,14 @@ use App\Http\Controllers\Admin\ContentGateController as AdminContentGateControll
 use App\Http\Controllers\Public\ContactController;
 use App\Http\Controllers\Public\LegalPageController;
 
+use App\Http\Controllers\SteamOpenIdController;
+use App\Http\Controllers\SteamProfileController;
+use App\Http\Controllers\MarketplaceTermsController;
+
+use App\Http\Controllers\MarketplaceController;
+use App\Http\Controllers\SkinListingController;
+use App\Http\Controllers\TradeRequestController;
+
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -41,6 +49,12 @@ Route::get('/contact', [ContactController::class, 'create'])
 Route::post('/contact', [ContactController::class, 'store'])
     ->middleware('throttle:contact')
     ->name('contact.store');
+
+Route::get('/marketplace', [MarketplaceController::class, 'index'])
+    ->name('marketplace.index');
+
+Route::get('/marketplace/listings/{listing}', [MarketplaceController::class, 'show'])
+    ->name('marketplace.listings.show');
 
 Route::get('/matches', [MatchController::class, 'index'])->name('matches.index');
 Route::get('/matches/{match}', [MatchController::class, 'show'])->name('matches.show');
@@ -69,6 +83,43 @@ Route::get('/affiliate-disclosures', [LegalPageController::class, 'affiliateDisc
 Route::get('/disclaimer', [LegalPageController::class, 'disclaimer'])
     ->name('legal.disclaimer');
 
+Route::get('/skins/trading', [SkinTradingController::class, 'index'])
+    ->name('skins.trading');
+
+// Marketplace routes - require verified email and completed marketplace terms
+Route::middleware(['auth', 'verified', 'marketplace.ready'])->group(function () {
+    Route::post('/skins/listings', [SkinListingController::class, 'store'])
+        ->name('skins.listings.store');
+
+    Route::post('/skins/listings/{listing}/trade-requests', [TradeRequestController::class, 'store'])
+        ->name('skins.trade-requests.store');
+
+    Route::get('/marketplace/sell', [SkinListingController::class, 'create'])
+        ->name('marketplace.listings.create');
+
+    Route::post('/marketplace/listings', [SkinListingController::class, 'store'])
+        ->name('marketplace.listings.store');
+
+    Route::post('/marketplace/listings/{listing}/trade-request', [TradeRequestController::class, 'store'])
+        ->name('marketplace.trade-requests.store');
+    
+    Route::get('/marketplace/trade-requests', [TradeRequestController::class, 'index'])
+        ->name('marketplace.trade-requests.index');
+
+    Route::post('/marketplace/trade-requests/{tradeRequest}/accept', [TradeRequestController::class, 'accept'])
+        ->name('marketplace.trade-requests.accept');
+
+    Route::post('/marketplace/trade-requests/{tradeRequest}/decline', [TradeRequestController::class, 'decline'])
+        ->name('marketplace.trade-requests.decline');
+
+    Route::post('/marketplace/trade-requests/{tradeRequest}/cancel', [TradeRequestController::class, 'cancel'])
+        ->name('marketplace.trade-requests.cancel');
+
+    Route::post('/marketplace/trade-requests/{tradeRequest}/complete', [TradeRequestController::class, 'complete'])
+        ->name('marketplace.trade-requests.complete');
+});
+
+// Account routes - require authentication
 Route::middleware('auth')->prefix('account')->name('account.')->group(function () {
     Route::get('/', [ProfileController::class, 'show'])->name('show');
     Route::get('/edit', [ProfileController::class, 'edit'])->name('edit');
@@ -78,6 +129,40 @@ Route::middleware('auth')->prefix('account')->name('account.')->group(function (
     Route::put('/security/password', [SecurityController::class, 'updatePassword'])->name('password.update');
 });
 
+
+// Marketplace terms routes - require authentication but not marketplace readiness 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/marketplace/terms', [MarketplaceTermsController::class, 'show'])
+        ->name('marketplace.terms');
+
+    Route::post('/marketplace/terms', [MarketplaceTermsController::class, 'accept'])
+        ->name('marketplace.terms.accept');
+
+    Route::delete('/profile/steam/unlink', [SteamProfileController::class, 'unlinkSteamAccount'])
+        ->name('profile.steam.unlink');
+
+    Route::get('/profile/steam/link', [SteamOpenIdController::class, 'redirect'])
+        ->name('profile.steam.link');
+
+    Route::get('/profile/steam/callback', [SteamOpenIdController::class, 'callback'])
+        ->name('profile.steam.callback');
+
+    Route::get('/profile/steam', [SteamProfileController::class, 'show'])
+        ->name('profile.steam');
+
+    Route::post('/profile/steam/trade-url', [SteamProfileController::class, 'updateTradeUrl'])
+        ->name('profile.steam.trade-url.update');
+    
+    Route::post('/profile/steam/inventory/sync', [SteamProfileController::class, 'syncInventory'])
+        ->name('profile.steam.inventory.sync');
+    
+    Route::post('/profile/steam/mock-link', [SteamProfileController::class, 'mockLink'])
+        ->name('profile.steam.mock-link');
+    
+    Route::post('/profile/steam/refresh', [SteamProfileController::class, 'refreshSteamProfile'])
+        ->name('profile.steam.refresh');
+});
+// Guest routes - do not require authentication 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'create'])->name('login');
     Route::post('/login', [LoginController::class, 'store'])->name('login.store');
@@ -99,11 +184,11 @@ Route::middleware('guest')->group(function () {
         ->whereIn('provider', ['google', 'apple', 'orcid'])
         ->name('social.callback');
 });
-
+// Authenticated routes
 Route::post('/logout', [LoginController::class, 'destroy'])
     ->middleware('auth')
     ->name('logout');
-
+// Admin routes - require admin role
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
 

@@ -313,3 +313,5 @@
     @apply rounded-xl border border-cyan-400/20 bg-cyan-400/5 p-4 text-sm text-cyan-100;
 }
 }
+
+@import "marketplace-profile.css";
