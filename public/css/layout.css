@@ -1,0 +1,25 @@
+@layer components {
+    .page-wrap {
+        @apply mx-auto max-w-7xl px-4 py-8;
+    }
+
+    .page-wrap-narrow {
+        @apply mx-auto max-w-5xl px-4 py-8;
+    }
+
+    .page-header {
+        @apply mb-6 flex flex-wrap items-center justify-between gap-4;
+    }
+
+    .page-title {
+        @apply text-2xl font-black text-white;
+    }
+
+    .page-subtitle {
+        @apply mt-1 text-slate-400;
+    }
+
+    .page-eyebrow {
+        @apply text-sm font-bold uppercase tracking-widest text-cyan-400;
+    }
+}

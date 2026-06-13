@@ -1,0 +1,25 @@
+@layer components {
+    .table-wrap {
+        @apply overflow-hidden rounded-xl border border-slate-800 bg-slate-900;
+    }
+
+    .admin-table {
+        @apply w-full text-left text-sm;
+    }
+
+    .admin-table thead {
+        @apply bg-slate-950 text-xs uppercase tracking-widest text-slate-500;
+    }
+
+    .admin-table th {
+        @apply px-4 py-3;
+    }
+
+    .admin-table tbody {
+        @apply divide-y divide-slate-800;
+    }
+
+    .admin-table td {
+        @apply px-4 py-4;
+    }
+}

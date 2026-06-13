@@ -1,0 +1,33 @@
+@layer components {
+    .site-body {
+        @apply bg-slate-950 text-slate-100;
+    }
+
+    .text-muted {
+        @apply text-slate-400;
+    }
+
+    .text-muted-sm {
+        @apply text-sm text-slate-400;
+    }
+
+    .text-muted-xs {
+        @apply text-xs text-slate-500;
+    }
+
+    .status-pill {
+        @apply rounded-full bg-slate-950 px-3 py-1 text-xs font-bold text-slate-300;
+    }
+
+    .price-text {
+        @apply font-bold text-cyan-300;
+    }
+
+    .empty-row {
+        @apply px-4 py-8 text-center text-slate-400;
+    }
+
+    .link-accent {
+        @apply text-sm font-bold text-cyan-400 hover:text-cyan-300;
+    }
+}

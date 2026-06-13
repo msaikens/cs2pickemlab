@@ -1,0 +1,210 @@
+/* public/css/marketplace-detail.css */
+
+.marketplace-listing-detail {
+    display: grid;
+    grid-template-columns: minmax(260px, 0.9fr) minmax(0, 1.1fr);
+    gap: 28px;
+    align-items: center;
+}
+
+.listing-detail-image {
+    display: grid;
+    place-items: center;
+    min-height: 360px;
+    border-radius: 22px;
+    background:
+        radial-gradient(circle at center, rgba(34, 211, 238, 0.14), transparent 60%),
+        rgba(15, 23, 42, 0.5);
+}
+
+.listing-detail-image img {
+    width: min(420px, 100%);
+    height: auto;
+    object-fit: contain;
+}
+
+.listing-detail-content h1 {
+    margin: 0 0 12px;
+    font-size: clamp(2rem, 5vw, 4rem);
+    line-height: 0.95;
+    letter-spacing: -0.06em;
+}
+
+.listing-detail-price {
+    margin-bottom: 20px;
+    color: #f5b642;
+    font-size: 1.5rem;
+    font-weight: 1000;
+}
+
+.listing-detail-grid {
+    width: 100%;
+    margin-bottom: 22px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.listing-detail-grid div {
+    padding: 16px 12px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.045);
+    border: 1px solid rgba(255, 255, 255, 0.11);
+}
+
+.listing-detail-grid span {
+    display: block;
+    margin-bottom: 5px;
+    color: #8b95a7;
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.listing-detail-grid strong {
+    display: block;
+    word-break: break-word;
+}
+
+.accepted-trade-box {
+    display: grid;
+    gap: 10px;
+    padding: 14px;
+    border-radius: 16px;
+    background: rgba(34, 197, 94, 0.09);
+    border: 1px solid rgba(34, 197, 94, 0.28);
+}
+
+.accepted-trade-box strong {
+    color: #86efac;
+}
+
+.accepted-trade-box p {
+    margin: 0;
+    color: #cbd5e1;
+    line-height: 1.5;
+}
+
+.accepted-trade-box .marketplace-button {
+    justify-self: start;
+}
+
+.trade-activity {
+    overflow: hidden;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    background: rgba(255, 255, 255, 0.035);
+}
+
+.trade-activity summary {
+    display: flex;
+    cursor: pointer;
+    list-style: none;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    color: #e2e8f0;
+    font-weight: 900;
+}
+
+.trade-activity summary::-webkit-details-marker {
+    display: none;
+}
+
+.trade-activity summary span {
+    color: #8b95a7;
+    font-size: 0.82rem;
+    font-weight: 800;
+}
+
+.trade-activity-list {
+    display: grid;
+    gap: 0;
+    padding: 0 14px 14px;
+}
+
+.trade-activity-item {
+    position: relative;
+    display: grid;
+    grid-template-columns: 18px minmax(0, 1fr);
+    gap: 10px;
+    padding: 12px 0;
+}
+
+.trade-activity-item + .trade-activity-item {
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.trade-activity-dot {
+    width: 10px;
+    height: 10px;
+    margin-top: 6px;
+    border-radius: 999px;
+    background: #67e8f9;
+    box-shadow: 0 0 0 5px rgba(103, 232, 249, 0.12);
+}
+
+.trade-activity-body {
+    min-width: 0;
+}
+
+.trade-activity-topline {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+}
+
+.trade-activity-topline strong {
+    color: #f8fafc;
+}
+
+.trade-activity-topline span {
+    flex: 0 0 auto;
+    color: #8b95a7;
+    font-size: 0.82rem;
+}
+
+.trade-activity-body p {
+    margin: 4px 0 0;
+    color: #94a3b8;
+    font-size: 0.9rem;
+}
+
+.trade-activity-metadata {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 8px;
+}
+
+.trade-activity-metadata span {
+    border-radius: 999px;
+    padding: 4px 8px;
+    background: rgba(255, 255, 255, 0.055);
+    color: #94a3b8;
+    font-size: 0.78rem;
+}
+
+.trade-activity-metadata strong {
+    color: #cbd5e1;
+}
+
+@media (max-width: 960px) {
+    .marketplace-listing-detail {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .listing-detail-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .trade-activity-topline {
+        flex-direction: column;
+        gap: 2px;
+    }
+}

@@ -42,27 +42,41 @@
     @else
         <div class="grid gap-4">
             @foreach ($users as $resultUser)
-                <article class="flex flex-col gap-4 rounded-2xl border border-slate-800 bg-slate-900/60 p-4 md:flex-row md:items-center md:justify-between">
-                    @include('components.user-identity', [
-                        'user' => $resultUser,
-                        'size' => 'lg',
-                        'showAccountType' => true,
-                        'showAccountName' => true,
-                    ])
+    <article class="flex flex-col gap-4 rounded-2xl border border-slate-800 bg-slate-900/60 p-4 md:flex-row md:items-center md:justify-between">
+        @include('components.user-identity', [
+            'user' => $resultUser,
+            'size' => 'lg',
+            'showAccountType' => true,
+            'showAccountName' => true,
+        ])
 
-                    <div class="flex shrink-0 flex-wrap items-center gap-2">
-                        @if ($resultUser->hasVerifiedEmail())
-                            <span class="rounded-full border border-emerald-500/40 bg-emerald-500/10 px-3 py-1 text-xs font-black uppercase text-emerald-200">
-                                Verified
-                            </span>
-                        @else
-                            <span class="rounded-full border border-amber-400/40 bg-amber-400/10 px-3 py-1 text-xs font-black uppercase text-amber-200">
-                                Unverified
-                            </span>
-                        @endif
-                    </div>
-                </article>
-            @endforeach
+        <div class="flex shrink-0 flex-wrap items-center gap-2">
+            @if ($resultUser->hasVerifiedEmail())
+                <span class="rounded-full border border-emerald-500/40 bg-emerald-500/10 px-3 py-1 text-xs font-black uppercase text-emerald-200">
+                    Verified
+                </span>
+            @else
+                <span class="rounded-full border border-amber-400/40 bg-amber-400/10 px-3 py-1 text-xs font-black uppercase text-amber-200">
+                    Unverified
+                </span>
+            @endif
+
+            @if(auth()->user()?->isAdmin())
+                <form
+                    method="POST"
+                    action="{{ route('admin.users.complete-resync', $resultUser) }}"
+                    onsubmit="return confirm('Run a complete re-sync for this user?');"
+                >
+                    @csrf
+
+                    <button type="submit" class="btn-secondary">
+                        Complete Re-Sync
+                    </button>
+                </form>
+            @endif
+        </div>
+    </article>
+@endforeach
         </div>
 
         <div class="mt-6">

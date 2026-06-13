@@ -218,7 +218,13 @@
 
             <form method="POST" action="{{ route('profile.steam.trade-url.update') }}" class="marketplace-form">
                 @csrf
+                <div class="mb-2 flex flex-wrap items-center justify-between gap-2">
 
+
+                <a href="{{ route('help.steam-trade-url') }}" class="text-sm font-bold text-cyan-300 hover:text-cyan-200">
+                    How do I find my trade URL?
+                </a>
+                </div>
                 <div class="form-row">
                     <label for="steam_trade_url">Steam Trade URL</label>
                     <input

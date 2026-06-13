@@ -16,7 +16,20 @@
             <a href="{{ route('account.security') }}" class="btn-secondary">Security</a>
         </div>
     </div>
+    @if(app()->environment(['local', 'development', 'staging']) || auth()->user()?->isAdmin())
+        <form
+            method="POST"
+            action="{{ route('account.complete-resync') }}"
+            onsubmit="return confirm('Run a complete account re-sync? This will repair missing profile, Steam, and marketplace records for your account.');"
+        >
+            @csrf
 
+            <button type="submit" class="btn-secondary">
+                Complete Re-Sync
+            </button>
+        </form>
+    @endif
+    
     @if(session('success'))
         <div class="mb-6 rounded-lg border border-emerald-500/40 bg-emerald-500/10 px-4 py-3 text-emerald-200">
             {{ session('success') }}

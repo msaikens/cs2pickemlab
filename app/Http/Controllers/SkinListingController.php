@@ -34,23 +34,29 @@ class SkinListingController extends Controller
     }
 
     public function create(Request $request): View
-    {
-        $listedAssetIds = SkinListing::where('user_id', $request->user()->id)
-            ->whereIn('status', ['draft', 'active', 'pending'])
-            ->pluck('steam_asset_id')
-            ->filter()
-            ->values();
+{
+    $user = $request->user();
 
-        $items = SteamInventoryItem::where('user_id', $request->user()->id)
-            ->where('tradable', true)
-            ->whereNotIn('asset_id', $listedAssetIds)
-            ->orderBy('market_hash_name')
-            ->paginate(24);
+    $alreadyListedAssetIds = SkinListing::query()
+        ->where('user_id', $user->id)
+        ->whereIn('status', ['draft', 'active', 'pending'])
+        ->pluck('steam_asset_id')
+        ->filter()
+        ->values();
 
-        return view('marketplace.listings.create', [
-            'items' => $items,
-        ]);
-    }
+    $inventoryItems = $user->steamInventoryItems()
+        ->where('tradable', true)
+        ->when($alreadyListedAssetIds->isNotEmpty(), function ($query) use ($alreadyListedAssetIds) {
+            $query->whereNotIn('asset_id', $alreadyListedAssetIds);
+        })
+        ->orderBy('market_hash_name')
+        ->paginate(24)
+        ->withQueryString();
+
+    return view('marketplace.listings.create', [
+        'inventoryItems' => $inventoryItems,
+    ]);
+}
 
     public function store(Request $request): RedirectResponse
     {

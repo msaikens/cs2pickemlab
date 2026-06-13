@@ -1,0 +1,241 @@
+/* public/css/marketplace-profile.css */
+
+.marketplace-status-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 42px;
+    padding: 0 18px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.06);
+    font-weight: 800;
+}
+
+.status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+}
+
+.marketplace-status-pill.is-ready .status-dot,
+.requirement-tile.complete .requirement-icon {
+    background: #22c55e;
+    box-shadow: 0 0 0 5px rgba(34, 197, 94, 0.14);
+}
+
+.marketplace-status-pill.is-not-ready .status-dot,
+.requirement-tile.incomplete .requirement-icon {
+    background: #ef4444;
+    box-shadow: 0 0 0 5px rgba(239, 68, 68, 0.14);
+}
+
+.requirement-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.requirement-tile {
+    display: grid;
+    justify-items: center;
+    text-align: center;
+    align-content: start;
+    gap: 8px;
+    min-height: 170px;
+    padding: 18px 14px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.045);
+    border: 1px solid rgba(255, 255, 255, 0.11);
+}
+
+.requirement-icon {
+    width: 14px;
+    height: 14px;
+    margin-bottom: 6px;
+    border-radius: 999px;
+}
+
+.requirement-tile strong {
+    font-size: 0.95rem;
+}
+
+.requirement-tile p {
+    margin: 0;
+    color: #8b95a7;
+    font-size: 0.86rem;
+    line-height: 1.4;
+}
+
+.requirement-tile a {
+    color: #f5b642;
+    font-size: 0.86rem;
+    font-weight: 800;
+    text-decoration: none;
+}
+
+.requirement-tile a:hover {
+    text-decoration: underline;
+}
+
+.steam-identity-card {
+    width: min(620px, 100%);
+    margin: 0 auto 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    padding: 22px;
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.045);
+    border: 1px solid rgba(255, 255, 255, 0.11);
+}
+
+.steam-avatar {
+    width: 76px;
+    height: 76px;
+    border-radius: 20px;
+    object-fit: cover;
+    flex: 0 0 auto;
+}
+
+.steam-avatar-placeholder {
+    display: grid;
+    place-items: center;
+    background: #f5b642;
+    color: #111;
+    font-size: 2rem;
+    font-weight: 900;
+}
+
+.steam-identity-main {
+    min-width: 0;
+}
+
+.steam-identity-main strong {
+    display: block;
+    font-size: 1.25rem;
+}
+
+.steam-identity-main p {
+    margin: 4px 0;
+    color: #8b95a7;
+    word-break: break-word;
+}
+
+.steam-identity-main a {
+    color: #f5b642;
+    font-weight: 800;
+    text-decoration: none;
+}
+
+.steam-identity-main a:hover {
+    text-decoration: underline;
+}
+
+.marketplace-account-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin: 0 auto 22px;
+}
+
+.marketplace-account-actions form {
+    margin: 0;
+}
+
+.marketplace-account-actions .marketplace-button {
+    min-width: 190px;
+}
+
+.marketplace-detail-grid {
+    width: min(760px, 100%);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.marketplace-detail-grid.trade-details {
+    margin-top: 22px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.marketplace-detail-grid div {
+    text-align: center;
+    padding: 16px 12px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.045);
+    border: 1px solid rgba(255, 255, 255, 0.11);
+}
+
+.marketplace-detail-grid span {
+    display: block;
+    margin-bottom: 5px;
+    color: #8b95a7;
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.marketplace-detail-grid strong {
+    display: block;
+    word-break: break-word;
+}
+
+.steam-login-button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 16px;
+    text-decoration: none;
+}
+
+.steam-login-button img {
+    display: block;
+    width: 180px;
+    max-width: 100%;
+    height: auto;
+    border: 0;
+}
+
+.marketplace-resend-form {
+    display: flex;
+    justify-content: center;
+    margin-top: 16px;
+}
+
+@media (max-width: 920px) {
+    .requirement-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .marketplace-detail-grid,
+    .marketplace-detail-grid.trade-details {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 640px) {
+    .requirement-grid {
+        grid-template-columns: repeat(auto-fit, minmax(155px, 1fr));
+    }
+
+    .marketplace-detail-grid,
+    .marketplace-detail-grid.trade-details {
+        grid-template-columns: 1fr;
+    }
+
+    .steam-identity-card {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .marketplace-account-actions {
+        flex-direction: column;
+    }
+}

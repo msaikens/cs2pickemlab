@@ -1,0 +1,33 @@
+@layer components {
+    .form-grid {
+        @apply grid gap-6 lg:grid-cols-2;
+    }
+
+    .form-label {
+        @apply mb-2 block font-bold text-white;
+    }
+
+    .form-label-sm {
+        @apply mb-1 block text-xs font-bold uppercase tracking-widest text-slate-500;
+    }
+
+    .form-input {
+        @apply w-full rounded-lg border border-slate-700 bg-slate-950 px-4 py-3 text-white;
+    }
+
+    .form-input-sm {
+        @apply w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-white;
+    }
+
+    .form-help {
+        @apply mt-1 text-xs text-slate-500;
+    }
+
+    .checkbox-card {
+        @apply flex items-center gap-3 rounded-lg border border-slate-800 bg-slate-950 p-4;
+    }
+
+    .checkbox-input {
+        @apply h-5 w-5;
+    }
+}

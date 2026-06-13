@@ -1,0 +1,283 @@
+/* public/css/marketplace-shared.css */
+
+.marketplace-profile-page {
+    min-height: calc(100vh - 120px);
+    padding: 48px 18px 72px;
+}
+
+.marketplace-profile-shell {
+    width: min(980px, 100%);
+    margin: 0 auto;
+}
+
+.marketplace-profile-hero {
+    text-align: center;
+    margin: 0 auto 28px;
+    padding: 42px 24px 32px;
+}
+
+.marketplace-profile-kicker,
+.marketplace-card-header span {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+    color: #f5b642;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.marketplace-profile-hero h1 {
+    max-width: 780px;
+    margin: 0 auto 12px;
+    font-size: clamp(2.25rem, 5vw, 4.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.06em;
+}
+
+.marketplace-profile-hero p {
+    max-width: 680px;
+    margin: 0 auto 22px;
+    color: #8b95a7;
+    font-size: 1.05rem;
+    line-height: 1.65;
+}
+
+.marketplace-card,
+.marketplace-alert {
+    width: 100%;
+    margin: 0 auto 22px;
+    padding: 26px;
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.045);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.18);
+}
+
+.marketplace-alert ul {
+    margin-bottom: 0;
+}
+
+.marketplace-alert-success {
+    border-color: rgba(34, 197, 94, 0.35);
+    background: rgba(34, 197, 94, 0.09);
+}
+
+.marketplace-alert-danger {
+    border-color: rgba(239, 68, 68, 0.35);
+    background: rgba(239, 68, 68, 0.09);
+}
+
+.marketplace-card-header.centered {
+    text-align: center;
+    max-width: 720px;
+    margin: 0 auto 24px;
+}
+
+.marketplace-card-header h2 {
+    margin: 0 0 8px;
+    font-size: clamp(1.45rem, 3vw, 2.2rem);
+    letter-spacing: -0.04em;
+}
+
+.marketplace-card-header p {
+    margin: 0;
+    color: #8b95a7;
+    line-height: 1.55;
+}
+
+.marketplace-empty-state {
+    width: min(620px, 100%);
+    margin: 0 auto;
+    padding: 22px;
+    text-align: center;
+    border-radius: 18px;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    background: rgba(245, 158, 11, 0.08);
+}
+
+.marketplace-empty-state p {
+    margin: 8px 0 0;
+    color: #8b95a7;
+}
+
+.marketplace-button {
+    justify-self: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    padding: 0 22px;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    font-weight: 900;
+    cursor: pointer;
+    text-decoration: none;
+    transition:
+        transform 150ms ease,
+        background-color 150ms ease,
+        border-color 150ms ease,
+        color 150ms ease;
+}
+
+.marketplace-button:hover {
+    transform: translateY(-1px);
+}
+
+.marketplace-button.primary {
+    background: #f5b642;
+    color: #111;
+}
+
+.marketplace-button.secondary {
+    background: transparent;
+    color: inherit;
+    border-color: rgba(255, 255, 255, 0.16);
+}
+
+.marketplace-button.secondary:hover {
+    background: rgba(255, 255, 255, 0.07);
+}
+
+.marketplace-button.danger {
+    background: rgba(239, 68, 68, 0.12);
+    color: #fca5a5;
+    border-color: rgba(239, 68, 68, 0.45);
+}
+
+.marketplace-button.danger:hover {
+    background: rgba(239, 68, 68, 0.2);
+    color: #fecaca;
+}
+
+.marketplace-pagination {
+    margin-top: 22px;
+}
+
+.marketplace-skin-placeholder {
+    display: grid;
+    place-items: center;
+    width: 140px;
+    height: 140px;
+    border-radius: 28px;
+    background: rgba(34, 211, 238, 0.12);
+    color: #67e8f9;
+    font-size: 2rem;
+    font-weight: 1000;
+}
+
+.marketplace-skin-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    color: #8b95a7;
+    font-size: 0.82rem;
+}
+
+.marketplace-skin-meta span {
+    border-radius: 999px;
+    padding: 5px 9px;
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.marketplace-form {
+    width: min(700px, 100%);
+    margin: 0 auto;
+    display: grid;
+    gap: 16px;
+}
+
+.compact-form {
+    margin-top: 22px;
+    padding-top: 22px;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.marketplace-form-title {
+    text-align: center;
+}
+
+.marketplace-form-title h3 {
+    margin: 0 0 6px;
+}
+
+.marketplace-form-title p {
+    margin: 0;
+    color: #8b95a7;
+}
+
+.form-row {
+    display: grid;
+    gap: 7px;
+}
+
+.form-row label {
+    font-weight: 800;
+}
+
+.form-row input,
+.form-row textarea,
+.form-row select {
+    width: 100%;
+    min-height: 48px;
+    padding: 0 14px;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.06);
+    color: inherit;
+}
+
+.form-row textarea {
+    min-height: 120px;
+    padding-top: 12px;
+    resize: vertical;
+}
+
+.form-row input:focus,
+.form-row textarea:focus,
+.form-row select:focus {
+    outline: none;
+    border-color: #f5b642;
+    box-shadow: 0 0 0 4px rgba(245, 182, 66, 0.13);
+}
+
+.form-help {
+    margin: 0;
+    color: #8b95a7;
+    font-size: 0.9rem;
+}
+
+.marketplace-check {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    color: #8b95a7;
+    line-height: 1.45;
+}
+
+.marketplace-check input {
+    margin-top: 4px;
+}
+
+@media (max-width: 640px) {
+    .marketplace-profile-page {
+        padding-top: 28px;
+    }
+
+    .marketplace-card {
+        padding: 20px;
+        border-radius: 20px;
+    }
+
+    .marketplace-profile-hero h1 {
+        font-size: 2.35rem;
+    }
+
+    .marketplace-account-actions,
+    .marketplace-account-actions form,
+    .marketplace-account-actions .marketplace-button {
+        width: 100%;
+    }
+}

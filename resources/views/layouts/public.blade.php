@@ -11,6 +11,8 @@
     <title>{{ $title }}</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    @stack('styles')
 </head>
 
 <body class="min-h-screen bg-slate-950 text-slate-100">
@@ -70,5 +72,7 @@
             </div>
         </footer>
     </div>
+
+    @stack('scripts')
 </body>
 </html>

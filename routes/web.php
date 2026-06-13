@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Account\CompleteResyncController;
 use App\Http\Controllers\Account\ProfileController;
 use App\Http\Controllers\Account\SecurityController;
 use App\Http\Controllers\Admin\ContentGateController as AdminContentGateController;
@@ -76,6 +77,9 @@ Route::get('/teams', [TeamController::class, 'index'])
 Route::get('/teams/{team}', [TeamController::class, 'show'])
     ->name('teams.show');
 
+Route::view('/help/steam-trade-url', 'help.steam-trade-url')
+    ->name('help.steam-trade-url');
+
 /*
 |--------------------------------------------------------------------------
 | Legal routes
@@ -147,6 +151,7 @@ Route::middleware('guest')->group(function () {
 
     Route::post('/reset-password', [ResetPasswordController::class, 'store'])
         ->name('password.update');
+
 });
 
 /*
@@ -206,6 +211,10 @@ Route::middleware('auth')
 
         Route::put('/security/password', [SecurityController::class, 'updatePassword'])
             ->name('password.update');
+        
+        Route::post('/complete-resync', CompleteResyncController::class)
+            ->middleware(['verified'])
+            ->name('complete-resync');
     });
 
 /*
@@ -388,4 +397,6 @@ Route::prefix('admin')
         Route::delete('products/{product}/variants/{variant}', [AdminProductVariantController::class, 'destroy'])
             ->name('products.variants.destroy');
         
+        Route::post('users/{user}/complete-resync', [\App\Http\Controllers\Admin\UserResyncController::class, 'resync'])
+            ->name('users.complete-resync');
     });
