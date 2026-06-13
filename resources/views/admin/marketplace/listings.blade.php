@@ -1,35 +1,32 @@
 @extends('layouts.admin', [
-    'title' => 'Marketplace Listings',
+    'title' => 'Marketplace Listings | CS2 PickLab',
+    'pageTitle' => 'Marketplace Listings',
 ])
 
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/admin/admin-marketplace.css') }}">
+@endpush
+
 @section('content')
-<section class="space-y-6">
-    <div>
-        <h1 class="text-3xl font-black text-white">Marketplace Listings</h1>
-        <p class="mt-2 text-slate-400">Review, search, and moderate user skin listings.</p>
+    <div class="page-header">
+        <div>
+            <h2 class="page-title">Marketplace Listings</h2>
+            <p class="page-subtitle">
+                Review, search, and moderate user skin listings.
+            </p>
+        </div>
     </div>
 
-    @if(session('success'))
-        <div class="rounded-lg border border-emerald-500/40 bg-emerald-500/10 px-4 py-3 text-emerald-200">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    @if(session('error'))
-        <div class="rounded-lg border border-red-500/40 bg-red-500/10 px-4 py-3 text-red-200">
-            {{ session('error') }}
-        </div>
-    @endif
-
-    <form method="GET" action="{{ route('admin.marketplace.listings') }}" class="flex flex-wrap gap-3 rounded-2xl border border-slate-800 bg-slate-900/60 p-4">
+    <form method="GET" action="{{ route('admin.marketplace.listings') }}" class="admin-filter-panel">
         <input
             name="search"
+            type="search"
             value="{{ request('search') }}"
             placeholder="Search listing, asset ID, user..."
-            class="min-h-11 flex-1 rounded-xl border border-slate-700 bg-slate-950 px-4 text-white outline-none focus:border-cyan-400"
+            class="form-input admin-filter-search"
         >
 
-        <select name="status" class="min-h-11 rounded-xl border border-slate-700 bg-slate-950 px-4 text-white outline-none focus:border-cyan-400">
+        <select name="status" class="form-input admin-filter-select">
             <option value="">All Statuses</option>
             <option value="active" @selected(request('status') === 'active')>Active</option>
             <option value="pending" @selected(request('status') === 'pending')>Pending</option>
@@ -38,44 +35,59 @@
             <option value="draft" @selected(request('status') === 'draft')>Draft</option>
         </select>
 
-        <button type="submit" class="btn-primary">Filter</button>
-        <a href="{{ route('admin.marketplace.listings') }}" class="btn-secondary">Reset</a>
+        <button type="submit" class="btn-primary">
+            Filter
+        </button>
+
+        <a href="{{ route('admin.marketplace.listings') }}" class="btn-secondary">
+            Reset
+        </a>
     </form>
 
-    <div class="overflow-hidden rounded-2xl border border-slate-800">
-        <table class="w-full divide-y divide-slate-800 text-left text-sm">
-            <thead class="bg-slate-900 text-xs uppercase tracking-widest text-slate-400">
+    <div class="table-wrap">
+        <table class="admin-table">
+            <thead>
                 <tr>
-                    <th class="px-4 py-3">Item</th>
-                    <th class="px-4 py-3">Seller</th>
-                    <th class="px-4 py-3">Status</th>
-                    <th class="px-4 py-3">Price</th>
-                    <th class="px-4 py-3">Requests</th>
-                    <th class="px-4 py-3 text-right">Actions</th>
+                    <th>Item</th>
+                    <th>Seller</th>
+                    <th>Status</th>
+                    <th>Price</th>
+                    <th>Requests</th>
+                    <th class="text-right">Actions</th>
                 </tr>
             </thead>
 
-            <tbody class="divide-y divide-slate-800 bg-slate-950">
+            <tbody>
                 @forelse($listings as $listing)
                     <tr>
-                        <td class="px-4 py-4">
-                            <div class="flex items-center gap-3">
+                        <td>
+                            <div class="marketplace-admin-item">
                                 @if($listing->image_url)
                                     <img
                                         src="{{ $listing->image_url }}"
                                         alt="{{ $listing->market_hash_name }}"
-                                        class="h-12 w-12 rounded-lg object-contain"
+                                        class="marketplace-admin-thumb"
+                                        loading="lazy"
                                     >
+                                @else
+                                    <div class="marketplace-admin-thumb placeholder">
+                                        CS2
+                                    </div>
                                 @endif
 
-                                <div>
-                                    <p class="font-bold text-white">{{ $listing->market_hash_name }}</p>
-                                    <p class="text-xs text-slate-500">Asset: {{ $listing->steam_asset_id ?? '—' }}</p>
+                                <div class="marketplace-admin-item-main">
+                                    <p class="table-primary-text">
+                                        {{ $listing->market_hash_name }}
+                                    </p>
+
+                                    <p class="text-muted-xs">
+                                        Asset: {{ $listing->steam_asset_id ?? '—' }}
+                                    </p>
                                 </div>
                             </div>
                         </td>
 
-                        <td class="px-4 py-4">
+                        <td>
                             @include('components.user-identity', [
                                 'user' => $listing->user,
                                 'size' => 'sm',
@@ -85,19 +97,25 @@
                             ])
                         </td>
 
-                        <td class="px-4 py-4">
-                            <span class="rounded-full border border-slate-700 px-3 py-1 text-xs font-black uppercase text-slate-200">
-                                {{ $listing->status }}
+                        <td>
+                            <span class="status-pill status-pill-{{ $listing->status }}">
+                                {{ ucfirst($listing->status) }}
                             </span>
                         </td>
 
-                        <td class="px-4 py-4 text-slate-300">{{ $listing->display_price }}</td>
+                        <td>
+                            <span class="price-text">
+                                {{ $listing->display_price }}
+                            </span>
+                        </td>
 
-                        <td class="px-4 py-4 text-slate-300">{{ $listing->tradeRequests->count() }}</td>
+                        <td>
+                            {{ $listing->tradeRequests->count() }}
+                        </td>
 
-                        <td class="px-4 py-4 text-right">
-                            <div class="flex justify-end gap-2">
-                                <a href="{{ route('marketplace.listings.show', $listing) }}" class="btn-secondary">
+                        <td class="text-right">
+                            <div class="table-actions">
+                                <a href="{{ route('marketplace.listings.show', $listing) }}" class="btn-small-secondary">
                                     View
                                 </a>
 
@@ -109,7 +127,7 @@
                                     >
                                         @csrf
 
-                                        <button type="submit" class="btn-danger">
+                                        <button type="submit" class="btn-small-danger">
                                             Cancel
                                         </button>
                                     </form>
@@ -119,7 +137,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="px-4 py-8 text-center text-slate-400">
+                        <td colspan="6" class="empty-row">
                             No marketplace listings found.
                         </td>
                     </tr>
@@ -128,6 +146,9 @@
         </table>
     </div>
 
-    {{ $listings->links() }}
-</section>
+    @if($listings->hasPages())
+        <div class="pagination-wrap">
+            {{ $listings->links() }}
+        </div>
+    @endif
 @endsection

@@ -19,6 +19,30 @@
         @apply rounded-full bg-slate-950 px-3 py-1 text-xs font-bold text-slate-300;
     }
 
+    .status-pill-success {
+        @apply bg-emerald-400/10 text-emerald-300 ring-1 ring-emerald-400/30;
+    }
+
+    .status-pill-upcoming {
+        @apply bg-cyan-400/10 text-cyan-300 ring-1 ring-cyan-400/30;
+    }
+
+    .status-pill-live {
+        @apply bg-emerald-400/10 text-emerald-300 ring-1 ring-emerald-400/30;
+    }
+
+    .status-pill-completed {
+        @apply bg-slate-700 text-slate-300 ring-1 ring-slate-600;
+    }
+
+    .status-pill-cancelled {
+        @apply bg-red-400/10 text-red-300 ring-1 ring-red-400/30;
+    }
+
+    .pagination-wrap {
+        @apply mt-6;
+    }
+
     .price-text {
         @apply font-bold text-cyan-300;
     }
@@ -28,6 +52,6 @@
     }
 
     .link-accent {
-        @apply text-sm font-bold text-cyan-400 hover:text-cyan-300;
+        @apply text-sm font-bold text-cyan-400 no-underline hover:text-cyan-300;
     }
 }

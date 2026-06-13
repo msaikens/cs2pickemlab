@@ -1,6 +1,6 @@
 @layer components {
     .table-wrap {
-        @apply overflow-hidden rounded-xl border border-slate-800 bg-slate-900;
+        @apply overflow-hidden rounded-xl border border-slate-800 bg-slate-900 shadow-xl shadow-black/20;
     }
 
     .admin-table {
@@ -12,14 +12,41 @@
     }
 
     .admin-table th {
-        @apply px-4 py-3;
+        @apply px-4 py-3 font-black;
     }
 
     .admin-table tbody {
         @apply divide-y divide-slate-800;
     }
 
-    .admin-table td {
-        @apply px-4 py-4;
+    .admin-table tr {
+        @apply transition hover:bg-slate-800/35;
     }
+
+    .admin-table td {
+        @apply px-4 py-4 align-middle;
+    }
+
+    @media (max-width: 760px) {
+        .table-wrap {
+            @apply overflow-x-auto;
+        }
+
+        .admin-table {
+            min-width: 760px;
+        }
+    }
+
+    .table-primary-text {
+        @apply font-bold text-white;
+    }
+
+    .table-actions {
+        @apply flex justify-end gap-2;
+    }
+
+    .table-actions form {
+        @apply m-0;
+    }
+    
 }

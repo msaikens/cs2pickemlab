@@ -1,5 +1,5 @@
-<div class="form-grid">
-    <div>
+<div class="prediction-admin-form-grid">
+    <div class="prediction-admin-field">
         <label class="form-label" for="match_id">Match</label>
         <select id="match_id" name="match_id" class="form-input" required>
             <option value="">Choose match</option>
@@ -14,7 +14,7 @@
                     @selected((string) old('match_id', $prediction->match_id) === (string) $match->id)
                     @disabled($hasOtherPrediction)
                 >
-                    {{ $match->teamOne->name }} vs {{ $match->teamTwo->name }}
+                    {{ $match->teamOne?->name ?? 'TBD' }} vs {{ $match->teamTwo?->name ?? 'TBD' }}
                     @if($match->event)
                         · {{ $match->event->name }}
                     @endif
@@ -24,23 +24,38 @@
                 </option>
             @endforeach
         </select>
-        <p class="form-help">Each match can have one prediction.</p>
+
+        <p class="form-help">
+            Each match can have one prediction.
+        </p>
+
+        @error('match_id')
+            <p class="prediction-admin-error">{{ $message }}</p>
+        @enderror
     </div>
 
-    <div>
+    <div class="prediction-admin-field">
         <label class="form-label" for="predicted_winner_team_id">Predicted Winner</label>
         <select id="predicted_winner_team_id" name="predicted_winner_team_id" class="form-input">
             <option value="">TBD / no winner selected</option>
+
             @foreach($teams as $team)
                 <option value="{{ $team->id }}" @selected((string) old('predicted_winner_team_id', $prediction->predicted_winner_team_id) === (string) $team->id)>
                     {{ $team->name }}
                 </option>
             @endforeach
         </select>
-        <p class="form-help">For now this lists all teams. Later we can limit it to the selected match teams.</p>
+
+        <p class="form-help">
+            For now this lists all teams. Later we can limit it to the selected match teams.
+        </p>
+
+        @error('predicted_winner_team_id')
+            <p class="prediction-admin-error">{{ $message }}</p>
+        @enderror
     </div>
 
-    <div>
+    <div class="prediction-admin-field">
         <label class="form-label" for="confidence_score">Confidence Score</label>
         <input
             id="confidence_score"
@@ -52,9 +67,13 @@
             class="form-input"
             required
         >
+
+        @error('confidence_score')
+            <p class="prediction-admin-error">{{ $message }}</p>
+        @enderror
     </div>
 
-    <div>
+    <div class="prediction-admin-field">
         <label class="form-label" for="upset_risk">Upset Risk</label>
         <select id="upset_risk" name="upset_risk" class="form-input" required>
             @foreach([
@@ -67,12 +86,17 @@
                 </option>
             @endforeach
         </select>
+
+        @error('upset_risk')
+            <p class="prediction-admin-error">{{ $message }}</p>
+        @enderror
     </div>
 
-    <div>
+    <div class="prediction-admin-field">
         <label class="form-label" for="best_pickem_use">Best Pick’em Use</label>
         <select id="best_pickem_use" name="best_pickem_use" class="form-input">
             <option value="">Not set</option>
+
             @foreach([
                 'safe_3_0' => 'Safe 3:0',
                 'risky_3_0' => 'Risky 3:0',
@@ -86,9 +110,13 @@
                 </option>
             @endforeach
         </select>
+
+        @error('best_pickem_use')
+            <p class="prediction-admin-error">{{ $message }}</p>
+        @enderror
     </div>
 
-    <div>
+    <div class="prediction-admin-field">
         <label class="form-label" for="status">Status</label>
         <select id="status" name="status" class="form-input" required>
             @foreach([
@@ -101,9 +129,13 @@
                 </option>
             @endforeach
         </select>
+
+        @error('status')
+            <p class="prediction-admin-error">{{ $message }}</p>
+        @enderror
     </div>
 
-    <div>
+    <div class="prediction-admin-field">
         <label class="form-label" for="published_at">Published At</label>
         <input
             id="published_at"
@@ -112,10 +144,14 @@
             value="{{ old('published_at', $prediction->published_at?->format('Y-m-d\TH:i')) }}"
             class="form-input"
         >
+
+        @error('published_at')
+            <p class="prediction-admin-error">{{ $message }}</p>
+        @enderror
     </div>
 </div>
 
-<label class="checkbox-card">
+<label class="prediction-admin-checkbox">
     <input
         type="checkbox"
         name="is_premium"
@@ -123,13 +159,20 @@
         @checked(old('is_premium', $prediction->is_premium))
         class="checkbox-input"
     >
+
     <span>
-        <span class="block font-bold text-white">Premium Prediction</span>
-        <span class="block text-xs text-slate-500">Hide full reasoning later behind subscription access.</span>
+        <span class="prediction-admin-checkbox-title">Premium Prediction</span>
+        <span class="prediction-admin-checkbox-help">
+            Hide full reasoning later behind subscription access.
+        </span>
     </span>
 </label>
 
-<div>
+@error('is_premium')
+    <p class="prediction-admin-error">{{ $message }}</p>
+@enderror
+
+<div class="prediction-admin-field">
     <label class="form-label" for="headline">Headline</label>
     <input
         id="headline"
@@ -139,9 +182,13 @@
         placeholder="MOUZ are safer, but not a free 3:0"
         class="form-input"
     >
+
+    @error('headline')
+        <p class="prediction-admin-error">{{ $message }}</p>
+    @enderror
 </div>
 
-<div>
+<div class="prediction-admin-field">
     <label class="form-label" for="summary">Summary</label>
     <textarea
         id="summary"
@@ -150,15 +197,23 @@
         placeholder="Short public prediction summary."
         class="form-input"
     >{{ old('summary', $prediction->summary) }}</textarea>
+
+    @error('summary')
+        <p class="prediction-admin-error">{{ $message }}</p>
+    @enderror
 </div>
 
-<div>
+<div class="prediction-admin-field">
     <label class="form-label" for="reasoning">Reasoning</label>
     <textarea
         id="reasoning"
         name="reasoning"
         rows="8"
         placeholder="Detailed reasoning: form, map pool, event context, upset risk, and Pick’em implications."
-        class="form-input"
+        class="form-input prediction-admin-reasoning"
     >{{ old('reasoning', $prediction->reasoning) }}</textarea>
+
+    @error('reasoning')
+        <p class="prediction-admin-error">{{ $message }}</p>
+    @enderror
 </div>

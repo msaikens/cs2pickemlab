@@ -1,0 +1,252 @@
+.player-admin-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.player-admin-title {
+    margin: 0.75rem 0 0;
+    color: #f8fafc;
+    font-size: 1.55rem;
+    font-weight: 950;
+    letter-spacing: -0.035em;
+}
+
+.player-admin-subtitle {
+    margin: 0.35rem 0 0;
+    color: #94a3b8;
+}
+
+.player-admin-panel {
+    border: 1px solid rgba(148, 163, 184, 0.14);
+    border-radius: 1rem;
+    background:
+        radial-gradient(circle at top left, rgba(34, 211, 238, 0.055), transparent 24rem),
+        rgba(15, 23, 42, 0.7);
+    padding: 1.25rem;
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.18);
+}
+
+.player-admin-form {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.player-admin-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+}
+
+.player-admin-field {
+    min-width: 0;
+}
+
+.player-admin-field-wide {
+    grid-column: 1 / -1;
+}
+
+.player-admin-form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    border-top: 1px solid rgba(30, 41, 59, 1);
+    padding-top: 1.25rem;
+}
+
+.player-admin-error {
+    margin: 0.45rem 0 0;
+    color: #fca5a5;
+    font-size: 0.82rem;
+    font-weight: 800;
+}
+
+.player-admin-table-wrap {
+    overflow: hidden;
+    border: 1px solid rgba(148, 163, 184, 0.14);
+    border-radius: 1rem;
+    background: #020617;
+}
+
+.player-admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.875rem;
+}
+
+.player-admin-table thead {
+    background: rgba(15, 23, 42, 0.95);
+    color: #94a3b8;
+    font-size: 0.72rem;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.player-admin-table th,
+.player-admin-table td {
+    padding: 1rem;
+    vertical-align: middle;
+}
+
+.player-admin-table tbody tr {
+    border-top: 1px solid rgba(30, 41, 59, 1);
+}
+
+.player-admin-table tbody tr:hover {
+    background: rgba(15, 23, 42, 0.58);
+}
+
+.player-admin-row-title {
+    margin: 0;
+    color: #fff;
+    font-weight: 900;
+}
+
+.player-admin-muted {
+    margin: 0.25rem 0 0;
+    color: #64748b;
+    font-size: 0.75rem;
+}
+
+.player-admin-link {
+    color: #67e8f9;
+    font-weight: 900;
+    text-decoration: none;
+}
+
+.player-admin-link:hover {
+    color: #a5f3fc;
+}
+
+.player-admin-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+.player-admin-actions form {
+    margin: 0;
+}
+
+.player-admin-empty {
+    padding: 2rem 1rem;
+    color: #94a3b8;
+    text-align: center;
+}
+
+.player-admin-pagination {
+    margin-top: 1.5rem;
+}
+
+.player-role,
+.player-status,
+.player-stat {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    padding: 0.3rem 0.7rem;
+    font-size: 0.68rem;
+    font-weight: 950;
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+}
+
+.player-role-awper {
+    background: rgba(248, 113, 113, 0.1);
+    color: #fecaca;
+    box-shadow: inset 0 0 0 1px rgba(248, 113, 113, 0.34);
+}
+
+.player-role-rifler,
+.player-role-entry {
+    background: rgba(16, 185, 129, 0.1);
+    color: #86efac;
+    box-shadow: inset 0 0 0 1px rgba(16, 185, 129, 0.34);
+}
+
+.player-role-igl,
+.player-role-support {
+    background: rgba(103, 232, 249, 0.1);
+    color: #cffafe;
+    box-shadow: inset 0 0 0 1px rgba(103, 232, 249, 0.34);
+}
+
+.player-role-lurker {
+    background: rgba(167, 139, 250, 0.1);
+    color: #ddd6fe;
+    box-shadow: inset 0 0 0 1px rgba(167, 139, 250, 0.34);
+}
+
+.player-role-coach,
+.player-role-substitute {
+    background: rgba(51, 65, 85, 0.72);
+    color: #cbd5e1;
+    box-shadow: inset 0 0 0 1px rgba(100, 116, 139, 0.45);
+}
+
+.player-status-active {
+    background: rgba(16, 185, 129, 0.1);
+    color: #86efac;
+    box-shadow: inset 0 0 0 1px rgba(16, 185, 129, 0.34);
+}
+
+.player-status-benched {
+    background: rgba(251, 191, 36, 0.1);
+    color: #fde68a;
+    box-shadow: inset 0 0 0 1px rgba(251, 191, 36, 0.34);
+}
+
+.player-status-inactive,
+.player-status-retired {
+    background: rgba(51, 65, 85, 0.72);
+    color: #cbd5e1;
+    box-shadow: inset 0 0 0 1px rgba(100, 116, 139, 0.45);
+}
+
+.player-stat {
+    background: rgba(103, 232, 249, 0.08);
+    color: #67e8f9;
+    box-shadow: inset 0 0 0 1px rgba(103, 232, 249, 0.24);
+}
+
+.text-right {
+    text-align: right;
+}
+
+@media (max-width: 900px) {
+    .player-admin-table-wrap {
+        overflow-x: auto;
+    }
+
+    .player-admin-table {
+        min-width: 820px;
+    }
+}
+
+@media (max-width: 760px) {
+    .player-admin-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .player-admin-field-wide {
+        grid-column: auto;
+    }
+}
+
+@media (max-width: 640px) {
+    .player-admin-panel {
+        padding: 1rem;
+    }
+
+    .player-admin-form-actions > a,
+    .player-admin-form-actions > button {
+        width: 100%;
+    }
+}

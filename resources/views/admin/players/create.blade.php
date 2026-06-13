@@ -3,26 +3,42 @@
     'pageTitle' => 'Create Player',
 ])
 
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/admin/admin-players.css') }}">
+@endpush
+
 @section('content')
-<div class="mb-6">
-    <a href="{{ route('admin.players.index') }}" class="link-accent">
-        ← Back to Players
-    </a>
-</div>
+    <div class="player-admin-header">
+        <div>
+            <a href="{{ route('admin.players.index') }}" class="link-accent">
+                ← Back to Players
+            </a>
 
-<div class="panel">
-    <form method="POST" action="{{ route('admin.players.store') }}" class="space-y-6">
-        @csrf
-
-        @include('admin.players.form', [
-            'player' => $player,
-            'teams' => $teams,
-        ])
-
-        <div class="flex justify-end gap-3">
-            <a href="{{ route('admin.players.index') }}" class="btn-secondary-lg">Cancel</a>
-            <button type="submit" class="btn-primary-lg">Create Player</button>
+            <h2 class="player-admin-title">Create Player</h2>
+            <p class="player-admin-subtitle">
+                Add a roster member, role, country, and basic player form metrics.
+            </p>
         </div>
-    </form>
-</div>
+    </div>
+
+    <div class="player-admin-panel">
+        <form method="POST" action="{{ route('admin.players.store') }}" class="player-admin-form">
+            @csrf
+
+            @include('admin.players.form', [
+                'player' => $player,
+                'teams' => $teams,
+            ])
+
+            <div class="player-admin-form-actions">
+                <a href="{{ route('admin.players.index') }}" class="btn-secondary-lg">
+                    Cancel
+                </a>
+
+                <button type="submit" class="btn-primary-lg">
+                    Create Player
+                </button>
+            </div>
+        </form>
+    </div>
 @endsection

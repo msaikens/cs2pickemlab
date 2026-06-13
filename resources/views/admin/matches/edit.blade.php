@@ -3,41 +3,60 @@
     'pageTitle' => 'Edit Match',
 ])
 
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/admin/admin-matches.css') }}">
+@endpush
+
 @section('content')
-<div class="mb-6 flex flex-wrap items-center justify-between gap-4">
-    <a href="{{ route('admin.matches.index') }}" class="link-accent">
-        ← Back to Matches
-    </a>
-
-    <div class="flex flex-wrap gap-2">
-        @if($match->prediction)
-            <a href="{{ route('admin.predictions.edit', $match->prediction) }}" class="btn-accent">
-                Edit Prediction
+    <div class="match-admin-header">
+        <div>
+            <a href="{{ route('admin.matches.index') }}" class="link-accent">
+                ← Back to Matches
             </a>
-        @endif
 
-        <a href="{{ route('matches.show', $match) }}" class="btn-secondary">
-            View Match
-        </a>
-    </div>
-</div>
+            <h2 class="match-admin-title">
+                Edit {{ $match->teamOne?->name ?? 'TBD' }} vs {{ $match->teamTwo?->name ?? 'TBD' }}
+            </h2>
 
-<div class="panel">
-    <form method="POST" action="{{ route('admin.matches.update', $match) }}" class="space-y-6">
-        @csrf
-        @method('PUT')
-
-        @include('admin.matches.form', [
-            'match' => $match,
-            'events' => $events,
-            'stages' => $stages,
-            'teams' => $teams,
-        ])
-
-        <div class="flex justify-end gap-3">
-            <a href="{{ route('admin.matches.index') }}" class="btn-secondary-lg">Cancel</a>
-            <button type="submit" class="btn-primary-lg">Save Match</button>
+            <p class="match-admin-subtitle">
+                Update match timing, teams, score, bracket placement, and prediction context.
+            </p>
         </div>
-    </form>
-</div>
+
+        <div class="match-admin-header-actions">
+            @if($match->prediction)
+                <a href="{{ route('admin.predictions.edit', $match->prediction) }}" class="btn-accent">
+                    Edit Prediction
+                </a>
+            @endif
+
+            <a href="{{ route('matches.show', $match) }}" class="btn-secondary">
+                View Match
+            </a>
+        </div>
+    </div>
+
+    <div class="match-admin-panel">
+        <form method="POST" action="{{ route('admin.matches.update', $match) }}" class="match-admin-form">
+            @csrf
+            @method('PUT')
+
+            @include('admin.matches.form', [
+                'match' => $match,
+                'events' => $events,
+                'stages' => $stages,
+                'teams' => $teams,
+            ])
+
+            <div class="match-admin-form-actions">
+                <a href="{{ route('admin.matches.index') }}" class="btn-secondary-lg">
+                    Cancel
+                </a>
+
+                <button type="submit" class="btn-primary-lg">
+                    Save Match
+                </button>
+            </div>
+        </form>
+    </div>
 @endsection

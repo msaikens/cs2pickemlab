@@ -1,16 +1,22 @@
 @extends('layouts.admin', [
-    'title' => 'Marketplace Trade Requests',
+    'title' => 'Marketplace Trade Requests | CS2 PickLab',
+    'pageTitle' => 'Marketplace Trade Requests',
 ])
-
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/admin/admin-marketplace.css') }}">
+@endpush
 @section('content')
-<section class="space-y-6">
-    <div>
-        <h1 class="text-3xl font-black text-white">Marketplace Trade Requests</h1>
-        <p class="mt-2 text-slate-400">Review marketplace trade activity and audit history.</p>
+    <div class="page-header">
+        <div>
+            <h2 class="page-title">Marketplace Trade Requests</h2>
+            <p class="page-subtitle">
+                Review marketplace trade activity and audit history.
+            </p>
+        </div>
     </div>
 
-    <form method="GET" action="{{ route('admin.marketplace.trade-requests') }}" class="flex flex-wrap gap-3 rounded-2xl border border-slate-800 bg-slate-900/60 p-4">
-        <select name="status" class="min-h-11 rounded-xl border border-slate-700 bg-slate-950 px-4 text-white outline-none focus:border-cyan-400">
+    <form method="GET" action="{{ route('admin.marketplace.trade-requests') }}" class="admin-filter-panel">
+        <select name="status" class="form-input admin-filter-select">
             <option value="">All Statuses</option>
             <option value="pending" @selected(request('status') === 'pending')>Pending</option>
             <option value="accepted" @selected(request('status') === 'accepted')>Accepted</option>
@@ -19,112 +25,123 @@
             <option value="completed" @selected(request('status') === 'completed')>Completed</option>
         </select>
 
-        <button type="submit" class="btn-primary">Filter</button>
-        <a href="{{ route('admin.marketplace.trade-requests') }}" class="btn-secondary">Reset</a>
+        <button type="submit" class="btn-primary">
+            Filter
+        </button>
+
+        <a href="{{ route('admin.marketplace.trade-requests') }}" class="btn-secondary">
+            Reset
+        </a>
     </form>
 
-    <div class="grid gap-4">
+    <div class="admin-audit-list">
         @forelse($tradeRequests as $tradeRequest)
-            <article class="rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
-                <div class="flex flex-wrap justify-between gap-4">
+            <article class="admin-audit-card">
+                <header class="admin-audit-header">
                     <div>
-                        <h2 class="text-xl font-black text-white">
+                        <h2 class="admin-audit-title">
                             {{ $tradeRequest->listing?->market_hash_name ?? 'Removed Listing' }}
                         </h2>
 
-                        <div class="mt-4 grid gap-4 md:grid-cols-2">
-                            <div class="rounded-xl border border-slate-800 bg-slate-950 p-3">
-                                <p class="mb-2 text-xs font-black uppercase tracking-widest text-slate-500">
-                                    Buyer
-                                </p>
-
-                                @include('components.user-identity', [
-                                    'user' => $tradeRequest->buyer,
-                                    'size' => 'sm',
-                                    'showEmail' => true,
-                                    'showAccountType' => true,
-                                    'showAccountName' => false,
-                                ])
-                            </div>
-
-                            <div class="rounded-xl border border-slate-800 bg-slate-950 p-3">
-                                <p class="mb-2 text-xs font-black uppercase tracking-widest text-slate-500">
-                                    Seller
-                                </p>
-
-                                @include('components.user-identity', [
-                                    'user' => $tradeRequest->seller,
-                                    'size' => 'sm',
-                                    'showEmail' => true,
-                                    'showAccountType' => true,
-                                    'showAccountName' => false,
-                                ])
-                            </div>
-                        </div>
+                        <p class="admin-audit-subtitle">
+                            Trade request #{{ $tradeRequest->id }}
+                        </p>
                     </div>
 
-                    <span class="h-fit rounded-full border border-slate-700 px-3 py-1 text-xs font-black uppercase text-slate-200">
-                        {{ $tradeRequest->status }}
+                    <span class="status-pill status-pill-{{ $tradeRequest->status }}">
+                        {{ ucfirst($tradeRequest->status) }}
                     </span>
+                </header>
+
+                <div class="admin-user-grid">
+                    <section class="admin-mini-card">
+                        <p class="admin-mini-card-label">Buyer</p>
+
+                        @include('components.user-identity', [
+                            'user' => $tradeRequest->buyer,
+                            'size' => 'sm',
+                            'showEmail' => true,
+                            'showAccountType' => true,
+                            'showAccountName' => false,
+                        ])
+                    </section>
+
+                    <section class="admin-mini-card">
+                        <p class="admin-mini-card-label">Seller</p>
+
+                        @include('components.user-identity', [
+                            'user' => $tradeRequest->seller,
+                            'size' => 'sm',
+                            'showEmail' => true,
+                            'showAccountType' => true,
+                            'showAccountName' => false,
+                        ])
+                    </section>
                 </div>
 
                 @if($tradeRequest->message)
-                    <div class="mt-4 rounded-xl border border-slate-800 bg-slate-950 p-3 text-slate-300">
+                    <section class="admin-message-card">
                         {{ $tradeRequest->message }}
-                    </div>
+                    </section>
                 @endif
 
-                <div class="mt-4 grid gap-2">
-                    <p class="text-xs font-black uppercase tracking-widest text-slate-500">
-                        Activity
-                    </p>
+                <section class="admin-activity">
+                    <p class="admin-mini-card-label">Activity</p>
 
-                    @forelse($tradeRequest->events as $event)
-                        <div class="rounded-xl border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-slate-300">
-                            <div class="flex flex-wrap items-center gap-2">
-                                <strong class="text-white">
-                                    {{ str($event->event_type)->replace('_', ' ')->title() }}
-                                </strong>
+                    <div class="admin-activity-list">
+                        @forelse($tradeRequest->events as $event)
+                            <article class="admin-activity-item">
+                                <div class="admin-activity-line">
+                                    <strong>
+                                        {{ str($event->event_type)->replace('_', ' ')->title() }}
+                                    </strong>
 
-                                <span class="text-slate-500">by</span>
+                                    <span class="text-muted-xs">by</span>
 
-                                @if($event->actor)
-                                    @include('components.user-role-badge', [
-                                        'user' => $event->actor,
-                                        'showFree' => false,
-                                        'showPremium' => true,
-                                    ])
+                                    @if($event->actor)
+                                        @include('components.user-role-badge', [
+                                            'user' => $event->actor,
+                                            'showFree' => false,
+                                            'showPremium' => true,
+                                        ])
 
-                                    <span>{{ $event->actor->displayName() }}</span>
-                                @else
-                                    <span>System</span>
-                                @endif
+                                        <span>{{ $event->actor->displayName() }}</span>
+                                    @else
+                                        <span>System</span>
+                                    @endif
 
-                                <span class="text-slate-500">
-                                    · {{ $event->created_at?->format('M j, Y g:i A') }}
-                                </span>
-                            </div>
-
-                            @if($event->old_status || $event->new_status)
-                                <div class="mt-1 text-xs text-slate-500">
-                                    {{ $event->old_status ?? 'none' }} → {{ $event->new_status ?? 'none' }}
+                                    <span class="text-muted-xs">
+                                        · {{ $event->created_at?->format('M j, Y g:i A') }}
+                                    </span>
                                 </div>
-                            @endif
-                        </div>
-                    @empty
-                        <div class="rounded-xl border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-slate-500">
-                            No activity events logged.
-                        </div>
-                    @endforelse
-                </div>
+
+                                @if($event->old_status || $event->new_status)
+                                    <p class="admin-activity-status-change">
+                                        {{ $event->old_status ?? 'none' }} → {{ $event->new_status ?? 'none' }}
+                                    </p>
+                                @endif
+                            </article>
+                        @empty
+                            <article class="admin-activity-item muted">
+                                No activity events logged.
+                            </article>
+                        @endforelse
+                    </div>
+                </section>
             </article>
         @empty
             <section class="card text-center">
-                <h2 class="text-2xl font-black text-white">No trade requests found.</h2>
+                <h2 class="page-title">No trade requests found.</h2>
+                <p class="page-subtitle">
+                    Marketplace trade activity will appear here when users submit requests.
+                </p>
             </section>
         @endforelse
     </div>
 
-    {{ $tradeRequests->links() }}
-</section>
+    @if($tradeRequests->hasPages())
+        <div class="pagination-wrap">
+            {{ $tradeRequests->links() }}
+        </div>
+    @endif
 @endsection

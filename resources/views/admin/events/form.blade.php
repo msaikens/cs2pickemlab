@@ -10,6 +10,10 @@
             class="form-input"
             required
         >
+
+        @error('name')
+            <p class="form-error">{{ $message }}</p>
+        @enderror
     </div>
 
     <div>
@@ -22,6 +26,14 @@
             placeholder="auto-generated if blank"
             class="form-input"
         >
+
+        <p class="form-help">
+            Leave blank to generate from the event name.
+        </p>
+
+        @error('slug')
+            <p class="form-error">{{ $message }}</p>
+        @enderror
     </div>
 
     <div>
@@ -34,6 +46,10 @@
             placeholder="BLAST, ESL, PGL, PickLab"
             class="form-input"
         >
+
+        @error('organizer')
+            <p class="form-error">{{ $message }}</p>
+        @enderror
     </div>
 
     <div>
@@ -46,6 +62,10 @@
             placeholder="Austin, Cologne, Online"
             class="form-input"
         >
+
+        @error('location')
+            <p class="form-error">{{ $message }}</p>
+        @enderror
     </div>
 
     <div>
@@ -57,6 +77,10 @@
             value="{{ old('starts_on', $event->starts_on?->format('Y-m-d')) }}"
             class="form-input"
         >
+
+        @error('starts_on')
+            <p class="form-error">{{ $message }}</p>
+        @enderror
     </div>
 
     <div>
@@ -68,6 +92,10 @@
             value="{{ old('ends_on', $event->ends_on?->format('Y-m-d')) }}"
             class="form-input"
         >
+
+        @error('ends_on')
+            <p class="form-error">{{ $message }}</p>
+        @enderror
     </div>
 
     <div>
@@ -84,10 +112,14 @@
                 </option>
             @endforeach
         </select>
+
+        @error('status')
+            <p class="form-error">{{ $message }}</p>
+        @enderror
     </div>
 </div>
 
-<div class="grid gap-4 md:grid-cols-2">
+<div class="checkbox-grid">
     <label class="checkbox-card">
         <input
             type="checkbox"
@@ -96,9 +128,12 @@
             @checked(old('has_pickem', $event->has_pickem))
             class="checkbox-input"
         >
+
         <span>
-            <span class="block font-bold text-white">Has Pick’em</span>
-            <span class="block text-xs text-slate-500">Enable Pick’em recommendations for this event.</span>
+            <span class="checkbox-title">Has Pick’em</span>
+            <span class="checkbox-help">
+                Enable Pick’em recommendations for this event.
+            </span>
         </span>
     </label>
 
@@ -110,12 +145,23 @@
             @checked(old('is_featured', $event->is_featured))
             class="checkbox-input"
         >
+
         <span>
-            <span class="block font-bold text-white">Featured</span>
-            <span class="block text-xs text-slate-500">Show this event prominently on public pages.</span>
+            <span class="checkbox-title">Featured</span>
+            <span class="checkbox-help">
+                Show this event prominently on public pages.
+            </span>
         </span>
     </label>
 </div>
+
+@error('has_pickem')
+    <p class="form-error">{{ $message }}</p>
+@enderror
+
+@error('is_featured')
+    <p class="form-error">{{ $message }}</p>
+@enderror
 
 <div>
     <label class="form-label" for="summary">Summary</label>
@@ -126,6 +172,10 @@
         placeholder="Short public-facing event summary."
         class="form-input"
     >{{ old('summary', $event->summary) }}</textarea>
+
+    @error('summary')
+        <p class="form-error">{{ $message }}</p>
+    @enderror
 </div>
 
 <div>
@@ -137,4 +187,8 @@
         placeholder="Private notes about format, stage rules, seeding, or Pick’em context."
         class="form-input"
     >{{ old('notes', $event->notes) }}</textarea>
+
+    @error('notes')
+        <p class="form-error">{{ $message }}</p>
+    @enderror
 </div>

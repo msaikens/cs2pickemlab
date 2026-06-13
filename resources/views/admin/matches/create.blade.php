@@ -2,7 +2,7 @@
     'title' => 'Create Match | CS2 PickLab',
     'pageTitle' => 'Create Match',
 ])
-
+<!-- resources/views/admin/matches/create.blade.php -->
 @section('content')
 <div class="mb-6">
     <a href="{{ route('admin.matches.index') }}" class="link-accent">
