@@ -4,14 +4,10 @@
 
 @section('content')
 <section class="legal-page">
-    <div class="legal-card">
-        <p class="legal-kicker">
-            Legal
-        </p>
+    <article class="legal-card">
+        <p class="legal-kicker">Legal</p>
 
-        <h1 class="legal-title">
-            Disclaimer
-        </h1>
+        <h1 class="legal-title">Disclaimer</h1>
 
         <p class="legal-updated">
             Last updated: {{ now()->format('F j, Y') }}
@@ -73,6 +69,6 @@
                 <strong>support@cs2picklabs.com</strong>
             </p>
         </div>
-    </div>
+    </article>
 </section>
 @endsection

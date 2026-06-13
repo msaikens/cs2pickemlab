@@ -4,25 +4,19 @@
     $rounds = $board['rounds'];
 @endphp
 
-<section class="card">
-    <div class="mb-6 flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
+<section class="pickem-card pickem-swiss-stage">
+    <div class="pickem-stage-header">
         <div>
-            <p class="text-xs font-black uppercase tracking-[0.3em] text-cyan-400">
-                Swiss Stage
-            </p>
+            <p class="pickem-kicker">Swiss Stage</p>
 
-            <h2 class="mt-2 text-2xl font-black text-white">
-                {{ $stage->name }}
-            </h2>
+            <h2>{{ $stage->name }}</h2>
 
             @if(! empty($stage->summary))
-                <p class="mt-2 max-w-3xl text-sm text-slate-400">
-                    {{ $stage->summary }}
-                </p>
+                <p>{{ $stage->summary }}</p>
             @endif
         </div>
 
-        <div class="text-sm text-slate-400 md:text-right">
+        <div class="pickem-stage-dates">
             @if(! empty($stage->starts_on))
                 <p>{{ \Illuminate\Support\Carbon::parse($stage->starts_on)->format('M j, Y') }}</p>
             @endif
@@ -33,109 +27,99 @@
         </div>
     </div>
 
-    <div class="grid gap-5 xl:grid-cols-3">
-        <div class="rounded-xl border border-emerald-400/30 bg-emerald-400/5 p-4">
-            <h3 class="text-lg font-black text-emerald-200">Advanced</h3>
-            <p class="mt-1 text-sm text-slate-500">Teams reaching 3 wins.</p>
+    <div class="pickem-stage-buckets">
+        <section class="pickem-bucket advanced">
+            <h3>Advanced</h3>
+            <p>Teams reaching 3 wins.</p>
 
-            <div class="mt-4 space-y-4">
+            <div class="pickem-record-groups">
                 @foreach(['3-0', '3-1', '3-2'] as $record)
                     <div>
-                        <p class="mb-2 text-xs font-black uppercase tracking-widest text-slate-500">
-                            {{ $record }}
-                        </p>
+                        <h4>{{ $record }}</h4>
 
-                        <div class="space-y-2">
+                        <div class="pickem-team-list">
                             @forelse($buckets['advanced'][$record] ?? [] as $team)
-                                <div class="flex items-center justify-between rounded-lg bg-slate-950 px-3 py-2">
-                                    <span class="font-bold text-white">{{ $team['name'] }}</span>
-                                    <span class="text-sm font-black text-emerald-300">{{ $team['record'] }}</span>
+                                <div class="pickem-team-row success">
+                                    <span>{{ $team['name'] }}</span>
+                                    <strong>{{ $team['record'] }}</strong>
                                 </div>
                             @empty
-                                <p class="text-sm text-slate-600">No teams yet.</p>
+                                <p class="pickem-empty-text">No teams yet.</p>
                             @endforelse
                         </div>
                     </div>
                 @endforeach
             </div>
-        </div>
+        </section>
 
-        <div class="rounded-xl border border-cyan-400/30 bg-cyan-400/5 p-4">
-            <h3 class="text-lg font-black text-cyan-200">Still Alive</h3>
-            <p class="mt-1 text-sm text-slate-500">Teams still playing in the stage.</p>
+        <section class="pickem-bucket alive">
+            <h3>Still Alive</h3>
+            <p>Teams still playing in the stage.</p>
 
-            <div class="mt-4 grid gap-3 sm:grid-cols-2">
+            <div class="pickem-alive-grid">
                 @foreach($buckets['alive'] ?? [] as $record => $teams)
                     <div>
-                        <p class="mb-2 text-xs font-black uppercase tracking-widest text-slate-500">
-                            {{ $record }}
-                        </p>
+                        <h4>{{ $record }}</h4>
 
-                        <div class="space-y-2">
+                        <div class="pickem-team-list">
                             @forelse($teams as $team)
-                                <div class="flex items-center justify-between rounded-lg bg-slate-950 px-3 py-2">
-                                    <span class="font-bold text-white">{{ $team['name'] }}</span>
-                                    <span class="text-sm font-black text-cyan-300">{{ $team['record'] }}</span>
+                                <div class="pickem-team-row info">
+                                    <span>{{ $team['name'] }}</span>
+                                    <strong>{{ $team['record'] }}</strong>
                                 </div>
                             @empty
-                                <p class="text-sm text-slate-600">—</p>
+                                <p class="pickem-empty-text">—</p>
                             @endforelse
                         </div>
                     </div>
                 @endforeach
             </div>
-        </div>
+        </section>
 
-        <div class="rounded-xl border border-red-400/30 bg-red-400/5 p-4">
-            <h3 class="text-lg font-black text-red-200">Eliminated</h3>
-            <p class="mt-1 text-sm text-slate-500">Teams reaching 3 losses.</p>
+        <section class="pickem-bucket eliminated">
+            <h3>Eliminated</h3>
+            <p>Teams reaching 3 losses.</p>
 
-            <div class="mt-4 space-y-4">
+            <div class="pickem-record-groups">
                 @foreach(['2-3', '1-3', '0-3'] as $record)
                     <div>
-                        <p class="mb-2 text-xs font-black uppercase tracking-widest text-slate-500">
-                            {{ $record }}
-                        </p>
+                        <h4>{{ $record }}</h4>
 
-                        <div class="space-y-2">
+                        <div class="pickem-team-list">
                             @forelse($buckets['eliminated'][$record] ?? [] as $team)
-                                <div class="flex items-center justify-between rounded-lg bg-slate-950 px-3 py-2">
-                                    <span class="font-bold text-white">{{ $team['name'] }}</span>
-                                    <span class="text-sm font-black text-red-300">{{ $team['record'] }}</span>
+                                <div class="pickem-team-row danger">
+                                    <span>{{ $team['name'] }}</span>
+                                    <strong>{{ $team['record'] }}</strong>
                                 </div>
                             @empty
-                                <p class="text-sm text-slate-600">No teams yet.</p>
+                                <p class="pickem-empty-text">No teams yet.</p>
                             @endforelse
                         </div>
                     </div>
                 @endforeach
             </div>
-        </div>
+        </section>
     </div>
 
-    <div class="mt-8">
-        <h3 class="mb-4 text-xl font-black text-white">
-            {{ $stage->name }} Matches
-        </h3>
+    <section class="pickem-stage-matches">
+        <h3>{{ $stage->name }} Matches</h3>
 
-        <div class="space-y-6">
+        <div class="pickem-round-list">
             @forelse($rounds as $roundLabel => $roundMatches)
-                <div>
-                    <h4 class="mb-3 text-sm font-black uppercase tracking-widest text-slate-500">
-                        {{ $roundLabel }}
-                    </h4>
+                <section class="pickem-round">
+                    <h4>{{ $roundLabel }}</h4>
 
-                    <div class="grid gap-3 lg:grid-cols-2">
+                    <div class="pickem-match-grid">
                         @forelse($roundMatches as $match)
-                            <div class="rounded-xl border border-slate-800 bg-slate-950 p-4">
-                                <div class="flex items-center justify-between gap-3">
-                                    <div class="min-w-0 flex-1 text-right">
-                                        <p class="truncate font-black {{ (int) $match->winner_team_id === (int) $match->team_one_id ? 'text-emerald-300' : 'text-white' }}">
+                            <article class="pickem-match-card">
+                                <div class="pickem-match-teams">
+                                    <div class="pickem-match-team left">
+                                        <span class="{{ (int) $match->winner_team_id === (int) $match->team_one_id ? 'is-winner' : '' }}">
                                             {{ $match->teamOne?->name ?? 'TBD' }}
-                                        </p>
+                                        </span>
                                     </div>
 
-                                    <div class="shrink-0 rounded-lg bg-slate-900 px-3 py-2 text-center font-black text-white">
+                                    <div class="pickem-match-score">
                                         @if($match->status === 'completed')
                                             {{ $match->team_one_score ?? 0 }} - {{ $match->team_two_score ?? 0 }}
                                         @else
@@ -143,14 +127,14 @@
                                         @endif
                                     </div>
 
-                                    <div class="min-w-0 flex-1">
-                                        <p class="truncate font-black {{ (int) $match->winner_team_id === (int) $match->team_two_id ? 'text-emerald-300' : 'text-white' }}">
+                                    <div class="pickem-match-team">
+                                        <span class="{{ (int) $match->winner_team_id === (int) $match->team_two_id ? 'is-winner' : '' }}">
                                             {{ $match->teamTwo?->name ?? 'TBD' }}
-                                        </p>
+                                        </span>
                                     </div>
                                 </div>
 
-                                <div class="mt-3 flex flex-wrap items-center justify-between gap-2 text-xs font-bold uppercase tracking-widest text-slate-500">
+                                <div class="pickem-match-meta">
                                     <span>{{ strtoupper($match->format ?? 'bo3') }} · {{ ucfirst($match->status ?? 'scheduled') }}</span>
 
                                     <span>
@@ -163,23 +147,23 @@
                                 </div>
 
                                 @if(! empty($match->summary))
-                                    <p class="mt-3 text-sm text-slate-400">
+                                    <p class="pickem-match-summary">
                                         {{ $match->summary }}
                                     </p>
                                 @endif
-                            </div>
+                            </article>
                         @empty
-                            <p class="rounded-xl border border-slate-800 bg-slate-950 p-4 text-slate-400">
+                            <p class="pickem-empty-box">
                                 No matches added for {{ $roundLabel }} yet.
                             </p>
                         @endforelse
                     </div>
-                </div>
+                </section>
             @empty
-                <p class="rounded-xl border border-slate-800 bg-slate-950 p-4 text-slate-400">
+                <p class="pickem-empty-box">
                     No matches have been added for this stage yet.
                 </p>
             @endforelse
         </div>
-    </div>
+    </section>
 </section>

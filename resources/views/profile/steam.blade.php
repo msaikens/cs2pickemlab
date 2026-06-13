@@ -1,6 +1,11 @@
-@extends('layouts.app')
+@extends('layouts.app', ['title' => 'Steam Marketplace Profile | CS2 PickLab'])
 
 @section('title', 'Steam Marketplace Profile')
+
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/marketplace-shared.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/marketplace-profile.css') }}">
+@endpush
 
 @section('content')
 <main class="marketplace-profile-page">
@@ -36,6 +41,7 @@
         @if ($errors->any())
             <div class="marketplace-alert marketplace-alert-danger">
                 <strong>Fix the following:</strong>
+
                 <ul>
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
@@ -140,7 +146,7 @@
                             Refresh Steam Profile
                         </button>
                     </form>
-                    
+
                     <form method="POST" action="{{ route('profile.steam.inventory.sync') }}">
                         @csrf
 
@@ -148,10 +154,11 @@
                             Sync Inventory
                         </button>
                     </form>
+
                     <form
                         method="POST"
                         action="{{ route('profile.steam.unlink') }}"
-                        onsubmit="return confirm('Unlinking Steam will disable marketplace access and cancel your active skin listings. Continue?');'"
+                        onsubmit="return confirm('Unlinking Steam will disable marketplace access and cancel your active skin listings. Continue?');"
                     >
                         @csrf
                         @method('DELETE')
@@ -194,6 +201,7 @@
             @else
                 <div class="marketplace-empty-state">
                     <strong>No Steam account linked yet.</strong>
+
                     <p>
                         Link your Steam account securely through Steam. Do not enter your Steam username
                         or password on this site.
@@ -218,15 +226,16 @@
 
             <form method="POST" action="{{ route('profile.steam.trade-url.update') }}" class="marketplace-form">
                 @csrf
-                <div class="mb-2 flex flex-wrap items-center justify-between gap-2">
 
-
-                <a href="{{ route('help.steam-trade-url') }}" class="text-sm font-bold text-cyan-300 hover:text-cyan-200">
-                    How do I find my trade URL?
-                </a>
+                <div class="marketplace-form-help-row">
+                    <a href="{{ route('help.steam-trade-url') }}">
+                        How do I find my trade URL?
+                    </a>
                 </div>
+
                 <div class="form-row">
                     <label for="steam_trade_url">Steam Trade URL</label>
+
                     <input
                         id="steam_trade_url"
                         name="steam_trade_url"
@@ -248,6 +257,7 @@
                         value="1"
                         {{ $steamTradeProfile?->trade_hold_warning_acknowledged_at ? 'checked' : '' }}
                     >
+
                     <span>I understand Steam trade holds or account restrictions may still apply.</span>
                 </label>
 

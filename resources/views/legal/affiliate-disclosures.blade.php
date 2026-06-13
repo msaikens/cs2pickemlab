@@ -4,20 +4,16 @@
 
 @section('content')
 <section class="legal-page">
-    <div class="legal-card">
-        <p class="legal-kicker">
-            Legal
-        </p>
+    <article class="legal-card">
+        <p class="legal-kicker">Legal</p>
 
-        <h1 class="legal-title">
-            Affiliate Disclosures
-        </h1>
+        <h1 class="legal-title">Affiliate Disclosures</h1>
 
         <p class="legal-updated">
             Last updated: {{ now()->format('F j, Y') }}
         </p>
 
-        <div class="legal-content">            
+        <div class="legal-content">
             <p>
                 CS2 PickLab may participate in affiliate marketing programs. This means we may earn a commission when you click certain links and purchase products or services from third-party merchants. This does not increase the price you pay.
             </p>
@@ -72,6 +68,6 @@
                 <strong>support@cs2picklabs.com</strong>
             </p>
         </div>
-    </div>
+    </article>
 </section>
 @endsection

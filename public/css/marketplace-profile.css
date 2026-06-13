@@ -239,3 +239,23 @@
         flex-direction: column;
     }
 }
+.marketplace-form-help-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.marketplace-form-help-row a {
+    color: #67e8f9;
+    font-size: 0.9rem;
+    font-weight: 900;
+    text-decoration: none;
+}
+
+.marketplace-form-help-row a:hover {
+    color: #cffafe;
+    text-decoration: underline;
+}

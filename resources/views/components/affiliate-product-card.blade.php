@@ -8,37 +8,30 @@
     'badge' => 'Affiliate',
 ])
 
-<div {{ $attributes->merge(['class' => 'rounded-2xl border border-slate-800 bg-slate-900/70 p-4']) }}>
+<article {{ $attributes->merge(['class' => 'affiliate-product-card']) }}>
     @if($image)
-        <a href="{{ $url }}" target="_blank" rel="nofollow sponsored noopener">
-            <img src="{{ $image }}" alt="{{ $title }}" class="h-40 w-full rounded-xl object-cover">
+        <a href="{{ $url }}" target="_blank" rel="nofollow sponsored noopener" class="affiliate-product-image">
+            <img src="{{ $image }}" alt="{{ $title }}">
         </a>
     @endif
 
-    <div class="mt-4 flex items-start justify-between gap-3">
+    <div class="affiliate-product-header">
         <div>
-            <p class="text-xs font-black uppercase tracking-widest text-cyan-400">
-                {{ $merchant ?? 'Recommended Product' }}
-            </p>
-
-            <h3 class="mt-1 text-lg font-black text-white">
-                {{ $title }}
-            </h3>
+            <p>{{ $merchant ?? 'Recommended Product' }}</p>
+            <h3>{{ $title }}</h3>
         </div>
 
-        <span class="shrink-0 rounded-full border border-amber-400/30 bg-amber-400/10 px-2 py-1 text-[10px] font-black uppercase text-amber-200">
-            {{ $badge }}
-        </span>
+        <span>{{ $badge }}</span>
     </div>
 
     @if($description)
-        <p class="mt-3 text-sm text-slate-400">
+        <p class="affiliate-product-description">
             {{ $description }}
         </p>
     @endif
 
     @if($price)
-        <p class="mt-3 text-xl font-black text-white">
+        <p class="affiliate-product-price">
             {{ $price }}
         </p>
     @endif
@@ -47,8 +40,8 @@
         href="{{ $url }}"
         target="_blank"
         rel="nofollow sponsored noopener"
-        class="mt-4 inline-flex w-full items-center justify-center rounded-lg bg-cyan-400 px-4 py-3 font-black text-slate-950 hover:bg-cyan-300"
+        class="affiliate-product-button"
     >
         View Product
     </a>
-</div>
+</article>

@@ -3,110 +3,103 @@
     'pageTitle' => 'How to Find Your Steam Trade URL',
 ])
 
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/help.css') }}">
+@endpush
+
 @section('content')
-<section class="mx-auto max-w-4xl px-6 py-10">
-    <div class="mb-8">
-        <p class="text-xs font-black uppercase tracking-widest text-cyan-300">
-            Steam Marketplace Setup
-        </p>
+<section class="help-page">
+    <header class="help-hero">
+        <p class="help-kicker">Steam Marketplace Setup</p>
 
-        <h1 class="mt-2 text-4xl font-black text-white">
-            How to Find Your Steam Trade URL
-        </h1>
+        <h1>How to Find Your Steam Trade URL</h1>
 
-        <p class="mt-3 text-slate-400">
+        <p>
             Your Steam Trade URL lets another Steam user send you a trade offer directly.
             CS2 PickLab uses it so accepted marketplace trades can be completed on Steam.
         </p>
-    </div>
+    </header>
 
-    <section class="card">
-        <h2 class="text-2xl font-black text-white">Step-by-step</h2>
+    <section class="help-card">
+        <div class="help-section-heading">
+            <p class="help-kicker">Walkthrough</p>
+            <h2>Step-by-step</h2>
+        </div>
 
-        <ol class="mt-5 space-y-4 text-slate-300">
-            <li class="rounded-xl border border-slate-800 bg-slate-950 p-4">
-                <strong class="text-white">1. Open Steam in your browser.</strong>
-                <p class="mt-1 text-slate-400">
-                    Go to Steam and make sure you are signed into the correct account.
-                </p>
+        <ol class="help-steps">
+            <li>
+                <strong>Open Steam in your browser.</strong>
+                <p>Go to Steam and make sure you are signed into the correct account.</p>
             </li>
 
-            <li class="rounded-xl border border-slate-800 bg-slate-950 p-4">
-                <strong class="text-white">2. Open your Inventory.</strong>
-                <p class="mt-1 text-slate-400">
+            <li>
+                <strong>Open your Inventory.</strong>
+                <p>
                     Hover over your Steam username, then choose <strong>Inventory</strong>.
                 </p>
             </li>
 
-            <li class="rounded-xl border border-slate-800 bg-slate-950 p-4">
-                <strong class="text-white">3. Click Trade Offers.</strong>
-                <p class="mt-1 text-slate-400">
+            <li>
+                <strong>Click Trade Offers.</strong>
+                <p>
                     On the Inventory page, click <strong>Trade Offers</strong>.
                 </p>
             </li>
 
-            <li class="rounded-xl border border-slate-800 bg-slate-950 p-4">
-                <strong class="text-white">4. Click “Who can send me Trade Offers?”</strong>
-                <p class="mt-1 text-slate-400">
+            <li>
+                <strong>Click &#8220;Who can send me Trade Offers?&#8221;</strong>
+                <p>
                     This page contains your personal Steam Trade URL.
                 </p>
             </li>
 
-            <li class="rounded-xl border border-slate-800 bg-slate-950 p-4">
-                <strong class="text-white">5. Copy your Trade URL.</strong>
-                <p class="mt-1 text-slate-400">
+            <li>
+                <strong>Copy your Trade URL.</strong>
+                <p>
                     It should look similar to this:
                 </p>
 
-                <code class="mt-3 block overflow-x-auto rounded-lg border border-slate-800 bg-slate-900 px-3 py-2 text-sm text-cyan-200">
-                    https://steamcommunity.com/tradeoffer/new/?partner=123456789&token=AbCdEfGh
+                <code class="help-code">
+                    https://steamcommunity.com/tradeoffer/new/?partner=123456789&amp;token=AbCdEfGh
                 </code>
             </li>
 
-            <li class="rounded-xl border border-slate-800 bg-slate-950 p-4">
-                <strong class="text-white">6. Paste it into CS2 PickLab.</strong>
-                <p class="mt-1 text-slate-400">
+            <li>
+                <strong>Paste it into CS2 PickLab.</strong>
+                <p>
                     Return to your Steam marketplace setup page and paste the full URL into the Trade URL field.
                 </p>
             </li>
         </ol>
     </section>
 
-    <section class="mt-6 rounded-2xl border border-amber-400/40 bg-amber-400/10 p-5">
-        <h2 class="text-xl font-black text-white">Important privacy note</h2>
+    <section class="help-callout warning">
+        <h2>Important privacy note</h2>
 
-        <p class="mt-2 text-slate-300">
+        <p>
             Your Steam profile and CS2 inventory must both be public for marketplace selling to work.
             A public profile alone is not enough. Steam inventory privacy is controlled separately.
         </p>
     </section>
 
-    <section class="mt-6 card">
-        <h2 class="text-2xl font-black text-white">Quick checklist</h2>
+    <section class="help-card">
+        <div class="help-section-heading">
+            <p class="help-kicker">Before You Sell</p>
+            <h2>Quick checklist</h2>
+        </div>
 
-        <div class="mt-4 grid gap-3 md:grid-cols-2">
-            <div class="rounded-xl border border-slate-800 bg-slate-950 p-4 text-slate-300">
-                Steam account linked
-            </div>
-
-            <div class="rounded-xl border border-slate-800 bg-slate-950 p-4 text-slate-300">
-                Steam profile set to public
-            </div>
-
-            <div class="rounded-xl border border-slate-800 bg-slate-950 p-4 text-slate-300">
-                CS2 inventory set to public
-            </div>
-
-            <div class="rounded-xl border border-slate-800 bg-slate-950 p-4 text-slate-300">
-                Trade URL saved
-            </div>
+        <div class="help-checklist">
+            <div>Steam account linked</div>
+            <div>Steam profile set to public</div>
+            <div>CS2 inventory set to public</div>
+            <div>Trade URL saved</div>
         </div>
     </section>
 
-    <div class="mt-8 flex flex-wrap gap-3">
+    <div class="help-actions">
         @auth
             @if(Route::has('profile.steam'))
-                <a href="{{ route('profile.steam') }}" class="btn-primary">
+                <a href="{{ route('profile.steam') }}" class="help-button primary">
                     Back to Steam Setup
                 </a>
             @endif
@@ -116,7 +109,7 @@
             href="https://steamcommunity.com/my/tradeoffers/privacy"
             target="_blank"
             rel="noopener noreferrer"
-            class="btn-secondary"
+            class="help-button secondary"
         >
             Open Steam Trade URL Page
         </a>
