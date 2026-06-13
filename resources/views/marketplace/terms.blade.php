@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('title', 'Marketplace Terms')
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/marketplace-terms.css') }}">
+@endpush
 
 @section('content')
 <section style="max-width: 900px; margin: 40px auto; padding: 24px;">

@@ -1,7 +1,10 @@
 @extends('layouts.app')
 
 @section('title', 'Trade Requests')
-
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/marketplace-shared.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/marketplace-trade-requests.css') }}">
+@endpush
 @section('content')
 <main class="marketplace-profile-page">
     <section class="marketplace-profile-shell">

@@ -2,6 +2,11 @@
 
 @section('title', 'Skin Marketplace')
 
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/marketplace-shared.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/marketplace-browse.css') }}">
+@endpush
+
 @section('content')
 <main class="marketplace-profile-page">
     <section class="marketplace-profile-shell">

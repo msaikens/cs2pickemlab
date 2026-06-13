@@ -1,31 +1,57 @@
 @extends('layouts.app', ['title' => 'Shop | CS2 PickLab'])
 
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/shop.css') }}">
+@endpush
+
 @section('content')
-<section class="mx-auto max-w-7xl px-4 py-12">
-    <h1 class="text-4xl font-black text-white">Custom Gamer Awards Shop</h1>
-    <p class="mt-3 max-w-3xl text-slate-400">
-        Custom coins, trophies, and award packs for squads, Discord servers, LAN events, and Pick’em groups.
-        Original designs only. No official Counter-Strike, Valve, Steam, tournament, or team marks.
-    </p>
+<section class="shop-page">
+    <header class="shop-hero">
+        <p class="shop-kicker">Custom Awards</p>
+        <h1>Custom Gamer Awards Shop</h1>
+        <p>
+            Custom coins, trophies, and award packs for squads, Discord servers, LAN events, and Pick’em groups.
+            Original designs only. No official Counter-Strike, Valve, Steam, tournament, or team marks.
+        </p>
+    </header>
 
-    <div class="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-        @forelse($products as $product)
-            <a href="{{ route('shop.show', $product) }}" class="rounded-xl border border-slate-800 bg-slate-900 p-5 hover:border-cyan-400">
-                <div class="flex h-40 items-center justify-center rounded-lg bg-slate-950 text-slate-600">
-                    Product Image
-                </div>
+    @if($products->count() === 0)
+        <section class="shop-empty">
+            <div class="shop-empty-icon">CS2</div>
+            <h2>No products available.</h2>
+            <p>Add products from the admin panel to populate the shop.</p>
+        </section>
+    @else
+        <section class="shop-product-grid">
+            @foreach($products as $product)
+                <a href="{{ route('shop.show', $product) }}" class="shop-product-card">
+                    <div class="shop-product-image">
+                        <span>Product Image</span>
+                    </div>
 
-                <h2 class="mt-5 text-xl font-black text-white">{{ $product->name }}</h2>
-                <p class="mt-2 text-sm text-slate-400">{{ $product->short_description }}</p>
-                <p class="mt-4 text-2xl font-black text-cyan-300">${{ $product->base_price_dollars }}</p>
-            </a>
-        @empty
-            <p class="text-slate-400">No products available.</p>
-        @endforelse
-    </div>
+                    <div class="shop-product-body">
+                        <p class="shop-product-type">
+                            {{ ucfirst($product->product_type ?? 'Custom Award') }}
+                        </p>
 
-    <div class="mt-8">
-        {{ $products->links() }}
-    </div>
+                        <h2>{{ $product->name }}</h2>
+
+                        <p class="shop-product-description">
+                            {{ $product->short_description }}
+                        </p>
+
+                        <div class="shop-product-footer">
+                            <strong>${{ $product->base_price_dollars }}</strong>
+                            <span>View details →</span>
+                        </div>
+                    </div>
+                </a>
+            @endforeach
+        </section>
+
+        <div class="shop-pagination">
+            {{ $products->links() }}
+        </div>
+    @endif
 </section>
 @endsection

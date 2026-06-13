@@ -1,27 +1,58 @@
 @extends('layouts.app', ['title' => 'Teams | CS2 PickLab'])
 
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/teams-index.css') }}">
+@endpush
+
 @section('content')
-<section class="mx-auto max-w-7xl px-4 py-12">
-    <h1 class="text-4xl font-black text-white">Teams</h1>
-    <p class="mt-3 text-slate-400">Team profiles, ratings, and PickLab notes.</p>
+<section class="teams-page">
+    <header class="teams-hero">
+        <p class="teams-kicker">Team Database</p>
+        <h1>Teams</h1>
+        <p>Team profiles, ratings, and PickLab notes.</p>
+    </header>
 
-    <div class="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        @forelse($teams as $team)
-            <a href="{{ route('teams.show', $team) }}" class="rounded-xl border border-slate-800 bg-slate-900 p-5 hover:border-cyan-400">
-                <div class="flex items-center justify-between">
-                    <h2 class="text-xl font-black text-white">{{ $team->name }}</h2>
-                    <span class="rounded-full bg-slate-950 px-3 py-1 text-sm text-cyan-300">{{ $team->picklab_rating }}</span>
-                </div>
-                <p class="mt-2 text-sm text-slate-400">{{ $team->region }} · {{ $team->players_count }} players</p>
-                <p class="mt-3 text-sm text-slate-300">{{ $team->summary }}</p>
-            </a>
-        @empty
-            <p class="text-slate-400">No teams available.</p>
-        @endforelse
-    </div>
+    @if($teams->count() === 0)
+        <section class="teams-empty">
+            <div class="teams-empty-icon">CS2</div>
+            <h2>No teams available.</h2>
+            <p>Add teams from the admin panel to populate the public team database.</p>
+        </section>
+    @else
+        <section class="teams-grid">
+            @foreach($teams as $team)
+                <a href="{{ route('teams.show', $team) }}" class="team-card">
+                    <div class="team-card-top">
+                        <div>
+                            <p class="team-region">{{ $team->region ?: 'Unknown region' }}</p>
+                            <h2>{{ $team->name }}</h2>
+                        </div>
 
-    <div class="mt-8">
-        {{ $teams->links() }}
-    </div>
+                        <span class="team-rating">
+                            {{ $team->picklab_rating }}
+                        </span>
+                    </div>
+
+                    <div class="team-meta">
+                        <span>{{ $team->players_count }} player(s)</span>
+                        <span>PickLab Rating</span>
+                    </div>
+
+                    <p class="team-summary">
+                        {{ $team->summary ?: 'No team summary has been added yet.' }}
+                    </p>
+
+                    <div class="team-card-footer">
+                        <span>View profile</span>
+                        <strong>→</strong>
+                    </div>
+                </a>
+            @endforeach
+        </section>
+
+        <div class="teams-pagination">
+            {{ $teams->links() }}
+        </div>
+    @endif
 </section>
 @endsection

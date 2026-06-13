@@ -1,47 +1,95 @@
 @extends('layouts.app', ['title' => $team->name . ' | CS2 PickLab'])
 
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/teams-show.css') }}">
+@endpush
+
 @section('content')
-<section class="mx-auto max-w-6xl px-4 py-12">
-    <h1 class="text-5xl font-black text-white">{{ $team->name }}</h1>
-    <p class="mt-3 text-slate-400">{{ $team->region }} · {{ $team->country }} · Rating {{ $team->picklab_rating }}</p>
+<section class="team-show-page">
+    <header class="team-show-hero">
+        <div>
+            <p class="team-show-kicker">Team Profile</p>
+
+            <h1>{{ $team->name }}</h1>
+
+            <div class="team-show-meta">
+                <span>{{ $team->region ?: 'Unknown region' }}</span>
+                <span>{{ $team->country ?: 'Unknown country' }}</span>
+                <strong>Rating {{ $team->picklab_rating }}</strong>
+            </div>
+        </div>
+
+        <div class="team-show-rating-card">
+            <span>PickLab Rating</span>
+            <strong>{{ $team->picklab_rating }}</strong>
+        </div>
+    </header>
 
     @if($team->summary)
-        <p class="mt-6 max-w-3xl text-lg text-slate-300">{{ $team->summary }}</p>
+        <section class="team-summary-card">
+            <p>{{ $team->summary }}</p>
+        </section>
     @endif
 
-    <div class="mt-10 grid gap-8 md:grid-cols-2">
-        <div>
-            <h2 class="mb-4 text-2xl font-black text-white">Roster</h2>
-            <div class="space-y-3">
+    <div class="team-show-grid">
+        <section class="team-panel">
+            <div class="team-panel-heading">
+                <p class="team-show-kicker">Players</p>
+                <h2>Roster</h2>
+            </div>
+
+            <div class="team-roster-list">
                 @forelse($team->players as $player)
-                    <div class="rounded-xl border border-slate-800 bg-slate-900 p-4">
-                        <p class="font-bold text-white">{{ $player->handle }}</p>
-                        <p class="text-sm text-slate-400">
-                            {{ $player->role ?? 'player' }}
-                            @if($player->rating)
-                                · Rating {{ $player->rating }}
-                            @endif
-                        </p>
-                    </div>
+                    <article class="team-player-card">
+                        <div class="team-player-avatar">
+                            {{ strtoupper(mb_substr($player->handle, 0, 1)) }}
+                        </div>
+
+                        <div class="team-player-main">
+                            <strong>{{ $player->handle }}</strong>
+
+                            <p>
+                                {{ $player->role ?? 'Player' }}
+
+                                @if($player->rating)
+                                    <span>· Rating {{ $player->rating }}</span>
+                                @endif
+                            </p>
+                        </div>
+                    </article>
                 @empty
-                    <p class="text-slate-400">No players loaded.</p>
+                    <div class="team-empty-card">
+                        <strong>No players loaded.</strong>
+                        <p>Add roster data from the admin panel.</p>
+                    </div>
                 @endforelse
             </div>
-        </div>
+        </section>
 
-        <div>
-            <h2 class="mb-4 text-2xl font-black text-white">Recent matches</h2>
-            <div class="space-y-3">
+        <section class="team-panel">
+            <div class="team-panel-heading">
+                <p class="team-show-kicker">Schedule</p>
+                <h2>Recent Matches</h2>
+            </div>
+
+            <div class="team-match-list">
                 @forelse($recentMatches as $match)
-                    <a href="{{ route('matches.show', $match) }}" class="block rounded-xl border border-slate-800 bg-slate-900 p-4 hover:border-cyan-400">
-                        <p class="font-bold text-white">{{ $match->teamOne->name }} vs {{ $match->teamTwo->name }}</p>
-                        <p class="text-sm text-slate-400">{{ $match->event?->name }} · {{ $match->starts_at?->format('M j, Y') ?? 'TBD' }}</p>
+                    <a href="{{ route('matches.show', $match) }}" class="team-match-card">
+                        <div>
+                            <strong>{{ $match->teamOne->name }} vs {{ $match->teamTwo->name }}</strong>
+                            <p>{{ $match->event?->name ?: 'Unknown event' }}</p>
+                        </div>
+
+                        <span>{{ $match->starts_at?->format('M j, Y') ?? 'TBD' }}</span>
                     </a>
                 @empty
-                    <p class="text-slate-400">No matches loaded.</p>
+                    <div class="team-empty-card">
+                        <strong>No matches loaded.</strong>
+                        <p>Recent matches will appear here once imported.</p>
+                    </div>
                 @endforelse
             </div>
-        </div>
+        </section>
     </div>
 </section>
 @endsection
