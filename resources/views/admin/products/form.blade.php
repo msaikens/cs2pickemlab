@@ -1,5 +1,5 @@
-<div class="form-grid">
-    <div>
+<div class="product-admin-form-grid">
+    <div class="product-admin-field">
         <label class="form-label" for="name">Name</label>
         <input
             id="name"
@@ -9,9 +9,13 @@
             class="form-input"
             required
         >
+
+        @error('name')
+            <p class="product-admin-error">{{ $message }}</p>
+        @enderror
     </div>
 
-    <div>
+    <div class="product-admin-field">
         <label class="form-label" for="slug">Slug</label>
         <input
             id="slug"
@@ -21,9 +25,17 @@
             placeholder="auto-generated if blank"
             class="form-input"
         >
+
+        <p class="form-help">
+            Leave blank to generate from the product name.
+        </p>
+
+        @error('slug')
+            <p class="product-admin-error">{{ $message }}</p>
+        @enderror
     </div>
 
-    <div>
+    <div class="product-admin-field">
         <label class="form-label" for="sku">SKU</label>
         <input
             id="sku"
@@ -32,9 +44,13 @@
             value="{{ old('sku', $product->sku) }}"
             class="form-input"
         >
+
+        @error('sku')
+            <p class="product-admin-error">{{ $message }}</p>
+        @enderror
     </div>
 
-    <div>
+    <div class="product-admin-field">
         <label class="form-label" for="base_price_dollars">Base Price</label>
         <input
             id="base_price_dollars"
@@ -46,21 +62,36 @@
             class="form-input"
             required
         >
-        <p class="form-help">Enter dollars. Example: 19.99</p>
+
+        <p class="form-help">
+            Enter dollars. Example: 19.99
+        </p>
+
+        @error('base_price_dollars')
+            <p class="product-admin-error">{{ $message }}</p>
+        @enderror
     </div>
 
-    <div>
+    <div class="product-admin-field">
         <label class="form-label" for="status">Status</label>
         <select id="status" name="status" class="form-input" required>
-            @foreach(['draft' => 'Draft', 'active' => 'Active', 'archived' => 'Archived'] as $value => $label)
+            @foreach([
+                'draft' => 'Draft',
+                'active' => 'Active',
+                'archived' => 'Archived',
+            ] as $value => $label)
                 <option value="{{ $value }}" @selected(old('status', $product->status) === $value)>
                     {{ $label }}
                 </option>
             @endforeach
         </select>
+
+        @error('status')
+            <p class="product-admin-error">{{ $message }}</p>
+        @enderror
     </div>
 
-    <div>
+    <div class="product-admin-field">
         <label class="form-label" for="product_type">Product Type</label>
         <select id="product_type" name="product_type" class="form-input" required>
             @foreach([
@@ -75,9 +106,13 @@
                 </option>
             @endforeach
         </select>
+
+        @error('product_type')
+            <p class="product-admin-error">{{ $message }}</p>
+        @enderror
     </div>
 
-    <div>
+    <div class="product-admin-field">
         <label class="form-label" for="sort_order">Sort Order</label>
         <input
             id="sort_order"
@@ -86,9 +121,13 @@
             value="{{ old('sort_order', $product->sort_order ?? 0) }}"
             class="form-input"
         >
+
+        @error('sort_order')
+            <p class="product-admin-error">{{ $message }}</p>
+        @enderror
     </div>
 
-    <div>
+    <div class="product-admin-field">
         <label class="form-label" for="primary_image_path">Primary Image Path</label>
         <input
             id="primary_image_path"
@@ -98,10 +137,14 @@
             placeholder="images/products/example.png"
             class="form-input"
         >
+
+        @error('primary_image_path')
+            <p class="product-admin-error">{{ $message }}</p>
+        @enderror
     </div>
 </div>
 
-<div>
+<div class="product-admin-field">
     <label class="form-label" for="short_description">Short Description</label>
     <input
         id="short_description"
@@ -110,20 +153,28 @@
         value="{{ old('short_description', $product->short_description) }}"
         class="form-input"
     >
+
+    @error('short_description')
+        <p class="product-admin-error">{{ $message }}</p>
+    @enderror
 </div>
 
-<div>
+<div class="product-admin-field">
     <label class="form-label" for="description">Description</label>
     <textarea
         id="description"
         name="description"
         rows="6"
-        class="form-input"
+        class="form-input product-admin-description"
     >{{ old('description', $product->description) }}</textarea>
+
+    @error('description')
+        <p class="product-admin-error">{{ $message }}</p>
+    @enderror
 </div>
 
-<div class="grid gap-4 md:grid-cols-3">
-    <label class="checkbox-card">
+<div class="product-admin-checkbox-grid">
+    <label class="product-admin-checkbox">
         <input
             type="checkbox"
             name="requires_customization"
@@ -131,13 +182,16 @@
             @checked(old('requires_customization', $product->requires_customization))
             class="checkbox-input"
         >
+
         <span>
-            <span class="block font-bold text-white">Requires customization</span>
-            <span class="block text-xs text-slate-500">Customer must provide text/options.</span>
+            <span class="product-admin-checkbox-title">Requires customization</span>
+            <span class="product-admin-checkbox-help">
+                Customer must provide text/options.
+            </span>
         </span>
     </label>
 
-    <label class="checkbox-card">
+    <label class="product-admin-checkbox">
         <input
             type="checkbox"
             name="requires_upload"
@@ -145,13 +199,16 @@
             @checked(old('requires_upload', $product->requires_upload))
             class="checkbox-input"
         >
+
         <span>
-            <span class="block font-bold text-white">Requires upload</span>
-            <span class="block text-xs text-slate-500">Customer may upload logo/reference.</span>
+            <span class="product-admin-checkbox-title">Requires upload</span>
+            <span class="product-admin-checkbox-help">
+                Customer may upload logo/reference.
+            </span>
         </span>
     </label>
 
-    <label class="checkbox-card">
+    <label class="product-admin-checkbox">
         <input
             type="checkbox"
             name="is_featured"
@@ -159,9 +216,24 @@
             @checked(old('is_featured', $product->is_featured))
             class="checkbox-input"
         >
+
         <span>
-            <span class="block font-bold text-white">Featured</span>
-            <span class="block text-xs text-slate-500">Show on homepage/shop top.</span>
+            <span class="product-admin-checkbox-title">Featured</span>
+            <span class="product-admin-checkbox-help">
+                Show on homepage/shop top.
+            </span>
         </span>
     </label>
 </div>
+
+@error('requires_customization')
+    <p class="product-admin-error">{{ $message }}</p>
+@enderror
+
+@error('requires_upload')
+    <p class="product-admin-error">{{ $message }}</p>
+@enderror
+
+@error('is_featured')
+    <p class="product-admin-error">{{ $message }}</p>
+@enderror

@@ -1,11 +1,17 @@
-<div class="card-dark">
-    <p class="page-eyebrow">Product</p>
-    <p class="mt-1 text-xl font-black text-white">{{ $product->name }}</p>
-    <p class="mt-1 text-muted-sm">Base product price: ${{ $product->base_price_dollars }}</p>
+<div class="product-admin-context-card">
+    <p class="product-admin-eyebrow">Product</p>
+
+    <p class="product-admin-context-title">
+        {{ $product->name }}
+    </p>
+
+    <p class="product-admin-context-subtitle">
+        Base product price: ${{ $product->base_price_dollars }}
+    </p>
 </div>
 
-<div class="form-grid">
-    <div>
+<div class="product-admin-form-grid">
+    <div class="product-admin-field">
         <label class="form-label" for="name">Variant Name</label>
         <input
             id="name"
@@ -16,9 +22,13 @@
             class="form-input"
             required
         >
+
+        @error('name')
+            <p class="product-admin-error">{{ $message }}</p>
+        @enderror
     </div>
 
-    <div>
+    <div class="product-admin-field">
         <label class="form-label" for="sku">SKU</label>
         <input
             id="sku"
@@ -28,9 +38,13 @@
             placeholder="PLC-COIN-BASE"
             class="form-input"
         >
+
+        @error('sku')
+            <p class="product-admin-error">{{ $message }}</p>
+        @enderror
     </div>
 
-    <div>
+    <div class="product-admin-field">
         <label class="form-label" for="price_dollars">Variant Price</label>
         <input
             id="price_dollars"
@@ -42,10 +56,17 @@
             class="form-input"
             required
         >
-        <p class="form-help">Enter dollars. Example: 24.99</p>
+
+        <p class="form-help">
+            Enter dollars. Example: 24.99
+        </p>
+
+        @error('price_dollars')
+            <p class="product-admin-error">{{ $message }}</p>
+        @enderror
     </div>
 
-    <div>
+    <div class="product-admin-field">
         <label class="form-label" for="inventory_quantity">Inventory Quantity</label>
         <input
             id="inventory_quantity"
@@ -56,11 +77,18 @@
             placeholder="Leave blank for made-to-order"
             class="form-input"
         >
-        <p class="form-help">Leave blank if this is made-to-order or unlimited.</p>
+
+        <p class="form-help">
+            Leave blank if this is made-to-order or unlimited.
+        </p>
+
+        @error('inventory_quantity')
+            <p class="product-admin-error">{{ $message }}</p>
+        @enderror
     </div>
 </div>
 
-<label class="checkbox-card">
+<label class="product-admin-checkbox">
     <input
         type="checkbox"
         name="is_active"
@@ -68,8 +96,15 @@
         @checked(old('is_active', $variant->is_active ?? true))
         class="checkbox-input"
     >
+
     <span>
-        <span class="block font-bold text-white">Active</span>
-        <span class="block text-xs text-slate-500">Inactive variants will not be offered to customers.</span>
+        <span class="product-admin-checkbox-title">Active</span>
+        <span class="product-admin-checkbox-help">
+            Inactive variants will not be offered to customers.
+        </span>
     </span>
 </label>
+
+@error('is_active')
+    <p class="product-admin-error">{{ $message }}</p>
+@enderror

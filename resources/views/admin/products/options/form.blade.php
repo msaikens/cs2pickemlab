@@ -1,10 +1,13 @@
-<div class="card-dark">
-    <p class="page-eyebrow">Product</p>
-    <p class="mt-1 text-xl font-black text-white">{{ $product->name }}</p>
+<div class="product-admin-context-card">
+    <p class="product-admin-eyebrow">Product</p>
+
+    <p class="product-admin-context-title">
+        {{ $product->name }}
+    </p>
 </div>
 
-<div class="form-grid">
-    <div>
+<div class="product-admin-form-grid">
+    <div class="product-admin-field">
         <label class="form-label" for="name">Option Name</label>
         <input
             id="name"
@@ -15,9 +18,13 @@
             class="form-input"
             required
         >
+
+        @error('name')
+            <p class="product-admin-error">{{ $message }}</p>
+        @enderror
     </div>
 
-    <div>
+    <div class="product-admin-field">
         <label class="form-label" for="slug">Slug</label>
         <input
             id="slug"
@@ -27,9 +34,17 @@
             placeholder="auto-generated if blank"
             class="form-input"
         >
+
+        <p class="form-help">
+            Leave blank to generate from the option name.
+        </p>
+
+        @error('slug')
+            <p class="product-admin-error">{{ $message }}</p>
+        @enderror
     </div>
 
-    <div>
+    <div class="product-admin-field">
         <label class="form-label" for="type">Type</label>
         <select id="type" name="type" class="form-input" required>
             @foreach([
@@ -47,9 +62,13 @@
                 </option>
             @endforeach
         </select>
+
+        @error('type')
+            <p class="product-admin-error">{{ $message }}</p>
+        @enderror
     </div>
 
-    <div>
+    <div class="product-admin-field">
         <label class="form-label" for="sort_order">Sort Order</label>
         <input
             id="sort_order"
@@ -58,10 +77,14 @@
             value="{{ old('sort_order', $option->sort_order ?? 0) }}"
             class="form-input"
         >
+
+        @error('sort_order')
+            <p class="product-admin-error">{{ $message }}</p>
+        @enderror
     </div>
 </div>
 
-<div>
+<div class="product-admin-field">
     <label class="form-label" for="help_text">Help Text</label>
     <input
         id="help_text"
@@ -71,9 +94,13 @@
         placeholder="Short instructions shown to the customer"
         class="form-input"
     >
+
+    @error('help_text')
+        <p class="product-admin-error">{{ $message }}</p>
+    @enderror
 </div>
 
-<label class="checkbox-card">
+<label class="product-admin-checkbox">
     <input
         type="checkbox"
         name="is_required"
@@ -81,18 +108,27 @@
         @checked(old('is_required', $option->is_required))
         class="checkbox-input"
     >
+
     <span>
-        <span class="block font-bold text-white">Required</span>
-        <span class="block text-xs text-slate-500">Customer must complete this option before checkout.</span>
+        <span class="product-admin-checkbox-title">Required</span>
+        <span class="product-admin-checkbox-help">
+            Customer must complete this option before checkout.
+        </span>
     </span>
 </label>
 
-<div class="card-dark">
-    <div class="mb-4">
-        <h3 class="text-xl font-black text-white">Selectable Values</h3>
-        <p class="mt-1 text-sm text-slate-400">
-            Use these for select, radio, and checkbox options. Leave blank for text, textarea, file, number, or date options.
-        </p>
+@error('is_required')
+    <p class="product-admin-error">{{ $message }}</p>
+@enderror
+
+<section class="product-admin-values-card">
+    <div class="product-admin-values-header">
+        <div>
+            <h3>Selectable Values</h3>
+            <p>
+                Use these for select, radio, and checkbox options. Leave blank for text, textarea, file, number, or date options.
+            </p>
+        </div>
     </div>
 
     @php
@@ -123,12 +159,12 @@
         }
     @endphp
 
-    <div class="space-y-3">
+    <div class="product-admin-value-list">
         @foreach($existingValues as $index => $value)
-            <div class="grid gap-3 rounded-lg border border-slate-800 bg-slate-900 p-4 lg:grid-cols-12">
+            <div class="product-admin-value-row">
                 <input type="hidden" name="values[{{ $index }}][id]" value="{{ $value['id'] ?? '' }}">
 
-                <div class="lg:col-span-3">
+                <div class="product-admin-value-field product-admin-value-label">
                     <label class="form-label-sm">Label</label>
                     <input
                         name="values[{{ $index }}][label]"
@@ -139,7 +175,7 @@
                     >
                 </div>
 
-                <div class="lg:col-span-3">
+                <div class="product-admin-value-field product-admin-value-value">
                     <label class="form-label-sm">Value</label>
                     <input
                         name="values[{{ $index }}][value]"
@@ -150,7 +186,7 @@
                     >
                 </div>
 
-                <div class="lg:col-span-2">
+                <div class="product-admin-value-field product-admin-value-price">
                     <label class="form-label-sm">Price +/-</label>
                     <input
                         name="values[{{ $index }}][price_delta_dollars]"
@@ -161,7 +197,7 @@
                     >
                 </div>
 
-                <div class="lg:col-span-2">
+                <div class="product-admin-value-field product-admin-value-sort">
                     <label class="form-label-sm">Sort</label>
                     <input
                         name="values[{{ $index }}][sort_order]"
@@ -171,17 +207,17 @@
                     >
                 </div>
 
-                <div class="flex items-end lg:col-span-2">
+                <div class="product-admin-value-field product-admin-value-delete">
                     @if(! empty($value['id']))
-                        <label class="flex items-center gap-2 text-sm text-red-300">
+                        <label class="product-admin-delete-check">
                             <input type="checkbox" name="delete_values[]" value="{{ $value['id'] }}">
-                            Delete
+                            <span>Delete</span>
                         </label>
                     @else
-                        <span class="pb-2 text-xs text-slate-600">New row</span>
+                        <span class="product-admin-new-row">New row</span>
                     @endif
                 </div>
             </div>
         @endforeach
     </div>
-</div>
+</section>
