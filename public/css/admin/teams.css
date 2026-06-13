@@ -1,0 +1,13 @@
+/* public/css/admin/teams.css */
+
+.admin-teams-page .admin-resource-header {
+    margin-bottom: 2px;
+}
+
+.admin-teams-page .admin-table-title {
+    font-size: 0.98rem;
+}
+
+.admin-teams-page .admin-price-text {
+    font-size: 0.98rem;
+}

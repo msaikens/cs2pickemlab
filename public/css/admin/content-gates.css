@@ -1,0 +1,19 @@
+/* public/css/admin/content-gates.css */
+
+.content-gate-list {
+    display: grid;
+    gap: 18px;
+}
+
+.content-gate-form {
+    display: grid;
+    gap: 18px;
+}
+
+.content-gate-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px 22px;
+    border-top: 1px solid rgba(148, 163, 184, 0.12);
+    padding-top: 18px;
+}

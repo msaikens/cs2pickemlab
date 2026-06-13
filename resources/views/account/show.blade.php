@@ -12,13 +12,22 @@
     <header class="account-hero">
         <div>
             <p class="account-kicker">Account Center</p>
+
             <h1>My Account</h1>
-            <p>Manage your CS2 PickLab profile, verification, and account settings.</p>
+
+            <p>
+                Manage your CS2 PickLab profile, verification, and account settings.
+            </p>
         </div>
 
         <div class="account-actions">
-            <a href="{{ route('account.edit') }}" class="account-button primary">Edit Profile</a>
-            <a href="{{ route('account.security') }}" class="account-button secondary">Security</a>
+            <a href="{{ route('account.edit') }}" class="account-button primary">
+                Edit Profile
+            </a>
+
+            <a href="{{ route('account.security') }}" class="account-button secondary">
+                Security
+            </a>
         </div>
     </header>
 
@@ -32,7 +41,7 @@
             @csrf
 
             <button type="submit" class="account-button secondary">
-                Complete Re-Sync
+                Complete Re&#8209;Sync
             </button>
         </form>
     @endif
@@ -112,7 +121,7 @@
         <section class="account-verification success">
             <p class="account-kicker">Account Verification</p>
 
-            <h2>E-mail successfully verified.</h2>
+            <h2>Email successfully verified.</h2>
 
             <p>
                 Your account email is verified and marketplace verification can continue.
@@ -147,7 +156,9 @@
                     ])
                 </div>
 
-                <p class="account-email">{{ $user->email }}</p>
+                <p class="account-email">
+                    {{ $user->email }}
+                </p>
 
                 @if($user->profile?->first_name || $user->profile?->last_name)
                     <p class="account-real-name">
@@ -178,6 +189,7 @@
         <section class="account-card account-about-card">
             <div class="account-card-heading">
                 <p class="account-kicker">Profile Details</p>
+
                 <h2>About</h2>
             </div>
 

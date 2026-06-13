@@ -3,28 +3,40 @@
     'pageTitle' => 'Edit Team',
 ])
 
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/admin/admin-resource.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/admin/teams.css') }}">
+@endpush
+
 @section('content')
-<div class="mb-6 flex flex-wrap items-center justify-between gap-4">
-    <a href="{{ route('admin.teams.index') }}" class="link-accent">
-        ← Back to Teams
-    </a>
+<section class="admin-resource-page admin-teams-page">
+    <div class="admin-back-row split">
+        <a href="{{ route('admin.teams.index') }}" class="admin-link">
+            ← Back to Teams
+        </a>
 
-    <a href="{{ route('teams.show', $team) }}" class="btn-secondary">
-        View Team
-    </a>
-</div>
+        <a href="{{ route('teams.show', $team) }}" class="admin-button secondary">
+            View Team
+        </a>
+    </div>
 
-<div class="panel">
-    <form method="POST" action="{{ route('admin.teams.update', $team) }}" class="space-y-6">
-        @csrf
-        @method('PUT')
+    <section class="admin-panel">
+        <form method="POST" action="{{ route('admin.teams.update', $team) }}" class="admin-form">
+            @csrf
+            @method('PUT')
 
-        @include('admin.teams.form', ['team' => $team])
+            @include('admin.teams.form', ['team' => $team])
 
-        <div class="flex justify-end gap-3">
-            <a href="{{ route('admin.teams.index') }}" class="btn-secondary-lg">Cancel</a>
-            <button type="submit" class="btn-primary-lg">Save Team</button>
-        </div>
-    </form>
-</div>
+            <div class="admin-form-actions">
+                <a href="{{ route('admin.teams.index') }}" class="admin-button secondary">
+                    Cancel
+                </a>
+
+                <button type="submit" class="admin-button primary">
+                    Save Team
+                </button>
+            </div>
+        </form>
+    </section>
+</section>
 @endsection
