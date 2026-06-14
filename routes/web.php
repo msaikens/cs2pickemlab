@@ -3,6 +3,7 @@
 use App\Http\Controllers\Account\CompleteResyncController;
 use App\Http\Controllers\Account\ProfileController;
 use App\Http\Controllers\Account\SecurityController;
+use App\Http\Controllers\Account\WalletController;
 use App\Http\Controllers\Admin\ContentGateController as AdminContentGateController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\EventController as AdminEventController;
@@ -16,6 +17,7 @@ use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\ProductOptionController as AdminProductOptionController;
 use App\Http\Controllers\Admin\ProductVariantController as AdminProductVariantController;
 use App\Http\Controllers\Admin\TeamController as AdminTeamController;
+use App\Http\Controllers\Auth\ConfirmPasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -34,6 +36,8 @@ use App\Http\Controllers\Public\TeamController;
 use App\Http\Controllers\SkinListingController;
 use App\Http\Controllers\SteamOpenIdController;
 use App\Http\Controllers\SteamProfileController;
+use App\Http\Controllers\Stripe\StripeWebhookController;
+use App\Http\Controllers\Stripe\WalletTopUpController;
 use App\Http\Controllers\TradeRequestController;
 use App\Http\Controllers\UserSearchController;
 use Illuminate\Support\Facades\Route;
@@ -44,7 +48,8 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/', [HomeController::class, 'index'])
+    ->name('home');
 
 Route::get('/contact', [ContactController::class, 'create'])
     ->name('contact.create');
@@ -79,6 +84,16 @@ Route::get('/teams/{team}', [TeamController::class, 'show'])
 
 Route::view('/help/steam-trade-url', 'help.steam-trade-url')
     ->name('help.steam-trade-url');
+
+/*
+|--------------------------------------------------------------------------
+| Stripe webhook
+|--------------------------------------------------------------------------
+| Must stay public. CSRF exception belongs in bootstrap/app.php.
+*/
+
+Route::post('/stripe/webhook', [StripeWebhookController::class, 'handle'])
+    ->name('stripe.webhook');
 
 /*
 |--------------------------------------------------------------------------
@@ -151,7 +166,6 @@ Route::middleware('guest')->group(function () {
 
     Route::post('/reset-password', [ResetPasswordController::class, 'store'])
         ->name('password.update');
-
 });
 
 /*
@@ -163,6 +177,27 @@ Route::middleware('guest')->group(function () {
 Route::post('/logout', [LoginController::class, 'destroy'])
     ->middleware('auth')
     ->name('logout');
+
+/*
+|--------------------------------------------------------------------------
+| Password / wallet access confirmation routes
+|--------------------------------------------------------------------------
+| These must be auth routes, not guest routes.
+*/
+
+Route::middleware('auth')->group(function () {
+    Route::get('/confirm-password', [ConfirmPasswordController::class, 'create'])
+        ->name('password.confirm');
+
+    Route::post('/confirm-password', [ConfirmPasswordController::class, 'store'])
+        ->name('password.confirm.store');
+
+    Route::get('/confirm-password/code', [ConfirmPasswordController::class, 'code'])
+        ->name('password.confirm.code');
+
+    Route::post('/confirm-password/code', [ConfirmPasswordController::class, 'verifyCode'])
+        ->name('password.confirm.code.verify');
+});
 
 /*
 |--------------------------------------------------------------------------
@@ -211,7 +246,11 @@ Route::middleware('auth')
 
         Route::put('/security/password', [SecurityController::class, 'updatePassword'])
             ->name('password.update');
-        
+
+        Route::get('/wallet', [WalletController::class, 'show'])
+            ->middleware(['password.confirm'])
+            ->name('wallet');
+
         Route::post('/complete-resync', CompleteResyncController::class)
             ->middleware(['verified'])
             ->name('complete-resync');
@@ -254,6 +293,15 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/profile/steam/trade-url', [SteamProfileController::class, 'updateTradeUrl'])
         ->name('profile.steam.trade-url.update');
+
+    Route::post('/wallet/top-up', [WalletTopUpController::class, 'create'])
+        ->name('wallet.topup.create');
+
+    Route::get('/wallet/top-up/success', [WalletTopUpController::class, 'success'])
+        ->name('wallet.topup.success');
+
+    Route::get('/wallet/top-up/cancel', [WalletTopUpController::class, 'cancel'])
+        ->name('wallet.topup.cancel');
 });
 
 /*
@@ -396,7 +444,7 @@ Route::prefix('admin')
 
         Route::delete('products/{product}/variants/{variant}', [AdminProductVariantController::class, 'destroy'])
             ->name('products.variants.destroy');
-        
+
         Route::post('users/{user}/complete-resync', [\App\Http\Controllers\Admin\UserResyncController::class, 'resync'])
             ->name('users.complete-resync');
     });

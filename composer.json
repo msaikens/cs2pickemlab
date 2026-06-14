@@ -11,7 +11,8 @@
         "laravel/socialite": "^5.27",
         "laravel/tinker": "^3.0",
         "socialiteproviders/apple": "^5.10",
-        "socialiteproviders/orcid": "^5.1"
+        "socialiteproviders/orcid": "^5.1",
+        "stripe/stripe-php": "^20.2"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

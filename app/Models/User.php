@@ -220,4 +220,10 @@ public function publicAccountLabel(): string
 
     return 'Free User';
 }
+
+
+    public function wallet()
+    {
+        return $this->hasOne(\App\Models\Wallet::class);
+    }
 }

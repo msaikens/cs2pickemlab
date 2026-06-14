@@ -185,7 +185,21 @@
                 </div>
             </div>
         </section>
+        @auth
+            @if(auth()->id() === $user->id || auth()->user()?->isAdmin() || auth()->user()?->isModerator())
+                <section class="account-wallet-preview">
+                    <div>
+                        <p class="account-kicker">Private Wallet</p>
+                        <h2>Wallet</h2>
+                        <p>Wallet balance and transaction history require password confirmation.</p>
+                    </div>
 
+                    <a href="{{ route('account.wallet') }}" class="account-button primary">
+                        Open Wallet
+                    </a>
+                </section>
+            @endif
+        @endauth
         <section class="account-card account-about-card">
             <div class="account-card-heading">
                 <p class="account-kicker">Profile Details</p>

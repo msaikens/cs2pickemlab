@@ -195,6 +195,28 @@
             </div>
 
             <div class="admin-feed-list">
+<!-- TEST TXN BUTTON -->
+            <form method="POST" action="{{ route('wallet.topup.create') }}">
+    @csrf
+
+    <label class="form-label" for="amount_dollars">Wallet Top-Up Amount</label>
+
+    <input
+        id="amount_dollars"
+        name="amount_dollars"
+        type="number"
+        min="5"
+        max="500"
+        step="0.01"
+        value="5.00"
+        class="form-input"
+    >
+
+    <button type="submit" class="btn-primary">
+        Add Test Funds
+    </button>
+</form>
+<!-- END TEST TXN BUTTON -->
                 @forelse($latestTradeRequests as $tradeRequest)
                     <article class="admin-feed-item">
                         <strong>
