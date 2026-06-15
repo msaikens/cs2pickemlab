@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\ContentGateController as AdminContentGateControll
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\EventController as AdminEventController;
 use App\Http\Controllers\Admin\EventStageController as AdminEventStageController;
+use App\Http\Controllers\Admin\GridImportController;
 use App\Http\Controllers\Admin\MatchController as AdminMatchController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\PickemRecommendationController as AdminPickemRecommendationController;
@@ -199,8 +200,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/confirm-password/code', [ConfirmPasswordController::class, 'verifyCode'])
         ->name('password.confirm.code.verify');
     
-    Route::post('/wallet/confirm/2fa', [WalletAccessController::class, 'confirmTwoFactor'])
-        ->name('wallet.confirm.2fa');
+    Route::post('/wallet/confirm/2fa', [ConfirmPasswordController::class, 'confirmTwoFactor'])
+    ->middleware(['auth'])
+    ->name('wallet.confirm.2fa');
 });
 
 /*
@@ -451,4 +453,34 @@ Route::prefix('admin')
 
         Route::post('users/{user}/complete-resync', [\App\Http\Controllers\Admin\UserResyncController::class, 'resync'])
             ->name('users.complete-resync');
+            
+        Route::get('grid', [GridImportController::class, 'index'])
+            ->name('grid.index');
+
+        Route::post('grid/search-tournaments', [GridImportController::class, 'searchTournaments'])
+            ->name('grid.search-tournaments');
+
+        Route::post('grid/create-event-from-tournament', [GridImportController::class, 'createEventFromTournament'])
+            ->name('grid.create-event-from-tournament');
+
+        Route::post('grid/discover-series', [GridImportController::class, 'discoverSeries'])
+            ->name('grid.discover-series');
+
+        Route::post('grid/download-series-files', [GridImportController::class, 'downloadSeriesFiles'])
+            ->name('grid.download-series-files');
+
+        Route::post('grid/import-stats', [GridImportController::class, 'importStats'])
+            ->name('grid.import-stats');
+
+        Route::delete('/grid/import-runs/{run}/notification', [GridImportController::class, 'dismissRunNotification'])
+            ->name('grid.dismiss-run-notification');
+
+        Route::delete('/grid/tournament-cache', [GridImportController::class, 'clearTournamentCache'])
+            ->name('grid.clear-tournament-cache');
+
+        Route::delete('/grid/series-discoveries', [GridImportController::class, 'clearSeriesDiscoveries'])
+            ->name('grid.clear-series-discoveries');
+
+        Route::delete('/grid/local-events/{event}', [GridImportController::class, 'deleteLocalEvent'])
+            ->name('grid.delete-local-event');
     });

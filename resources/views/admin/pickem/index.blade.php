@@ -1,6 +1,6 @@
 @extends('layouts.admin', [
-    'title' => 'Pick’em Recommendations | CS2 PickLab',
-    'pageTitle' => 'Pick’em',
+    'title' => 'Pick&#x2019;em Recommendations | CS2 PickLab',
+    'pageTitle' => 'Pick&#x2019;em',
 ])
 
 @push('styles')
@@ -10,7 +10,7 @@
 @section('content')
     <div class="pickem-admin-header">
         <div>
-            <h2 class="pickem-admin-title">Pick’em Recommendations</h2>
+            <h2 class="pickem-admin-title">Pick&#x2019;em Recommendations</h2>
             <p class="pickem-admin-subtitle">
                 Manage team recommendations for 3:0, advancement, 0:3, upset watch, and avoid slots.
             </p>
@@ -109,7 +109,7 @@
                                 <form
                                     method="POST"
                                     action="{{ route('admin.pickem.destroy', $recommendation) }}"
-                                    onsubmit="return confirm('Delete this Pick’em recommendation?');"
+                                    onsubmit="return confirm('Delete this Pick&#x2019;em recommendation?');"
                                 >
                                     @csrf
                                     @method('DELETE')
@@ -124,7 +124,7 @@
                 @empty
                     <tr>
                         <td colspan="7" class="pickem-admin-empty">
-                            No Pick’em recommendations yet.
+                            No Pick&#x2019;em recommendations yet.
                         </td>
                     </tr>
                 @endforelse

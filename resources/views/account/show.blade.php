@@ -8,6 +8,11 @@
 @endpush
 
 @section('content')
+@php
+    $hasTwoFactor = ! empty($user?->two_factor_secret)
+        && ! empty($user?->two_factor_confirmed_at);
+@endphp
+
 <section class="account-page">
     <header class="account-hero">
         <div>
@@ -28,11 +33,12 @@
             <a href="{{ route('account.security') }}" class="account-button secondary">
                 Security
             </a>
+
             @auth
                 @if(auth()->id() === $user->id || auth()->user()?->isAdmin() || auth()->user()?->isModerator())
-                <a href="{{ route('account.wallet') }}" class="account-button wallet">
-                    Wallet
-                </a>
+                    <a href="{{ route('account.wallet') }}" class="account-button wallet">
+                        Wallet
+                    </a>
                 @endif
             @endauth
         </div>
@@ -156,15 +162,16 @@
                 <div class="account-name-row">
                     <h2>{{ $user->displayName() }}</h2>
 
-                    @include('components.user-role-badge', [
-                        'user' => $user,
-                        'showFree' => false,
-                        'showPremium' => false,
-                    ])
                 </div>
 
                 <p class="account-email">
                     {{ $user->email }}
+                </p>
+
+                <p class="account-security-shortcut">
+                    <a href="{{ route('account.security') }}">
+                        {{ $hasTwoFactor ? 'Manage two-factor authentication' : 'Set up two-factor authentication' }}
+                    </a>
                 </p>
 
                 @if($user->profile?->first_name || $user->profile?->last_name)
@@ -174,6 +181,11 @@
                 @endif
 
                 <div class="account-badges">
+                    @include('components.user-role-badge', [
+                        'user' => $user,
+                        'showFree' => true,
+                        'showPremium' => true,
+                    ])
                     @if ($user->hasVerifiedEmail())
                         <span class="account-pill verified">
                             Email Verified
@@ -184,14 +196,14 @@
                         </span>
                     @endif
 
-                    @include('components.user-role-badge', [
-                        'user' => $user,
-                        'showFree' => true,
-                        'showPremium' => true,
-                    ])
+
+                    <span class="account-two-factor-badge {{ $hasTwoFactor ? 'enabled' : 'disabled' }}">
+                        {{ $hasTwoFactor ? '2FA Enabled' : '2FA Off' }}
+                    </span>
                 </div>
             </div>
         </section>
+
         <section class="account-card account-about-card">
             <div class="account-card-heading">
                 <p class="account-kicker">Profile Details</p>

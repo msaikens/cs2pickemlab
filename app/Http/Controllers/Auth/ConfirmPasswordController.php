@@ -9,6 +9,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Validation\ValidationException;
+use Laravel\Fortify\Contracts\TwoFactorAuthenticationProvider;
 use Illuminate\View\View;
 
 class ConfirmPasswordController extends Controller
@@ -94,4 +97,38 @@ class ConfirmPasswordController extends Controller
 
         return redirect()->intended(route('account.wallet'));
     }
+    public function confirmTwoFactor(
+    Request $request,
+    TwoFactorAuthenticationProvider $provider
+) {
+    $request->validate([
+        'code' => ['required', 'string', 'max:20'],
+    ]);
+
+    $user = $request->user();
+
+    if (
+        empty($user->two_factor_secret)
+        || empty($user->two_factor_confirmed_at)
+    ) {
+        throw ValidationException::withMessages([
+            'code' => 'Authenticator verification is not enabled for this account.',
+        ]);
+    }
+
+    $code = preg_replace('/\s+/', '', $request->input('code'));
+
+    if (! $provider->verify(Crypt::decrypt($user->two_factor_secret), $code)) {
+        throw ValidationException::withMessages([
+            'code' => 'The authenticator code was invalid.',
+        ]);
+    }
+
+    session([
+        'auth.password_confirmed_at' => time(),
+        'wallet_confirmed_at' => time(),
+    ]);
+
+    return redirect()->intended(route('account.wallet'));
+}
 }

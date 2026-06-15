@@ -48,6 +48,17 @@ return [
         'redirect' => env('GOOGLE_REDIRECT_URI'),
     ],
 
+    'grid' => [
+        'api_key' => env('GRID_API_KEY'),
+        'graphql_url' => env('GRID_GRAPHQL_URL'),
+        'central_data_endpoint' => env('GRID_CENTRAL_DATA_ENDPOINT'),
+        'rest_base_url' => env('GRID_REST_BASE_URL'),
+        'timeout_seconds' => env('GRID_TIMEOUT_SECONDS'),
+        'stats_feed_endpoint' => env('GRID_STATS_FEED_ENDPOINT'),
+        'file_download_endpoint' => env('GRID_FILE_DOWNLOAD_ENDPOINT'),
+        'cs2_title_id' => env('GRID_TITLE_ID_CS2', '28'),
+    ],
+
     'apple' => [
         'client_id' => env('APPLE_CLIENT_ID'),
         'client_secret' => env('APPLE_CLIENT_SECRET'),
@@ -68,5 +79,7 @@ return [
         'site_key' => env('TURNSTILE_SITE_KEY'),
         'secret_key' => env('TURNSTILE_SECRET_KEY'),
     ],
+
+    'admin_report_email' => env('ADMIN_REPORT_EMAIL'),
 
 ];

@@ -53,4 +53,24 @@ class Team extends Model
     {
         return $this->hasMany(PickemRecommendation::class);
     }
+
+public function eventRosterPlayers()
+{
+    return $this->hasMany(EventRosterPlayer::class);
+}
+
+public function playerStatSnapshots()
+{
+    return $this->hasMany(PlayerStatSnapshot::class);
+}
+
+public function statSnapshots()
+{
+    return $this->hasMany(TeamStatSnapshot::class);
+}
+
+public function latestStatSnapshot()
+{
+    return $this->hasOne(TeamStatSnapshot::class)->latestOfMany('snapshot_date');
+}
 }

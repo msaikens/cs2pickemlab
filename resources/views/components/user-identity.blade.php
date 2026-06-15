@@ -3,6 +3,8 @@
     'size' => 'md',
     'showEmail' => false,
     'showAccountType' => false,
+    'showTwoFactorStatus' => false,
+    'showTwoFactorLink' => false,
 ])
 
 @php
@@ -11,6 +13,9 @@
         'lg' => 'large',
         default => 'medium',
     };
+
+    $hasTwoFactor = ! empty($user?->two_factor_secret)
+        && ! empty($user?->two_factor_confirmed_at);
 @endphp
 
 <div {{ $attributes->merge(['class' => 'user-identity ' . $sizeClass]) }}>
@@ -37,6 +42,12 @@
                 'showFree' => $showAccountType,
                 'showPremium' => $showAccountType,
             ])
+
+            @if($showTwoFactorStatus && $user)
+                <span class="user-identity-2fa-badge {{ $hasTwoFactor ? 'enabled' : 'disabled' }}">
+                    {{ $hasTwoFactor ? '2FA Enabled' : '2FA Off' }}
+                </span>
+            @endif
         </div>
 
         @if ($user)
@@ -48,6 +59,14 @@
         @if ($showEmail && $user?->email)
             <p class="user-identity-email">
                 {{ $user->email }}
+            </p>
+        @endif
+
+        @if($showTwoFactorLink && $user)
+            <p class="user-identity-security-link-row">
+                <a href="{{ route('account.security') }}" class="user-identity-security-link">
+                    {{ $hasTwoFactor ? 'Manage two-factor authentication' : 'Set up two-factor authentication' }}
+                </a>
             </p>
         @endif
     </div>

@@ -57,6 +57,10 @@
                     Pick&#8217;em
                 </a>
 
+                <a href="{{ route('admin.grid.index') }}" class="admin-nav-link">
+                    GRID Imports
+                </a>
+
                 <a href="{{ route('admin.products.index') }}" class="admin-nav-link">
                     Products
                 </a>

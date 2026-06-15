@@ -34,4 +34,19 @@ class Player extends Model
     {
         return $this->belongsTo(Team::class);
     }
+
+public function eventRosters()
+{
+    return $this->hasMany(EventRosterPlayer::class);
+}
+
+public function statSnapshots()
+{
+    return $this->hasMany(PlayerStatSnapshot::class);
+}
+
+public function latestStatSnapshot()
+{
+    return $this->hasOne(PlayerStatSnapshot::class)->latestOfMany('snapshot_date');
+}
 }

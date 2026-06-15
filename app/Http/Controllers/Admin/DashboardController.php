@@ -7,6 +7,7 @@ use App\Models\SkinListing;
 use App\Models\TradeRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Schema;
 
 class DashboardController extends Controller
 {
@@ -21,7 +22,10 @@ class DashboardController extends Controller
             'pickem' => DB::table('pickem_recommendations')->count(),
             'products' => DB::table('products')->count(),
             'orders' => DB::table('orders')->count(),
-
+            
+            'grid_imports' => Schema::hasTable('grid_import_runs') ? DB::table('grid_import_runs')->count() : 0,
+            'grid_series' => Schema::hasTable('grid_series') ? DB::table('grid_series')->count() : 0,
+            
             'marketplace_listings_total' => SkinListing::count(),
             'marketplace_listings_active' => SkinListing::where('status', 'active')->count(),
             'marketplace_listings_pending' => SkinListing::where('status', 'pending')->count(),

@@ -1,0 +1,572 @@
+.grid-admin-page {
+    width: min(1380px, calc(100vw - 2rem));
+    margin: 0 auto;
+    padding: 1.5rem 0 3rem;
+    color: #e5e7eb;
+}
+
+.grid-admin-hero {
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    border-radius: 24px;
+    padding: clamp(1.25rem, 2vw, 2rem);
+    background:
+        radial-gradient(circle at top left, rgba(245, 158, 11, 0.18), transparent 32rem),
+        linear-gradient(135deg, rgba(15, 23, 42, 0.98), rgba(2, 6, 23, 0.98));
+    box-shadow:
+        0 24px 70px rgba(0, 0, 0, 0.34),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.grid-admin-hero h1 {
+    margin: 0;
+    font-size: clamp(2rem, 4vw, 3.4rem);
+    line-height: 1;
+    letter-spacing: -0.06em;
+    color: #f8fafc;
+}
+
+.grid-admin-hero p {
+    max-width: 760px;
+    margin: 0.75rem 0 0;
+    color: #94a3b8;
+    font-size: 1rem;
+    line-height: 1.7;
+}
+
+.grid-admin-kicker {
+    margin: 0 0 0.45rem;
+    color: #f59e0b;
+    font-size: 0.74rem;
+    font-weight: 900;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.grid-admin-hero-badge {
+    min-width: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: 1px solid rgba(245, 158, 11, 0.28);
+    border-radius: 18px;
+    padding: 1rem;
+    background: rgba(15, 23, 42, 0.72);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.grid-admin-hero-badge span {
+    color: #94a3b8;
+    font-size: 0.76rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.grid-admin-hero-badge strong {
+    margin-top: 0.25rem;
+    color: #fbbf24;
+    font-size: 2.3rem;
+    line-height: 1;
+}
+
+.grid-admin-alert {
+    margin-bottom: 1rem;
+    border-radius: 18px;
+    padding: 1rem 1.1rem;
+    font-weight: 800;
+}
+
+.grid-admin-alert ul {
+    margin: 0.65rem 0 0;
+    padding-left: 1.25rem;
+    font-weight: 600;
+}
+
+.grid-admin-alert.success {
+    color: #bbf7d0;
+    border: 1px solid rgba(34, 197, 94, 0.32);
+    background: rgba(34, 197, 94, 0.11);
+}
+
+.grid-admin-alert.danger {
+    color: #fecaca;
+    border: 1px solid rgba(239, 68, 68, 0.32);
+    background: rgba(239, 68, 68, 0.11);
+}
+
+.grid-admin-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.grid-admin-card {
+    border: 1px solid rgba(148, 163, 184, 0.16);
+    border-radius: 22px;
+    padding: 1.1rem;
+    background:
+        linear-gradient(180deg, rgba(15, 23, 42, 0.96), rgba(2, 6, 23, 0.96));
+    box-shadow:
+        0 18px 48px rgba(0, 0, 0, 0.26),
+        inset 0 1px 0 rgba(255, 255, 255, 0.035);
+}
+
+.grid-admin-wide-card {
+    margin-top: 1rem;
+    padding: 1.2rem;
+}
+
+.grid-admin-card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+    margin-bottom: 1rem;
+}
+
+.grid-admin-card-icon {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    border-radius: 14px;
+    color: #fbbf24;
+    background: rgba(245, 158, 11, 0.11);
+    font-size: 0.8rem;
+    font-weight: 950;
+}
+
+.grid-admin-card h2,
+.grid-admin-section-header h2 {
+    margin: 0;
+    color: #f8fafc;
+    font-size: 1.05rem;
+    letter-spacing: -0.025em;
+}
+
+.grid-admin-card p,
+.grid-admin-section-header p {
+    margin: 0.3rem 0 0;
+    color: #94a3b8;
+    font-size: 0.88rem;
+    line-height: 1.5;
+}
+
+.grid-admin-help-box {
+    border: 1px solid rgba(245, 158, 11, 0.18);
+    border-radius: 16px;
+    padding: 0.9rem;
+    background: rgba(245, 158, 11, 0.07);
+}
+
+.grid-admin-help-box p {
+    margin: 0;
+}
+
+.grid-admin-help-box strong {
+    color: #fbbf24;
+}
+
+.grid-admin-form {
+    display: grid;
+    gap: 0.7rem;
+}
+
+.grid-admin-stacked-form {
+    margin-top: 0.25rem;
+}
+
+.grid-admin-form label {
+    color: #cbd5e1;
+    font-size: 0.78rem;
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.grid-admin-form input,
+.grid-admin-form select {
+    width: 100%;
+    min-height: 2.75rem;
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: 14px;
+    padding: 0.72rem 0.85rem;
+    color: #f8fafc;
+    background: rgba(15, 23, 42, 0.82);
+    outline: none;
+    transition:
+        border-color 160ms ease,
+        box-shadow 160ms ease,
+        background 160ms ease;
+}
+
+.grid-admin-form input:focus,
+.grid-admin-form select:focus {
+    border-color: rgba(245, 158, 11, 0.72);
+    box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.12);
+    background: rgba(15, 23, 42, 1);
+}
+
+.grid-admin-form input::placeholder {
+    color: #64748b;
+}
+
+.grid-admin-divider {
+    width: 100%;
+    height: 1px;
+    border: 0;
+    margin: 1rem 0;
+    background: rgba(148, 163, 184, 0.16);
+}
+
+.grid-admin-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.8rem;
+    border: 0;
+    border-radius: 14px;
+    padding: 0.75rem 1rem;
+    font-weight: 950;
+    cursor: pointer;
+    transition:
+        transform 160ms ease,
+        box-shadow 160ms ease,
+        filter 160ms ease,
+        opacity 160ms ease;
+}
+
+.grid-admin-button:hover {
+    transform: translateY(-1px);
+}
+
+.grid-admin-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.48;
+    transform: none;
+}
+
+.grid-admin-button.primary,
+.grid-admin-button.small {
+    color: #111827;
+    background: linear-gradient(135deg, #fbbf24, #f97316);
+    box-shadow: 0 12px 28px rgba(249, 115, 22, 0.22);
+}
+
+.grid-admin-button.primary:hover,
+.grid-admin-button.small:hover {
+    filter: brightness(1.08);
+    box-shadow: 0 16px 34px rgba(249, 115, 22, 0.32);
+}
+
+.grid-admin-button.small {
+    min-height: 2.15rem;
+    border-radius: 999px;
+    padding: 0.45rem 0.75rem;
+    font-size: 0.75rem;
+}
+
+.grid-admin-inline-form {
+    margin: 0;
+}
+
+.grid-admin-section-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.grid-admin-table-wrap {
+    overflow-x: auto;
+    border: 1px solid rgba(148, 163, 184, 0.13);
+    border-radius: 18px;
+    background: rgba(2, 6, 23, 0.42);
+}
+
+.grid-admin-table {
+    width: 100%;
+    min-width: 850px;
+    border-collapse: collapse;
+}
+
+.grid-admin-table th,
+.grid-admin-table td {
+    padding: 0.9rem 1rem;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.11);
+    text-align: left;
+    vertical-align: middle;
+}
+
+.grid-admin-table th {
+    color: #94a3b8;
+    background: rgba(15, 23, 42, 0.82);
+    font-size: 0.73rem;
+    font-weight: 950;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.grid-admin-table td {
+    color: #e5e7eb;
+    font-size: 0.88rem;
+}
+
+.grid-admin-table tbody tr {
+    transition: background 140ms ease;
+}
+
+.grid-admin-table tbody tr:hover {
+    background: rgba(245, 158, 11, 0.045);
+}
+
+.grid-admin-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.grid-admin-code {
+    display: inline-flex;
+    max-width: 260px;
+    overflow: hidden;
+    border: 1px solid rgba(148, 163, 184, 0.16);
+    border-radius: 10px;
+    padding: 0.3rem 0.45rem;
+    color: #cbd5e1;
+    background: rgba(15, 23, 42, 0.75);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    font-size: 0.78rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.grid-admin-status {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    border-radius: 999px;
+    padding: 0.32rem 0.65rem;
+    font-size: 0.72rem;
+    font-weight: 950;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+}
+
+.grid-admin-status.queued,
+.grid-admin-status.discovered,
+.grid-admin-status.draft {
+    color: #bfdbfe;
+    border: 1px solid rgba(59, 130, 246, 0.28);
+    background: rgba(59, 130, 246, 0.12);
+}
+
+.grid-admin-status.running,
+.grid-admin-status.files_ready {
+    color: #fde68a;
+    border: 1px solid rgba(245, 158, 11, 0.32);
+    background: rgba(245, 158, 11, 0.13);
+}
+
+.grid-admin-status.completed,
+.grid-admin-status.downloaded,
+.grid-admin-status.imported,
+.grid-admin-status.active,
+.grid-admin-status.published {
+    color: #bbf7d0;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+    background: rgba(34, 197, 94, 0.12);
+}
+
+.grid-admin-status.failed,
+.grid-admin-status.cancelled {
+    color: #fecaca;
+    border: 1px solid rgba(239, 68, 68, 0.32);
+    background: rgba(239, 68, 68, 0.13);
+}
+
+.grid-admin-error-cell {
+    max-width: 360px;
+    color: #fca5a5;
+}
+
+.grid-admin-versus {
+    display: inline-flex;
+    margin: 0 0.35rem;
+    color: #f59e0b;
+    font-size: 0.7rem;
+    font-weight: 950;
+    text-transform: uppercase;
+}
+
+.grid-admin-file-flags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+.grid-admin-file-flags span {
+    display: inline-flex;
+    border-radius: 999px;
+    padding: 0.28rem 0.55rem;
+    font-size: 0.72rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.grid-admin-file-flags .yes {
+    color: #bbf7d0;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+    background: rgba(34, 197, 94, 0.12);
+}
+
+.grid-admin-file-flags .no {
+    color: #cbd5e1;
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    background: rgba(148, 163, 184, 0.08);
+}
+
+.grid-admin-empty {
+    padding: 2rem 1rem !important;
+    color: #94a3b8 !important;
+    text-align: center !important;
+}
+
+.grid-admin-details {
+    border: 1px solid rgba(148, 163, 184, 0.15);
+    border-radius: 14px;
+    padding: 0.65rem 0.8rem;
+    background: rgba(15, 23, 42, 0.5);
+}
+
+.grid-admin-details summary {
+    color: #fbbf24;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+.grid-admin-details pre {
+    overflow-x: auto;
+    max-height: 320px;
+    margin: 0.75rem 0 0;
+    border-radius: 12px;
+    padding: 0.9rem;
+    color: #d1d5db;
+    background: rgba(2, 6, 23, 0.85);
+    font-size: 0.78rem;
+    line-height: 1.55;
+}
+
+@media (max-width: 1180px) {
+    .grid-admin-actions-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 760px) {
+    .grid-admin-page {
+        width: min(100% - 1rem, 1380px);
+        padding-top: 1rem;
+    }
+
+    .grid-admin-hero {
+        flex-direction: column;
+        border-radius: 20px;
+    }
+
+    .grid-admin-hero-badge {
+        min-width: 0;
+    }
+
+    .grid-admin-actions-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .grid-admin-card {
+        border-radius: 18px;
+    }
+}
+.grid-admin-alert.warning {
+    border: 1px solid rgba(245, 158, 11, 0.45);
+    background: rgba(120, 53, 15, 0.28);
+    color: #fde68a;
+}
+
+.grid-admin-alert.warning strong {
+    display: block;
+    margin-bottom: 0.35rem;
+    color: #fbbf24;
+}
+
+.grid-admin-alert.warning p {
+    margin: 0.25rem 0 0.75rem;
+}
+
+.grid-admin-alert.warning ul {
+    margin: 0.5rem 0 0;
+    padding-left: 1.25rem;
+}
+
+.grid-admin-muted {
+    color: rgba(226, 232, 240, 0.7);
+    font-size: 0.9rem;
+}
+.grid-admin-alert-heading-row,
+.grid-admin-warning-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.grid-admin-warning-list {
+    display: grid;
+    gap: 0.65rem;
+}
+
+.grid-admin-warning-row span {
+    min-width: 0;
+}
+
+.grid-admin-dismiss-form {
+    flex: 0 0 auto;
+    margin: 0;
+}
+
+.grid-admin-dismiss-button {
+    border: 1px solid rgba(251, 191, 36, 0.45);
+    border-radius: 999px;
+    background: rgba(15, 23, 42, 0.65);
+    color: #fde68a;
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-weight: 700;
+    line-height: 1;
+    padding: 0.45rem 0.75rem;
+    white-space: nowrap;
+}
+
+.grid-admin-dismiss-button:hover {
+    background: rgba(251, 191, 36, 0.18);
+    color: #fff7ed;
+}
+.grid-admin-button.danger {
+    border-color: rgba(239, 68, 68, 0.45);
+    background: rgba(127, 29, 29, 0.35);
+    color: #fecaca;
+}
+
+.grid-admin-button.danger:hover {
+    background: rgba(185, 28, 28, 0.5);
+    color: #ffffff;
+}

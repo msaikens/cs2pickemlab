@@ -42,4 +42,19 @@ class Event extends Model
     {
         return $this->hasMany(PickemRecommendation::class);
     }
+
+public function rosterPlayers()
+{
+    return $this->hasMany(EventRosterPlayer::class);
+}
+
+public function teamStatSnapshots()
+{
+    return $this->hasMany(TeamStatSnapshot::class);
+}
+
+public function playerStatSnapshots()
+{
+    return $this->hasMany(PlayerStatSnapshot::class);
+}
 }
