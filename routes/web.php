@@ -40,6 +40,7 @@ use App\Http\Controllers\Stripe\StripeWebhookController;
 use App\Http\Controllers\Stripe\WalletTopUpController;
 use App\Http\Controllers\TradeRequestController;
 use App\Http\Controllers\UserSearchController;
+use App\Http\Controllers\WalletAccessController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -197,6 +198,9 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/confirm-password/code', [ConfirmPasswordController::class, 'verifyCode'])
         ->name('password.confirm.code.verify');
+    
+    Route::post('/wallet/confirm/2fa', [WalletAccessController::class, 'confirmTwoFactor'])
+        ->name('wallet.confirm.2fa');
 });
 
 /*

@@ -279,3 +279,44 @@
         margin-top: 24px;
     }
 }
+.confirm-card .confirm-card-header .confirm-copy #confirm-instruction {
+    color: #f59e0b !important;
+    font-weight: 800;
+    line-height: 1.6;
+    margin-top: 0.85rem;
+    margin-bottom: 0.85rem;
+    animation: confirmInstructionPulse 1.8s ease-in-out infinite;
+}
+
+@keyframes confirmInstructionPulse {
+    0% {
+        color: #c97705;
+        text-shadow:
+            0 0 2px rgba(245, 158, 11, 0.15),
+            0 0 5px rgba(245, 158, 11, 0.05);
+        opacity: 0.72;
+    }
+
+    50% {
+        color: #ffc857;
+        text-shadow:
+            0 0 6px rgba(255, 200, 87, 0.95),
+            0 0 16px rgba(245, 158, 11, 0.9),
+            0 0 30px rgba(245, 158, 11, 0.55);
+        opacity: 1;
+    }
+
+    100% {
+        color: #c97705;
+        text-shadow:
+            0 0 2px rgba(245, 158, 11, 0.15),
+            0 0 5px rgba(245, 158, 11, 0.05);
+        opacity: 0.72;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .confirm-card .confirm-card-header .confirm-copy #confirm-instruction {
+        animation: none;
+    }
+}

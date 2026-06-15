@@ -39,6 +39,11 @@
             <strong>${{ $wallet->pending_balance_dollars }}</strong>
             <span>Pending seller funds or unsettled activity.</span>
         </article>
+        <article class="wallet-balance-card">
+            <p>Reserved Balance</p>
+            <strong>${{ $wallet->reserved_balance_dollars }}</strong>
+            <span>Funds locked in active marketplace trade requests.</span>
+        </article>
     </section>
 
     <section class="wallet-topup-card">

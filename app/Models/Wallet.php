@@ -12,11 +12,13 @@ class Wallet extends Model
         'user_id',
         'currency',
         'available_balance_cents',
+        'reserved_balance_cents',
         'pending_balance_cents',
     ];
 
     protected $casts = [
         'available_balance_cents' => 'integer',
+        'reserved_balance_cents' => 'integer',
         'pending_balance_cents' => 'integer',
     ];
 
@@ -33,6 +35,11 @@ class Wallet extends Model
     public function getAvailableBalanceDollarsAttribute(): string
     {
         return number_format($this->available_balance_cents / 100, 2);
+    }
+
+    public function getReservedBalanceDollarsAttribute(): string
+    {
+        return number_format($this->reserved_balance_cents / 100, 2);
     }
 
     public function getPendingBalanceDollarsAttribute(): string

@@ -13,14 +13,17 @@ use Illuminate\View\View;
 
 class ConfirmPasswordController extends Controller
 {
-    public function create(Request $request): View
-    {
-        $user = $request->user();
+    public function create(Request $request)
+{
+    $user = $request->user();
 
-        return view('auth.confirm-password', [
-            'hasPassword' => filled($user->password),
-        ]);
-    }
+    return view('auth.confirm-password', [
+        'user' => $user,
+        'hasPassword' => ! empty($user->password),
+        'hasTwoFactor' => ! empty($user->two_factor_secret)
+            && ! empty($user->two_factor_confirmed_at),
+    ]);
+}
 
     public function store(Request $request): RedirectResponse
     {

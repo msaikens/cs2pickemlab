@@ -11,15 +11,27 @@ class WalletTransaction extends Model
         'wallet_id',
         'user_id',
         'type',
+        'direction',
         'amount_cents',
         'currency',
+        'balance_bucket',
+        'available_balance_after_cents',
+        'reserved_balance_after_cents',
+        'pending_balance_after_cents',
         'stripe_checkout_session_id',
         'stripe_payment_intent_id',
+        'reference_type',
+        'reference_id',
         'status',
+        'description',
         'metadata',
     ];
 
     protected $casts = [
+        'amount_cents' => 'integer',
+        'available_balance_after_cents' => 'integer',
+        'reserved_balance_after_cents' => 'integer',
+        'pending_balance_after_cents' => 'integer',
         'metadata' => 'array',
     ];
 
