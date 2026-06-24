@@ -194,39 +194,60 @@ class User extends Authenticatable implements CanResetPasswordContract, MustVeri
     }
 
     public function isModerator(): bool
-{
-    return $this->role === 'moderator';
-}
-
-public function publicRoleLabel(): ?string
-{
-    return match ($this->role) {
-        'admin' => 'Administrator',
-        'moderator' => 'Moderator',
-        default => null,
-    };
-}
-
-public function publicAccountLabel(): string
-{
-    if ($this->isAdmin()) {
-        return 'Administrator';
+    {
+        return $this->role === 'moderator';
     }
 
-    if ($this->isModerator()) {
-        return 'Moderator';
+    public function publicRoleLabel(): ?string
+    {
+        return match ($this->role) {
+            'admin' => 'Administrator',
+            'moderator' => 'Moderator',
+            default => null,
+        };
     }
 
-    if ($this->hasActiveSubscription()) {
-        return 'Premium User';
-    }
 
-    return 'Free User';
-}
+    public function publicAccountLabel(): string
+    {
+        if ($this->isAdmin()) {
+            return 'Administrator';
+        }
+
+        if ($this->isModerator()) {
+            return 'Moderator';
+        }
+
+        if ($this->hasActiveSubscription()) {
+            return 'Premium User';
+        }
+
+        return 'Free User';
+    }
 
 
     public function wallet()
     {
         return $this->hasOne(\App\Models\Wallet::class);
+    }
+
+    public function walletTermsAcceptances(): HasMany
+    {
+        return $this->hasMany(WalletTermsAcceptance::class);
+    }
+
+    public function currentWalletTermsAcceptance(): ?WalletTermsAcceptance
+    {
+        return $this->walletTermsAcceptances()
+            ->currentVersion()
+            ->latest('accepted_at')
+            ->first();
+    }
+
+    public function hasAcceptedCurrentWalletTerms(): bool
+    {
+        return $this->walletTermsAcceptances()
+            ->currentVersion()
+            ->exists();
     }
 }

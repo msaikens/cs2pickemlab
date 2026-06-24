@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\EnsureMarketplaceReady;
+use App\Http\Middleware\EnsureWalletTermsAccepted;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -15,6 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
             'marketplace.ready' => EnsureMarketplaceReady::class,
+            'wallet.terms.accepted' => EnsureWalletTermsAccepted::class,
         ]);
 
         $middleware->validateCsrfTokens(except: [

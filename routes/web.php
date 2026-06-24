@@ -27,6 +27,7 @@ use App\Http\Controllers\Auth\SocialAuthController;
 use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\MarketplaceController;
 use App\Http\Controllers\MarketplaceTermsController;
+use App\Http\Controllers\WalletTermsController;
 use App\Http\Controllers\Public\ContactController;
 use App\Http\Controllers\Public\HomeController;
 use App\Http\Controllers\Public\LegalPageController;
@@ -117,6 +118,9 @@ Route::get('/privacy-policy', [LegalPageController::class, 'privacyPolicy'])
 
 Route::get('/terms-of-service', [LegalPageController::class, 'termsOfService'])
     ->name('legal.terms');
+
+Route::get('/wallet/terms', [WalletTermsController::class, 'show'])
+    ->name('wallet.terms');
 
 /*
 |--------------------------------------------------------------------------
@@ -301,6 +305,7 @@ Route::middleware('auth')->group(function () {
         ->name('profile.steam.trade-url.update');
 
     Route::post('/wallet/top-up', [WalletTopUpController::class, 'create'])
+        ->middleware('wallet.terms.accepted:top_up_gate')
         ->name('wallet.topup.create');
 
     Route::get('/wallet/top-up/success', [WalletTopUpController::class, 'success'])
@@ -308,6 +313,10 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/wallet/top-up/cancel', [WalletTopUpController::class, 'cancel'])
         ->name('wallet.topup.cancel');
+
+    Route::post('/wallet/terms', [WalletTermsController::class, 'accept'])
+        ->name('wallet.terms.accept');
+
 });
 
 /*
@@ -318,7 +327,7 @@ Route::middleware('auth')->group(function () {
 | trade URL, public profile, and public inventory.
 */
 
-Route::middleware(['auth', 'verified', 'marketplace.ready'])->group(function () {
+Route::middleware(['auth', 'verified', 'wallet.terms.accepted:marketplace_gate', 'marketplace.ready',])->group(function () {
     Route::get('/marketplace/my-listings', [SkinListingController::class, 'index'])
         ->name('marketplace.listings.index');
 

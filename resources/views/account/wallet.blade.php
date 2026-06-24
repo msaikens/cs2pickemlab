@@ -8,6 +8,7 @@
 @endpush
 
 @section('content')
+
 <section class="wallet-page">
     <header class="wallet-hero">
         <div>
@@ -27,6 +28,18 @@
         </div>
     @endif
 
+    @if(session('warning'))
+        <div class="wallet-alert">
+            {{ session('warning') }}
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="wallet-alert">
+            {{ session('error') }}
+        </div>
+    @endif
+
     <section class="wallet-balance-grid">
         <article class="wallet-balance-card primary">
             <p>Available Balance</p>
@@ -39,6 +52,7 @@
             <strong>${{ $wallet->pending_balance_dollars }}</strong>
             <span>Pending seller funds or unsettled activity.</span>
         </article>
+
         <article class="wallet-balance-card">
             <p>Reserved Balance</p>
             <strong>${{ $wallet->reserved_balance_dollars }}</strong>
@@ -47,10 +61,44 @@
     </section>
 
     <section class="wallet-topup-card">
+        <div class="wallet-terms-status {{ $hasAcceptedWalletTerms ? 'accepted' : 'missing' }}">
+            <div>
+            <strong>Wallet Terms</strong>
+
+                @if($hasAcceptedWalletTerms)
+                    <span>
+                        Accepted version {{ $walletTermsVersion }}
+                            @if($walletTermsAcceptance?->accepted_at)
+                                on {{ $walletTermsAcceptance->accepted_at->format('M j, Y g:i A') }}
+                            @endif
+                    </span>
+                @else
+                <span>
+                    Acceptance required before wallet top-ups and protected marketplace actions.
+                </span>
+                @endif
+            </div>
+
+            <a href="{{ route('wallet.terms', ['source' => \App\Models\WalletTermsAcceptance::SOURCE_TOP_UP_GATE]) }}">
+                {{ $hasAcceptedWalletTerms ? 'Review Terms' : 'Accept Terms' }}
+            </a>
+        </div>
         <div>
             <h2>Add Funds</h2>
-            <p>Use Stripe test checkout to add funds to your wallet.</p>
+            <p>
+                Use Stripe checkout to add spendable site credit to your wallet.
+                Top-up funds are not directly withdrawable.
+            </p>
         </div>
+
+        @unless($hasAcceptedWalletTerms)
+            <div class="wallet-alert">
+                You must review and accept the current Wallet Terms before adding funds.
+                <a href="{{ route('wallet.terms', ['source' => \App\Models\WalletTermsAcceptance::SOURCE_TOP_UP_GATE]) }}">
+                    Review Wallet Terms
+                </a>
+            </div>
+        @endunless
 
         <form method="POST" action="{{ route('wallet.topup.create') }}" class="wallet-topup-form">
             @csrf
@@ -65,7 +113,7 @@
                     min="5"
                     max="500"
                     step="0.01"
-                    value="5.00"
+                    value="{{ old('amount_dollars', '5.00') }}"
                     required
                 >
 
@@ -78,6 +126,11 @@
                 <p class="wallet-error">{{ $message }}</p>
             @enderror
         </form>
+
+        <p class="wallet-help-text">
+            Seller proceeds are tracked separately and may become withdrawable only after marketplace review, settlement, and any applicable holds.
+            Unused eligible top-up funds may be refunded to the original payment method after review.
+        </p>
     </section>
 
     <section class="wallet-transactions-card">
@@ -98,6 +151,7 @@
                         <th class="numeric">Amount</th>
                     </tr>
                 </thead>
+
                 <tbody>
                     @forelse($transactions as $transaction)
                         <tr>

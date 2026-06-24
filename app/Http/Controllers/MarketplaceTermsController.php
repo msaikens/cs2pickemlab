@@ -20,7 +20,7 @@ class MarketplaceTermsController extends Controller
         ])->save();
 
         return redirect()
-            ->route('skins.trading')
+            ->route('marketplace.index')
             ->with('success', 'Marketplace terms accepted.');
     }
 }
