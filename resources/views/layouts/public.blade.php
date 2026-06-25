@@ -13,69 +13,25 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     @stack('styles')
+
+    @if(config('monetization.adsense.enabled') && config('monetization.adsense.client'))
+        <script
+            async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ config('monetization.adsense.client') }}"
+            crossorigin="anonymous">
+        </script>
+    @endif
 </head>
 
 <body class="public-layout-body">
     <div class="public-layout">
-        <header class="public-site-header">
-            <div class="public-site-header-inner">
-                <a href="{{ route('home') }}" class="public-brand" aria-label="CS2 PickLab Home">
-                    <span class="public-brand-title">
-                        CS2 PickLab
-                    </span>
-
-                    <span class="public-brand-subtitle">
-                        Pick&#8217;em &middot; Matches &middot; Teams &middot; Shop
-                    </span>
-                </a>
-
-                <nav class="public-nav" aria-label="Primary navigation">
-                    <a href="{{ route('home') }}" class="public-nav-link">
-                        Home
-                    </a>
-
-                    <a href="{{ route('matches.index') }}" class="public-nav-link">
-                        Matches
-                    </a>
-
-                    <a href="{{ route('teams.index') }}" class="public-nav-link">
-                        Teams
-                    </a>
-
-                    <a href="{{ route('pickem.index') }}" class="public-nav-link">
-                        Pick&#8217;em
-                    </a>
-
-                    <a href="{{ route('shop.index') }}" class="public-nav-link">
-                        Shop
-                    </a>
-
-                    @auth
-                        @if(auth()->user()?->isAdmin())
-                            <a href="{{ route('admin.dashboard') }}" class="public-nav-link admin">
-                                Admin
-                            </a>
-                        @endif
-                    @endauth
-                </nav>
-            </div>
-        </header>
+        @include('layouts.partials.nav')
 
         <main class="public-main">
             @yield('content')
         </main>
 
-        <footer class="public-site-footer">
-            <div class="public-site-footer-inner">
-                <p>
-                    &copy; {{ date('Y') }} CS2 PickLab
-                </p>
-
-                <p>
-                    CS2 Pick&#8217;em tools, match tracking, and recommendations.
-                </p>
-            </div>
-        </footer>
+        @include('layouts.partials.footer')
     </div>
 
     @stack('scripts')

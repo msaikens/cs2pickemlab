@@ -1,3 +1,5 @@
+<!-- app/views/components/user-role-badge.blade.php -->
+
 @props([
     'user',
     'showFree' => false,

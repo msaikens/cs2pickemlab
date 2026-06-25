@@ -1,3 +1,8 @@
+@php
+    $legalLinks = config('navigation.footer_legal', []);
+    $exploreLinks = config('navigation.footer_explore', []);
+@endphp
+
 <footer class="public-footer">
     <div class="public-footer-inner">
         <section class="public-footer-grid">
@@ -5,25 +10,12 @@
                 <h2>Legal</h2>
 
                 <nav class="public-footer-nav" aria-label="Legal links">
-                    <a href="{{ route('legal.privacy') }}">
-                        Privacy Policy
-                    </a>
-
-                    <a href="{{ route('legal.data') }}">
-                        Data Usage &amp; Collection
-                    </a>
-
-                    <a href="{{ route('legal.terms') }}">
-                        Terms of Service
-                    </a>
-
-                    <a href="{{ route('legal.affiliate') }}">
-                        Affiliate Disclosures
-                    </a>
-
-                    <a href="{{ route('legal.disclaimer') }}">
-                        Disclaimer
-                    </a>
+                    @foreach($legalLinks as $link)
+                        <x-navigation-link
+                            :route="$link['route']"
+                            :label="$link['label']"
+                        />
+                    @endforeach
                 </nav>
             </div>
 
@@ -31,29 +23,12 @@
                 <h2>Explore</h2>
 
                 <nav class="public-footer-nav" aria-label="Explore links">
-                    <a href="{{ route('home') }}">
-                        Home
-                    </a>
-
-                    <a href="{{ route('matches.index') }}">
-                        Matches
-                    </a>
-
-                    <a href="{{ route('pickem.index') }}">
-                        Pick&#8217;em
-                    </a>
-
-                    <a href="{{ route('teams.index') }}">
-                        Teams
-                    </a>
-
-                    <a href="{{ route('shop.index') }}">
-                        Shop
-                    </a>
-
-                    <a href="{{ route('contact.create') }}">
-                        Contact Us
-                    </a>
+                    @foreach($exploreLinks as $link)
+                        <x-navigation-link
+                            :route="$link['route']"
+                            :label="$link['label']"
+                        />
+                    @endforeach
                 </nav>
             </div>
 
@@ -62,7 +37,7 @@
 
                 <div class="public-footer-copy">
                     <p>
-                        CS2 PickLab is an independent fan project. It is not affiliated with Valve, Steam, Counter Strike, tournament organizers, or professional teams.
+                        CS2 PickLab is an independent fan project. It is not affiliated with Valve, Steam, Counter-Strike, tournament organizers, or professional teams.
                     </p>
 
                     <p>

@@ -1,5 +1,7 @@
 <?php
 
+// app/Http/Controllers/Admin/DashboardController.php
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
@@ -30,6 +32,7 @@ class DashboardController extends Controller
             'marketplace_listings_active' => SkinListing::where('status', 'active')->count(),
             'marketplace_listings_pending' => SkinListing::where('status', 'pending')->count(),
             'marketplace_listings_cancelled' => SkinListing::where('status', 'cancelled')->count(),
+            'marketplace_listings_dashboard_count' => SkinListing::where('status', 'active')->count(),
 
             'trade_requests_total' => TradeRequest::count(),
             'trade_requests_pending' => TradeRequest::where('status', 'pending')->count(),
@@ -92,6 +95,7 @@ class DashboardController extends Controller
 
         $latestListings = SkinListing::query()
             ->with(['user.profile', 'user.steamAccount'])
+            ->where('status', 'active')
             ->latest()
             ->limit(5)
             ->get();

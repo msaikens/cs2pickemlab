@@ -15,7 +15,7 @@
             <h1>Contact CS2 PickLab</h1>
 
             <p>
-                Send a message about the site, Pick’em tools, match data, partnerships, or general feedback.
+                Send a message about the site, Pick&#8217;em tools, match data, partnerships, or general feedback.
             </p>
         </header>
 

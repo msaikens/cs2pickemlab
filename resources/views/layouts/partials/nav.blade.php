@@ -1,6 +1,7 @@
 @php
     $user = auth()->user();
     $isMarketplaceReady = $user ? $user->canUseMarketplace() : false;
+    $publicLinks = config('navigation.public', []);
 @endphp
 
 <header class="public-nav-header">
@@ -10,63 +11,70 @@
         </a>
 
         <nav class="public-main-nav" aria-label="Primary navigation">
-            <a href="{{ route('marketplace.index') }}" class="public-main-nav-link featured">
-                Marketplace
-            </a>
-
-            <a href="{{ route('matches.index') }}" class="public-main-nav-link">
-                Matches
-            </a>
-
-            <a href="{{ route('pickem.index') }}" class="public-main-nav-link">
-                Pick&#8217;em
-            </a>
-
-            <a href="{{ route('teams.index') }}" class="public-main-nav-link">
-                Teams
-            </a>
-
-            <a href="{{ route('shop.index') }}" class="public-main-nav-link featured">
-                Shop
-            </a>
+            @foreach($publicLinks as $link)
+                <x-navigation-link
+                    :route="$link['route']"
+                    :label="$link['label']"
+                    :class="'public-main-nav-link ' . ($link['class'] ?? '')"
+                    :active-pattern="$link['active_pattern'] ?? null"
+                />
+            @endforeach
 
             @auth
-                @if ($isMarketplaceReady)
-                    @if (Route::has('marketplace.listings.create'))
-                        <a href="{{ route('marketplace.listings.index') }}" class="public-main-nav-link">
-                            My Listings
-                        </a>
+                @if($isMarketplaceReady)
+                    <x-navigation-link
+                        route="marketplace.listings.index"
+                        label="My Listings"
+                        class="public-main-nav-link"
+                    />
 
-                        <a href="{{ route('marketplace.listings.create') }}" class="public-main-nav-link outline">
-                            Sell Skins
-                        </a>
-                    @endif
+                    <x-navigation-link
+                        route="marketplace.listings.create"
+                        label="Sell Skins"
+                        class="public-main-nav-link outline"
+                    />
 
-                    @if (Route::has('marketplace.trade-requests.index'))
-                        <a href="{{ route('marketplace.trade-requests.index') }}" class="public-main-nav-link">
-                            Trade Requests
-                        </a>
-                    @endif
+                    <x-navigation-link
+                        route="marketplace.trade-requests.index"
+                        label="Trade Requests"
+                        class="public-main-nav-link"
+                    />
                 @else
-                    @if (Route::has('profile.steam'))
-                        <a href="{{ route('profile.steam') }}" class="public-main-nav-link warning">
-                            Finish Marketplace Setup
-                        </a>
-                    @endif
+                    <x-navigation-link
+                        route="profile.steam"
+                        label="Finish Marketplace Setup"
+                        class="public-main-nav-link warning"
+                    />
                 @endif
 
-                @if (Route::has('users.search'))
-                    <a href="{{ route('users.search') }}" class="public-main-nav-link">
-                        Users
-                    </a>
-                @endif
+                <x-navigation-link
+                    route="users.search"
+                    label="Users"
+                    class="public-main-nav-link"
+                />
 
+                @if($user?->isAdmin())
+                    <x-navigation-link
+                        route="admin.dashboard"
+                        label="Admin"
+                        class="public-main-nav-link admin"
+                    />
+                @endif
+                <a
+                href="{{ route('account.inbox') }}"
+                class="public-main-nav-link {{ request()->routeIs('account.inbox*') ? 'active' : '' }}"
+                >
+                    Inbox
+                @if($user->unreadInboxMessages()->exists())
+                    <span class="nav-unread-dot" aria-label="Unread inbox messages"></span>
+                @endif
+                </a>
                 <a
                     href="{{ route('account.show') }}"
-                    class="public-main-nav-link account"
-                    title="{{ auth()->user()->email }}"
+                    class="public-main-nav-link account {{ request()->routeIs('account.*') ? 'active' : '' }}"
+                    title="{{ $user->email }}"
                 >
-                    {{ auth()->user()->displayName() ?? auth()->user()->email }}
+                    {{ $user->displayName() ?? $user->email }}
                 </a>
 
                 <form method="POST" action="{{ route('logout') }}" class="public-nav-form">
@@ -79,13 +87,17 @@
             @endauth
 
             @guest
-                <a href="{{ route('login') }}" class="public-main-nav-link account">
-                    Sign In
-                </a>
+                <x-navigation-link
+                    route="login"
+                    label="Sign In"
+                    class="public-main-nav-link account"
+                />
 
-                <a href="{{ route('register') }}" class="public-main-nav-link outline">
-                    Create Account
-                </a>
+                <x-navigation-link
+                    route="register"
+                    label="Create Account"
+                    class="public-main-nav-link outline"
+                />
             @endguest
         </nav>
     </div>

@@ -1,3 +1,5 @@
+<!-- resources/views/admin/dashboard.blade.php -->
+
 @extends('layouts.admin', [
     'title' => 'Admin Dashboard | CS2 PickLab',
     'pageTitle' => 'Dashboard',
@@ -60,8 +62,9 @@
             <span>Marketplace Listings</span>
             <strong>{{ $stats['marketplace_listings_total'] }}</strong>
             <p>
-                {{ $stats['marketplace_listings_active'] }} active &middot;
-                {{ $stats['marketplace_listings_pending'] }} pending
+                {{ $stats['marketplace_listings_total'] }} total &middot;
+                {{ $stats['marketplace_listings_pending'] }} pending &middot;
+                {{ $stats['marketplace_listings_cancelled'] }} cancelled
             </p>
         </a>
 
@@ -168,7 +171,7 @@
     <div class="admin-dashboard-grid two">
         <section class="admin-panel">
             <div class="admin-panel-header">
-                <h2>Latest Marketplace Listings</h2>
+                <h2>Latest Active Marketplace Listings</h2>
                 <a href="{{ route('admin.marketplace.listings') }}">Manage</a>
             </div>
 
@@ -188,7 +191,7 @@
                         </span>
                     </article>
                 @empty
-                    <p class="admin-empty-text">No marketplace listings yet.</p>
+                    <p class="admin-empty-text">No active  marketplace listings right now.</p>
                 @endforelse
             </div>
         </section>
@@ -217,7 +220,7 @@
                         </span>
                     </article>
                 @empty
-                    <p class="admin-empty-text">No trade requests yet.</p>
+                    <p class="admin-empty-text">No trade requests right now.</p>
                 @endforelse
             </div>
         </section>

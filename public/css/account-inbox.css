@@ -1,0 +1,245 @@
+.account-inbox-page {
+    width: min(1120px, calc(100% - 32px));
+    margin: 0 auto;
+    padding: 36px 0 64px;
+}
+
+.account-inbox-hero,
+.account-inbox-message,
+.account-inbox-empty,
+.account-inbox-alert {
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    border-radius: 22px;
+    background: rgba(15, 23, 42, 0.82);
+}
+
+.account-inbox-hero {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    align-items: flex-start;
+    padding: 26px;
+    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.24);
+}
+
+.account-inbox-kicker {
+    margin: 0 0 8px;
+    color: #67e8f9;
+    font-size: 0.78rem;
+    font-weight: 950;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.account-inbox-hero h1 {
+    margin: 0;
+    color: #f8fafc;
+    font-size: clamp(2rem, 4vw, 3rem);
+}
+
+.account-inbox-hero p,
+.account-inbox-message-body,
+.account-inbox-empty {
+    color: #cbd5e1;
+    line-height: 1.7;
+}
+
+.account-inbox-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    border-radius: 999px;
+    padding: 0 16px;
+    color: #e2e8f0;
+    border: 1px solid rgba(148, 163, 184, 0.24);
+    text-decoration: none;
+    font-weight: 900;
+}
+
+.account-inbox-alert {
+    margin-top: 16px;
+    padding: 14px 16px;
+}
+
+.account-inbox-alert.success {
+    color: #dcfce7;
+    background: rgba(22, 101, 52, 0.22);
+    border-color: rgba(34, 197, 94, 0.34);
+}
+
+.account-inbox-alert.warning {
+    color: #fef3c7;
+    background: rgba(146, 64, 14, 0.22);
+    border-color: rgba(251, 191, 36, 0.34);
+}
+
+.account-inbox-alert.danger {
+    color: #fecaca;
+    background: rgba(127, 29, 29, 0.24);
+    border-color: rgba(248, 113, 113, 0.34);
+}
+
+.account-inbox-alert ul {
+    margin: 10px 0 0;
+    padding-left: 20px;
+}
+
+.account-inbox-list {
+    display: grid;
+    gap: 16px;
+    margin-top: 18px;
+}
+
+.account-inbox-message {
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 20px;
+    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.18);
+}
+
+.account-inbox-message.unread {
+    border-color: rgba(103, 232, 249, 0.35);
+    background: rgba(8, 47, 73, 0.34);
+}
+
+.account-inbox-message-main {
+    min-width: 0;
+    flex: 1;
+}
+
+.account-inbox-message-title-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+}
+
+.account-inbox-message h2 {
+    margin: 0;
+    color: #f8fafc;
+    font-size: 1.15rem;
+}
+
+.account-inbox-badge {
+    display: inline-flex;
+    align-items: center;
+    min-height: 26px;
+    border-radius: 999px;
+    padding: 0 9px;
+    font-size: 0.74rem;
+    font-weight: 950;
+}
+
+.account-inbox-badge.unread {
+    color: #020617;
+    background: #67e8f9;
+}
+
+.account-inbox-badge.reversed {
+    color: #bbf7d0;
+    background: rgba(22, 101, 52, 0.34);
+    border: 1px solid rgba(34, 197, 94, 0.34);
+}
+
+.account-inbox-message-body {
+    margin-top: 12px;
+}
+
+.account-inbox-message-footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 14px;
+    color: #94a3b8;
+    font-size: 0.85rem;
+}
+
+.account-inbox-read-form {
+    flex: 0 0 auto;
+}
+
+.account-inbox-message button,
+.account-inbox-appeal button {
+    min-height: 38px;
+    border: 0;
+    border-radius: 999px;
+    padding: 0 14px;
+    color: #020617;
+    background: #67e8f9;
+    font-weight: 950;
+    cursor: pointer;
+}
+
+.account-inbox-empty {
+    padding: 28px;
+    text-align: center;
+}
+
+.account-inbox-pagination {
+    margin-top: 18px;
+}
+
+.account-inbox-appeal,
+.account-inbox-appeal-status {
+    margin-top: 14px;
+    padding: 14px;
+    border-radius: 16px;
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    background: rgba(2, 6, 23, 0.42);
+}
+
+.account-inbox-appeal summary {
+    color: #f8fafc;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+.account-inbox-appeal form {
+    display: grid;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.account-inbox-appeal label {
+    color: #cbd5e1;
+    font-weight: 900;
+}
+
+.account-inbox-appeal textarea {
+    width: 100%;
+    min-height: 110px;
+    border: 1px solid rgba(148, 163, 184, 0.24);
+    border-radius: 14px;
+    padding: 12px;
+    color: #f8fafc;
+    background: rgba(2, 6, 23, 0.7);
+    resize: vertical;
+}
+
+.account-inbox-appeal-status {
+    color: #fef3c7;
+}
+
+.nav-unread-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin-left: 5px;
+    border-radius: 999px;
+    background: #f87171;
+}
+
+@media (max-width: 720px) {
+    .account-inbox-hero,
+    .account-inbox-message {
+        flex-direction: column;
+    }
+
+    .account-inbox-button,
+    .account-inbox-read-form,
+    .account-inbox-read-form button {
+        width: 100%;
+    }
+}

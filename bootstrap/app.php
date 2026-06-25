@@ -1,11 +1,15 @@
 <?php
 
+// bootstrap/app.php
+
 use App\Http\Middleware\EnsureMarketplaceReady;
 use App\Http\Middleware\EnsureWalletTermsAccepted;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
+use App\Http\Middleware\EnsureAdmin;
+use App\Http\Middleware\EnsureUserIsNotBanned;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -13,8 +17,14 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__ . '/../routes/console.php',
         health: '/up',
     )
+
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->web(append: [
+            EnsureUserIsNotBanned::class,
+        ]);
+    
         $middleware->alias([
+            'admin' => EnsureAdmin::class,
             'marketplace.ready' => EnsureMarketplaceReady::class,
             'wallet.terms.accepted' => EnsureWalletTermsAccepted::class,
         ]);

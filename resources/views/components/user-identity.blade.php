@@ -1,3 +1,5 @@
+<!-- app/views/components/user-identity.blade.php -->
+
 @props([
     'user',
     'size' => 'md',

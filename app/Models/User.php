@@ -250,4 +250,59 @@ class User extends Authenticatable implements CanResetPasswordContract, MustVeri
             ->currentVersion()
             ->exists();
     }
+    public function moderationIncidents()
+{
+    return $this->hasMany(ModerationIncident::class, 'subject_user_id');
+}
+
+public function issuedModerationIncidents()
+{
+    return $this->hasMany(ModerationIncident::class, 'admin_user_id');
+}
+
+public function inboxMessages()
+{
+    return $this->hasMany(UserInboxMessage::class);
+}
+
+public function unreadInboxMessages()
+{
+    return $this->inboxMessages()->whereNull('read_at');
+}
+
+public function bannedByUser()
+{
+    return $this->belongsTo(User::class, 'site_banned_by_user_id');
+}
+
+public function suspendedByUser()
+{
+    return $this->belongsTo(User::class, 'site_suspended_by_user_id');
+}
+
+public function isSiteBanned(): bool
+{
+    return ! is_null($this->site_banned_at);
+}
+
+public function isSiteSuspended(): bool
+{
+    return $this->site_suspended_until
+        && $this->site_suspended_until->isFuture();
+}
+
+public function canUseSite(): bool
+{
+    return ! $this->isSiteBanned()
+        && ! $this->isSiteSuspended();
+}
+public function moderationAppeals()
+{
+    return $this->hasMany(ModerationAppeal::class);
+}
+
+public function reviewedModerationAppeals()
+{
+    return $this->hasMany(ModerationAppeal::class, 'reviewed_by_user_id');
+}
 }

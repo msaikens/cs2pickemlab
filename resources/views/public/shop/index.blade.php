@@ -10,8 +10,10 @@
         <p class="shop-kicker">Custom Awards</p>
         <h1>Custom Gamer Awards Shop</h1>
         <p>
-            Custom coins, trophies, and award packs for squads, Discord servers, LAN events, and Pick’em groups.
+            Custom coins, trophies, and award packs for squads, Discord servers, LAN events, and Pick&#8217;em groups.
             Original designs only. No official Counter-Strike, Valve, Steam, tournament, or team marks.
+            <b> You will be given a warning for violating copyright or trademark law, and your order will be canceled if you upload
+            any copyrighted or trademarked material. Subsequent warning will come with a $15.00 fee and may result in a permanent ban from the shop.</b>
         </p>
     </header>
 

@@ -13,12 +13,12 @@
             <h1>Smarter CS2 picks before every match.</h1>
 
             <p>
-                Track team form, upset risk, Pick’em recommendations, and order custom esports awards for your squad, LAN, or Discord tournament.
+                Track team form, upset risk, Pick&#8217;em recommendations, and order custom esports awards for your squad, LAN, or Discord tournament.
             </p>
 
             <div class="home-hero-actions">
                 <a href="{{ route('pickem.index') }}" class="home-button primary">
-                    Open Pick’em Assistant
+                    Open Pick&#8217;em Assistant
                 </a>
 
                 <a href="{{ route('shop.index') }}" class="home-button secondary">
@@ -30,7 +30,7 @@
         <aside class="home-match-board">
             <div class="home-card-heading">
                 <p class="home-kicker">Live Board</p>
-                <h2>Today’s match board</h2>
+                <h2>Today&#8217;s match board</h2>
             </div>
 
             <div class="home-match-list">
@@ -50,7 +50,7 @@
                 @empty
                     <div class="home-empty-card">
                         <strong>No matches loaded yet.</strong>
-                        <p>Add matches from the admin panel to populate the board.</p>
+                        <p>Check back later for matches!</p>
                     </div>
                 @endforelse
             </div>

@@ -1,9 +1,13 @@
+@php
+    $title = $title ?? 'CS2 PickLab';
+@endphp
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $title ?? 'CS2 PickLab' }}</title>
+    <title>{{ $title }}</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -18,14 +22,16 @@
     @endif
 </head>
 
-<body class="bg-slate-950 text-slate-100">
-    @include('layouts.partials.nav')
+<body class="public-layout-body">
+    <div class="public-layout">
+        @include('layouts.partials.nav')
 
-    <main class="min-h-screen">
-        @yield('content')
-    </main>
+        <main class="public-main">
+            @yield('content')
+        </main>
 
-    @include('layouts.partials.footer')
+        @include('layouts.partials.footer')
+    </div>
 
     @stack('scripts')
 </body>

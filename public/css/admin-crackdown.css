@@ -1,0 +1,353 @@
+.admin-crackdown-page {
+    display: grid;
+    gap: 18px;
+}
+
+.admin-crackdown-hero,
+.admin-crackdown-card,
+.admin-crackdown-user-card,
+.admin-crackdown-alert {
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    border-radius: 24px;
+    background: rgba(15, 23, 42, 0.82);
+    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.22);
+}
+
+.admin-crackdown-hero {
+    padding: 26px;
+    background:
+        radial-gradient(circle at top left, rgba(103, 232, 249, 0.14), transparent 34%),
+        rgba(15, 23, 42, 0.88);
+}
+
+.admin-crackdown-kicker {
+    margin: 0 0 8px;
+    color: #67e8f9;
+    font-size: 0.76rem;
+    font-weight: 950;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.admin-crackdown-hero h2 {
+    margin: 0;
+    color: #f8fafc;
+    font-size: 2.2rem;
+}
+
+.admin-crackdown-hero p {
+    max-width: 860px;
+    color: #cbd5e1;
+    line-height: 1.7;
+}
+
+.admin-crackdown-alert {
+    padding: 16px 18px;
+}
+
+.admin-crackdown-alert.danger {
+    color: #fecaca;
+    border-color: rgba(248, 113, 113, 0.34);
+    background: rgba(127, 29, 29, 0.24);
+}
+
+.admin-crackdown-alert ul {
+    margin: 10px 0 0;
+    padding-left: 20px;
+}
+
+.admin-crackdown-card {
+    padding: 18px;
+}
+
+.admin-crackdown-section-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: flex-start;
+    margin-bottom: 14px;
+}
+
+.admin-crackdown-section-header h2,
+.admin-crackdown-card h2 {
+    margin: 0;
+    color: #f8fafc;
+}
+
+.admin-crackdown-section-header p {
+    margin: 6px 0 0;
+    color: #94a3b8;
+}
+
+.admin-crackdown-search label,
+.admin-crackdown-user-card label,
+.admin-crackdown-appeal-actions label,
+.admin-crackdown-reversal label {
+    display: block;
+    margin-bottom: 6px;
+    color: #cbd5e1;
+    font-weight: 900;
+}
+
+.admin-crackdown-search div {
+    display: flex;
+    gap: 10px;
+}
+
+.admin-crackdown-search input,
+.admin-crackdown-user-card input,
+.admin-crackdown-user-card textarea,
+.admin-crackdown-appeal-actions textarea,
+.admin-crackdown-reversal textarea {
+    width: 100%;
+    border: 1px solid rgba(148, 163, 184, 0.24);
+    border-radius: 14px;
+    padding: 12px;
+    color: #f8fafc;
+    background: rgba(2, 6, 23, 0.7);
+    outline: none;
+}
+
+.admin-crackdown-search input:focus,
+.admin-crackdown-user-card input:focus,
+.admin-crackdown-user-card textarea:focus,
+.admin-crackdown-appeal-actions textarea:focus,
+.admin-crackdown-reversal textarea:focus {
+    border-color: rgba(103, 232, 249, 0.58);
+    box-shadow: 0 0 0 3px rgba(103, 232, 249, 0.12);
+}
+
+.admin-crackdown-user-card textarea,
+.admin-crackdown-appeal-actions textarea,
+.admin-crackdown-reversal textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.admin-crackdown-search button,
+.admin-crackdown-search a,
+.admin-crackdown-user-card button,
+.admin-crackdown-appeal-actions button,
+.admin-crackdown-reversal button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    border: 0;
+    border-radius: 999px;
+    padding: 0 16px;
+    color: #020617;
+    background: #67e8f9;
+    font-weight: 950;
+    text-decoration: none;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.admin-crackdown-search a {
+    color: #cbd5e1;
+    border: 1px solid rgba(148, 163, 184, 0.24);
+    background: rgba(2, 6, 23, 0.5);
+}
+
+.admin-crackdown-user-card button.danger,
+.admin-crackdown-appeal-actions button.danger {
+    color: #fee2e2;
+    background: #991b1b;
+}
+
+.admin-crackdown-grid {
+    display: grid;
+    gap: 16px;
+}
+
+.admin-crackdown-user-card {
+    padding: 18px;
+}
+
+.admin-crackdown-user-card > header {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: flex-start;
+    margin-bottom: 14px;
+}
+
+.admin-crackdown-statuses {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.admin-crackdown-statuses span,
+.admin-crackdown-pill {
+    display: inline-flex;
+    align-items: center;
+    min-height: 28px;
+    border-radius: 999px;
+    padding: 0 10px;
+    color: #e2e8f0;
+    background: rgba(2, 6, 23, 0.52);
+    font-size: 0.8rem;
+    font-weight: 900;
+}
+
+.admin-crackdown-statuses .success,
+.admin-crackdown-pill.success {
+    color: #bbf7d0;
+    background: rgba(22, 101, 52, 0.28);
+    border: 1px solid rgba(34, 197, 94, 0.26);
+}
+
+.admin-crackdown-statuses .warning,
+.admin-crackdown-pill.warning {
+    color: #fef3c7;
+    background: rgba(146, 64, 14, 0.28);
+    border: 1px solid rgba(251, 191, 36, 0.26);
+}
+
+.admin-crackdown-statuses .danger {
+    color: #fecaca;
+    background: rgba(127, 29, 29, 0.34);
+    border: 1px solid rgba(248, 113, 113, 0.26);
+}
+
+.admin-crackdown-actions {
+    display: grid;
+    gap: 10px;
+}
+
+.admin-crackdown-user-card details,
+.admin-crackdown-reversal {
+    border: 1px solid rgba(148, 163, 184, 0.14);
+    border-radius: 16px;
+    padding: 12px;
+    background: rgba(2, 6, 23, 0.36);
+}
+
+.admin-crackdown-user-card summary,
+.admin-crackdown-reversal summary {
+    color: #f8fafc;
+    font-weight: 950;
+    cursor: pointer;
+}
+
+.admin-crackdown-user-card form,
+.admin-crackdown-reversal form {
+    display: grid;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.admin-crackdown-incidents {
+    display: grid;
+    gap: 12px;
+}
+
+.admin-crackdown-incident-card {
+    padding: 16px;
+    border-radius: 18px;
+    border: 1px solid rgba(148, 163, 184, 0.14);
+    background: rgba(2, 6, 23, 0.42);
+}
+
+.admin-crackdown-incident-card > header {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    align-items: flex-start;
+}
+
+.admin-crackdown-incident-card strong {
+    color: #f8fafc;
+}
+
+.admin-crackdown-incident-card strong span {
+    color: #94a3b8;
+}
+
+.admin-crackdown-incident-card p,
+.admin-crackdown-incident-card footer,
+.admin-crackdown-message {
+    color: #cbd5e1;
+    line-height: 1.65;
+}
+
+.admin-crackdown-incident-card footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 10px;
+    color: #94a3b8;
+    font-size: 0.85rem;
+}
+
+.admin-crackdown-message {
+    margin-top: 12px;
+    padding: 14px;
+    border-radius: 14px;
+    background: rgba(15, 23, 42, 0.58);
+}
+
+.admin-crackdown-appeal-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 14px;
+}
+
+.admin-crackdown-appeal-actions form {
+    display: grid;
+    gap: 10px;
+}
+
+.admin-crackdown-reversal {
+    margin-top: 12px;
+}
+
+.admin-crackdown-reversed-note {
+    margin-top: 12px;
+    padding: 14px;
+    border-radius: 14px;
+    color: #bbf7d0;
+    border: 1px solid rgba(34, 197, 94, 0.24);
+    background: rgba(22, 101, 52, 0.18);
+}
+
+.admin-crackdown-reversed-note p {
+    margin-bottom: 0;
+}
+
+.admin-crackdown-empty {
+    padding: 18px;
+    color: #94a3b8;
+    text-align: center;
+}
+
+.admin-crackdown-pagination {
+    margin-top: 4px;
+}
+
+@media (max-width: 900px) {
+    .admin-crackdown-appeal-actions {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 760px) {
+    .admin-crackdown-search div,
+    .admin-crackdown-user-card > header,
+    .admin-crackdown-incident-card > header {
+        flex-direction: column;
+    }
+
+    .admin-crackdown-statuses {
+        justify-content: flex-start;
+    }
+
+    .admin-crackdown-search button,
+    .admin-crackdown-search a {
+        width: 100%;
+    }
+}

@@ -1,5 +1,7 @@
 <?php
 
+// app/routes/web.php
+
 use App\Http\Controllers\Account\CompleteResyncController;
 use App\Http\Controllers\Account\ProfileController;
 use App\Http\Controllers\Account\SecurityController;
@@ -18,6 +20,7 @@ use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\ProductOptionController as AdminProductOptionController;
 use App\Http\Controllers\Admin\ProductVariantController as AdminProductVariantController;
 use App\Http\Controllers\Admin\TeamController as AdminTeamController;
+use App\Http\Controllers\Admin\WalletTermsAcceptanceController as AdminWalletTermsAcceptanceController;
 use App\Http\Controllers\Auth\ConfirmPasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
@@ -44,7 +47,10 @@ use App\Http\Controllers\TradeRequestController;
 use App\Http\Controllers\UserSearchController;
 use App\Http\Controllers\WalletAccessController;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Account\InboxController;
+use App\Http\Controllers\Account\AccountRestrictionController;
+use App\Http\Controllers\Admin\CrackdownController as AdminCrackdownController;
+use App\Http\Controllers\Account\ModerationAppealController;
 /*
 |--------------------------------------------------------------------------
 | Public routes
@@ -207,6 +213,21 @@ Route::middleware('auth')->group(function () {
     Route::post('/wallet/confirm/2fa', [ConfirmPasswordController::class, 'confirmTwoFactor'])
     ->middleware(['auth'])
     ->name('wallet.confirm.2fa');
+
+    Route::get('/banned', [AccountRestrictionController::class, 'banned'])
+        ->name('account.banned');
+
+    Route::get('/suspended', [AccountRestrictionController::class, 'suspended'])
+        ->name('account.suspended');
+
+    Route::get('/account/inbox', [InboxController::class, 'index'])
+        ->name('account.inbox');
+
+    Route::post('/account/inbox/{message}/read', [InboxController::class, 'markRead'])
+        ->name('account.inbox.read');
+
+    Route::post('/account/moderation-incidents/{incident}/appeal', [ModerationAppealController::class, 'store'])
+    ->name('account.moderation-appeals.store');
 });
 
 /*
@@ -264,6 +285,18 @@ Route::middleware('auth')
         Route::post('/complete-resync', CompleteResyncController::class)
             ->middleware(['verified'])
             ->name('complete-resync');
+
+        Route::get('/account/inbox', [InboxController::class, 'index'])
+            ->middleware('auth')
+            ->name('account.inbox');
+
+        Route::post('/account/inbox/{message}/read', [InboxController::class, 'markRead'])
+            ->middleware('auth')
+            ->name('account.inbox.read');
+
+        Route::get('/banned', [BannedAccountController::class, 'show'])
+            ->middleware('auth')
+            ->name('account.banned');
     });
 
 /*
@@ -367,6 +400,7 @@ Route::middleware(['auth', 'verified', 'wallet.terms.accepted:marketplace_gate',
 
 Route::prefix('admin')
     ->name('admin.')
+    ->middleware(['auth', 'verified', 'admin'])
     ->group(function () {
         Route::get('/', [AdminDashboardController::class, 'index'])
             ->name('dashboard');
@@ -393,6 +427,9 @@ Route::prefix('admin')
 
         Route::post('marketplace/users/{user}/restore', [\App\Http\Controllers\Admin\MarketplaceModerationController::class, 'restoreUser'])
             ->name('marketplace.users.restore');
+
+        Route::get('wallet-terms/acceptances', [AdminWalletTermsAcceptanceController::class, 'index'])
+            ->name('wallet-terms.acceptances');
 
         Route::get('content-gates', [AdminContentGateController::class, 'index'])
             ->name('content-gates.index');
@@ -492,4 +529,43 @@ Route::prefix('admin')
 
         Route::delete('/grid/local-events/{event}', [GridImportController::class, 'deleteLocalEvent'])
             ->name('grid.delete-local-event');
+        
+        Route::get('crackdown', [AdminCrackdownController::class, 'index'])
+            ->name('crackdown.index');
+
+        Route::post('crackdown/users/{user}/warn', [AdminCrackdownController::class, 'warn'])
+            ->name('crackdown.users.warn');
+
+        Route::post('crackdown/users/{user}/suspend', [AdminCrackdownController::class, 'suspend'])
+            ->name('crackdown.users.suspend');
+
+        Route::post('crackdown/users/{user}/ban', [AdminCrackdownController::class, 'ban'])
+            ->name('crackdown.users.ban');
+
+        Route::post('crackdown/users/{user}/remove-listings', [AdminCrackdownController::class, 'removeListings'])
+            ->name('crackdown.users.remove-listings');
+
+        Route::get('crackdown', [AdminCrackdownController::class, 'index'])
+            ->name('crackdown.index');
+
+        Route::post('crackdown/users/{user}/warn', [AdminCrackdownController::class, 'warn'])
+            ->name('crackdown.users.warn');
+
+        Route::post('crackdown/users/{user}/suspend', [AdminCrackdownController::class, 'suspend'])
+            ->name('crackdown.users.suspend');
+
+        Route::post('crackdown/users/{user}/ban', [AdminCrackdownController::class, 'ban'])
+            ->name('crackdown.users.ban');
+
+        Route::post('crackdown/users/{user}/remove-listings', [AdminCrackdownController::class, 'removeListings'])
+            ->name('crackdown.users.remove-listings');
+
+        Route::post('crackdown/incidents/{incident}/reverse', [AdminCrackdownController::class, 'reverseIncident'])
+            ->name('crackdown.incidents.reverse');
+
+        Route::post('crackdown/appeals/{appeal}/approve', [AdminCrackdownController::class, 'approveAppeal'])
+            ->name('crackdown.appeals.approve');
+
+        Route::post('crackdown/appeals/{appeal}/deny', [AdminCrackdownController::class, 'denyAppeal'])
+            ->name('crackdown.appeals.deny');
     });
