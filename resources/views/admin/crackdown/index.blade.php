@@ -12,7 +12,12 @@
     <header class="admin-crackdown-hero">
         <div>
             <p class="admin-crackdown-kicker">Moderation</p>
-            <h2>Crackdown</h2>
+            <h2 class="admin-crackdown-fire-title" data-text="Crackdown">
+                Crackdown
+            </h2>
+            <p class="admin-crackdown-fire-subtitle">
+                Moderation tools are hot. Use carefully.
+            </p>
             <p>
                 Issue warnings, suspensions, bans, listing removals, appeal decisions, and reversals with incident records and user inbox notices.
             </p>
