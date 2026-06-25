@@ -51,6 +51,8 @@ use App\Http\Controllers\Account\InboxController;
 use App\Http\Controllers\Account\AccountRestrictionController;
 use App\Http\Controllers\Admin\CrackdownController as AdminCrackdownController;
 use App\Http\Controllers\Account\ModerationAppealController;
+use App\Http\Controllers\Public\CartController;
+use App\Http\Controllers\Public\CheckoutController;
 /*
 |--------------------------------------------------------------------------
 | Public routes
@@ -84,6 +86,33 @@ Route::get('/shop', [ShopController::class, 'index'])
 
 Route::get('/shop/{product}', [ShopController::class, 'show'])
     ->name('shop.show');
+
+Route::get('/cart', [CartController::class, 'index'])
+    ->name('cart.index');
+
+Route::post('/cart/items', [CartController::class, 'store'])
+    ->name('cart.items.store');
+
+Route::patch('/cart/items/{cartItemKey}', [CartController::class, 'update'])
+    ->name('cart.items.update');
+
+Route::delete('/cart/items/{cartItemKey}', [CartController::class, 'destroy'])
+    ->name('cart.items.destroy');
+
+Route::delete('/cart', [CartController::class, 'clear'])
+    ->name('cart.clear');
+
+Route::get('/checkout', [CheckoutController::class, 'create'])
+    ->name('checkout.create');
+
+Route::post('/checkout', [CheckoutController::class, 'store'])
+    ->name('checkout.store');
+
+Route::get('/checkout/success', [CheckoutController::class, 'success'])
+    ->name('checkout.success');
+
+Route::get('/checkout/cancel', [CheckoutController::class, 'cancel'])
+    ->name('checkout.cancel');
 
 Route::get('/teams', [TeamController::class, 'index'])
     ->name('teams.index');
