@@ -26,25 +26,41 @@ class ShopOrderService
 
         return DB::transaction(function () use ($cartItems, $customerData, $user) {
             $subtotal = (int) $cartItems->sum('line_total');
+
+            // Flat/free shipping placeholder. We can add shipping rules next.
             $shippingAmount = 0;
             $taxAmount = 0;
             $discountAmount = 0;
+
             $total = max(0, $subtotal + $shippingAmount + $taxAmount - $discountAmount);
 
             $order = Order::create([
                 'order_number' => Order::generateOrderNumber(),
                 'user_id' => $user?->id,
+
                 'customer_name' => $customerData['customer_name'],
                 'customer_email' => $customerData['customer_email'],
                 'customer_phone' => $customerData['customer_phone'] ?? null,
-                'status' => Order::STATUS_PENDING_PAYMENT,
+
+                'shipping_name' => $customerData['shipping_name'] ?? $customerData['customer_name'],
+                'shipping_address_line_1' => $customerData['shipping_address_line_1'],
+                'shipping_address_line_2' => $customerData['shipping_address_line_2'] ?? null,
+                'shipping_city' => $customerData['shipping_city'],
+                'shipping_state' => $customerData['shipping_state'],
+                'shipping_postal_code' => $customerData['shipping_postal_code'],
+                'shipping_country' => strtoupper($customerData['shipping_country'] ?? 'US'),
+                'shipping_instructions' => $customerData['shipping_instructions'] ?? null,
+
+                'status' => Order::STATUS_RECEIVED,
                 'payment_status' => Order::PAYMENT_STATUS_UNPAID,
+
                 'subtotal' => $subtotal,
                 'shipping_amount' => $shippingAmount,
                 'tax_amount' => $taxAmount,
                 'discount_amount' => $discountAmount,
                 'total' => $total,
                 'currency' => 'USD',
+
                 'notes' => $customerData['notes'] ?? null,
             ]);
 

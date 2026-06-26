@@ -46,6 +46,16 @@ class CheckoutController extends Controller
             'customer_name' => ['required', 'string', 'max:100'],
             'customer_email' => ['required', 'email', 'max:100'],
             'customer_phone' => ['nullable', 'string', 'max:100'],
+
+            'shipping_name' => ['nullable', 'string', 'max:100'],
+            'shipping_address_line_1' => ['required', 'string', 'max:191'],
+            'shipping_address_line_2' => ['nullable', 'string', 'max:191'],
+            'shipping_city' => ['required', 'string', 'max:100'],
+            'shipping_state' => ['required', 'string', 'max:100'],
+            'shipping_postal_code' => ['required', 'string', 'max:40'],
+            'shipping_country' => ['required', 'string', 'size:2'],
+            'shipping_instructions' => ['nullable', 'string', 'max:2000'],
+
             'notes' => ['nullable', 'string', 'max:2000'],
         ]);
 

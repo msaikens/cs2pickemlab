@@ -163,6 +163,11 @@ return [
             'label' => 'Wallet Terms',
             'route' => 'admin.wallet-terms.acceptances',
         ],
+        
+        [
+            'label' => 'Shop Orders',
+            'route' => 'admin.orders.index',
+        ],
 
         [
             'heading' => 'System',

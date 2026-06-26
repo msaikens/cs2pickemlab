@@ -1,6 +1,6 @@
 @extends('layouts.admin', [
-    'title' => 'Orders | CS2 PickLab',
-    'pageTitle' => 'Orders',
+    'title' => 'Shop Orders | CS2 PickLab',
+    'pageTitle' => 'Shop Orders',
 ])
 
 @push('styles')
@@ -8,86 +8,97 @@
 @endpush
 
 @section('content')
-    <div class="order-admin-header">
+<section class="admin-orders-page">
+    <header class="admin-orders-hero">
         <div>
-            <h2 class="order-admin-title">Orders</h2>
-            <p class="order-admin-subtitle">
-                View customer orders, payment state, and production workflow status.
-            </p>
+            <p class="admin-orders-kicker">Commerce</p>
+            <h2>Shop Orders</h2>
+            <p>View customer orders, payment state, production status, shipping, and tracking.</p>
         </div>
-    </div>
+    </header>
 
-    <div class="order-admin-table-wrap">
-        <table class="order-admin-table">
-            <thead>
-                <tr>
-                    <th>Order</th>
-                    <th>Customer</th>
-                    <th>Status</th>
-                    <th>Payment</th>
-                    <th>Items</th>
-                    <th>Total</th>
-                    <th class="text-right">Actions</th>
-                </tr>
-            </thead>
+    <section class="admin-orders-card">
+        <form method="GET" action="{{ route('admin.orders.index') }}" class="admin-orders-filters">
+            <input
+                type="search"
+                name="search"
+                value="{{ request('search') }}"
+                placeholder="Order number, name, email, tracking"
+            >
 
-            <tbody>
-                @forelse($orders as $order)
-                    <tr>
-                        <td>
-                            <p class="order-admin-row-title">{{ $order->order_number }}</p>
-                            <p class="order-admin-muted">
-                                {{ $order->created_at?->format('M j, Y g:i A') }}
-                            </p>
-                        </td>
+            <select name="status">
+                <option value="">All statuses</option>
 
-                        <td>
-                            <p class="order-admin-row-title">{{ $order->customer_name }}</p>
-                            <p class="order-admin-muted">{{ $order->customer_email }}</p>
-                        </td>
+                @foreach($statuses as $status)
+                    <option value="{{ $status }}" @selected(request('status') === $status)>
+                        {{ str($status)->replace('_', ' ')->title() }}
+                    </option>
+                @endforeach
+            </select>
 
-                        <td>
-                            <span class="order-status order-status-{{ $order->status }}">
-                                {{ str_replace('_', ' ', ucfirst($order->status)) }}
-                            </span>
-                        </td>
+            <select name="payment_status">
+                <option value="">All payments</option>
 
-                        <td>
-                            <span class="order-status order-status-payment-{{ $order->payment_status }}">
-                                {{ ucfirst($order->payment_status) }}
-                            </span>
-                        </td>
+                @foreach($paymentStatuses as $paymentStatus)
+                    <option value="{{ $paymentStatus }}" @selected(request('payment_status') === $paymentStatus)>
+                        {{ str($paymentStatus)->replace('_', ' ')->title() }}
+                    </option>
+                @endforeach
+            </select>
 
-                        <td>
-                            {{ $order->items_count }}
-                        </td>
+            <button type="submit">Filter</button>
 
-                        <td>
-                            <span class="order-admin-price">
-                                ${{ $order->total_dollars }}
-                            </span>
-                        </td>
+            @if(request()->hasAny(['search', 'status', 'payment_status']))
+                <a href="{{ route('admin.orders.index') }}">Reset</a>
+            @endif
+        </form>
+    </section>
 
-                        <td class="text-right">
-                            <a href="{{ route('admin.orders.show', $order) }}" class="btn-small-primary">
-                                View
-                            </a>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="7" class="order-admin-empty">
-                            No orders yet. Stripe Checkout will create orders later.
-                        </td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
-    </div>
+    <section class="admin-orders-list">
+        @forelse($orders as $order)
+            <article class="admin-order-row">
+                <div>
+                    <h3>
+                        <a href="{{ route('admin.orders.show', $order) }}">
+                            {{ $order->order_number }}
+                        </a>
+                    </h3>
+
+                    <p>
+                        {{ $order->customer_name }}
+                        &middot;
+                        {{ $order->customer_email }}
+                    </p>
+
+                    <p>
+                        {{ $order->items_count }} item{{ $order->items_count === 1 ? '' : 's' }}
+                        &middot;
+                        {{ $order->created_at->format('M j, Y g:i A') }}
+                    </p>
+                </div>
+
+                <div class="admin-order-row-meta">
+                    <span class="status-{{ str($order->status)->replace('_', '-')->toString() }}">
+                        Production: {{ $order->statusLabel() }}
+                    </span>
+
+                    <span class="payment-{{ str($order->payment_status)->replace('_', '-')->toString() }}">
+                        Payment: {{ $order->paymentStatusLabel() }}
+                    </span>
+                    <strong>${{ $order->total_dollars }}</strong>
+                </div>
+            </article>
+        @empty
+            <section class="admin-orders-empty">
+                No orders found.
+            </section>
+        @endforelse
+    </section>
 
     @if($orders->hasPages())
-        <div class="order-admin-pagination">
+        <div class="admin-orders-pagination">
             {{ $orders->links() }}
         </div>
     @endif
+</section>
 @endsection

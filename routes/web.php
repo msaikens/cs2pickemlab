@@ -55,6 +55,8 @@ use App\Http\Controllers\Public\CartController;
 use App\Http\Controllers\Public\CheckoutController;
 use App\Http\Controllers\Public\ShopStripeWebhookController;
 use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
+use App\Http\Controllers\Account\ShopOrderController as AccountShopOrderController;
+use App\Http\Controllers\Admin\ShopOrderController as AdminShopOrderController;
 /*
 |--------------------------------------------------------------------------
 | Public routes
@@ -262,6 +264,12 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/account/moderation-incidents/{incident}/appeal', [ModerationAppealController::class, 'store'])
     ->name('account.moderation-appeals.store');
+
+            Route::get('/account/orders', [AccountShopOrderController::class, 'index'])
+            ->name('account.orders.index');
+
+        Route::get('/account/orders/{order:order_number}', [AccountShopOrderController::class, 'show'])
+            ->name('account.orders.show');
 });
 
 /*
@@ -331,6 +339,8 @@ Route::middleware('auth')
         Route::get('/banned', [BannedAccountController::class, 'show'])
             ->middleware('auth')
             ->name('account.banned');
+
+
     });
 
 /*
@@ -602,4 +612,13 @@ Route::prefix('admin')
 
         Route::post('crackdown/appeals/{appeal}/deny', [AdminCrackdownController::class, 'denyAppeal'])
             ->name('crackdown.appeals.deny');
+        
+        Route::get('orders', [AdminShopOrderController::class, 'index'])
+            ->name('orders.index');
+
+        Route::get('orders/{order:order_number}', [AdminShopOrderController::class, 'show'])
+            ->name('orders.show');
+
+        Route::patch('orders/{order:order_number}', [AdminShopOrderController::class, 'update'])
+            ->name('orders.update');
     });

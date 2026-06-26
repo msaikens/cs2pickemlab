@@ -46,7 +46,13 @@
                         class="public-main-nav-link warning"
                     />
                 @endif
-
+                
+                <a
+                href="{{ route('account.orders.index') }}"
+                class="public-main-nav-link {{ request()->routeIs('account.orders.*') ? 'active' : '' }}"
+                >
+                    Orders
+                </a>
                 <x-navigation-link
                     route="users.search"
                     label="Users"

@@ -84,8 +84,9 @@ class ShopStripeWebhookController extends Controller
         }
 
         $order->forceFill([
-            'status' => Order::STATUS_CANCELLED,
-            'payment_status' => Order::PAYMENT_STATUS_FAILED,
+            'payment_status' => Order::PAYMENT_STATUS_PAID,
+            'stripe_payment_intent_id' => $paymentIntentId,
+            'paid_at' => now(),
         ])->save();
     }
 }
