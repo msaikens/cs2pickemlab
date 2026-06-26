@@ -53,6 +53,8 @@ use App\Http\Controllers\Admin\CrackdownController as AdminCrackdownController;
 use App\Http\Controllers\Account\ModerationAppealController;
 use App\Http\Controllers\Public\CartController;
 use App\Http\Controllers\Public\CheckoutController;
+use App\Http\Controllers\Public\ShopStripeWebhookController;
+use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
 /*
 |--------------------------------------------------------------------------
 | Public routes
@@ -129,6 +131,9 @@ Route::view('/help/steam-trade-url', 'help.steam-trade-url')
 |--------------------------------------------------------------------------
 | Must stay public. CSRF exception belongs in bootstrap/app.php.
 */
+Route::post('/stripe/shop/webhook', ShopStripeWebhookController::class)
+    ->withoutMiddleware([ValidateCsrfToken::class])
+    ->name('stripe.shop.webhook');
 
 Route::post('/stripe/webhook', [StripeWebhookController::class, 'handle'])
     ->name('stripe.webhook');

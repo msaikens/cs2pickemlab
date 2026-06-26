@@ -38,7 +38,11 @@
             </ul>
         </div>
     @endif
-
+@if(session('error'))
+    <div class="shop-cart-alert danger">
+        {{ session('error') }}
+    </div>
+@endif
     <section class="shop-cart-layout">
         <form method="POST" action="{{ route('checkout.store') }}" class="shop-checkout-form">
             @csrf
@@ -109,8 +113,8 @@
             </div>
 
             <p>
-                Payment/order creation is the next backend wiring step.
-            </p>
+    You will be redirected to Stripe to complete secure payment.
+</p>
         </aside>
     </section>
 </section>

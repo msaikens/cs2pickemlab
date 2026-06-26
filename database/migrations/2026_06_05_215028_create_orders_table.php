@@ -1,5 +1,5 @@
 <?php
-
+// app/Database/Migrations/2026_06_05_215028_create_orders_table.php
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;

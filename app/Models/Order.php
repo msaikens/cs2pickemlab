@@ -8,6 +8,17 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Order extends Model
 {
+    public const STATUS_DRAFT = 'draft';
+    public const STATUS_PENDING_PAYMENT = 'pending_payment';
+    public const STATUS_PAID = 'paid';
+    public const STATUS_CANCELLED = 'cancelled';
+
+    public const PAYMENT_STATUS_UNPAID = 'unpaid';
+    public const PAYMENT_STATUS_PENDING = 'pending';
+    public const PAYMENT_STATUS_PAID = 'paid';
+    public const PAYMENT_STATUS_FAILED = 'failed';
+    public const PAYMENT_STATUS_REFUNDED = 'refunded';
+
     protected $fillable = [
         'order_number',
         'user_id',
@@ -37,6 +48,15 @@ class Order extends Model
         'total' => 'integer',
         'paid_at' => 'datetime',
     ];
+
+    public static function generateOrderNumber(): string
+    {
+        do {
+            $orderNumber = 'CPL-' . now()->format('Ymd') . '-' . strtoupper(str()->random(8));
+        } while (static::query()->where('order_number', $orderNumber)->exists());
+
+        return $orderNumber;
+    }
 
     public function user(): BelongsTo
     {
