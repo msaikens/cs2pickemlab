@@ -326,4 +326,27 @@ class CrackdownService
             'site_suspension_incident_number' => null,
         ])->save();
     }
+    public function deleteUser(User $subjectUser, User $adminUser, string $reason): void
+{
+    if ($subjectUser->id === $adminUser->id) {
+        throw \Illuminate\Validation\ValidationException::withMessages([
+            'user' => 'You cannot delete your own account from Crackdown.',
+        ]);
+    }
+
+    if (method_exists($subjectUser, 'isAdmin') && $subjectUser->isAdmin()) {
+        throw \Illuminate\Validation\ValidationException::withMessages([
+            'user' => 'Deleting another admin is blocked. Demote the account first or handle this directly in the database.',
+        ]);
+    }
+
+    \Illuminate\Support\Facades\DB::transaction(function () use ($subjectUser, $adminUser, $reason) {
+        $subjectUser->forceFill([
+            'deleted_by_user_id' => $adminUser->id,
+            'deleted_reason' => $reason,
+        ])->save();
+
+        $subjectUser->delete();
+    });
+}
 }

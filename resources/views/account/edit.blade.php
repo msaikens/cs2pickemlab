@@ -241,7 +241,27 @@
                     </div>
                 </div>
             </div>
+<section class="edit-account-section">
+    <h2>Privacy</h2>
 
+    <p>
+        Admins can always see your real account name for moderation and marketplace safety.
+        Other users will only see your real name if you allow it.
+    </p>
+
+    <label class="account-privacy-toggle">
+        <input
+            type="checkbox"
+            name="show_real_name_publicly"
+            value="1"
+            @checked(old('show_real_name_publicly', auth()->user()->show_real_name_publicly))
+        >
+
+        <span>
+            Show my real name to other marketplace users
+        </span>
+    </label>
+</section>
             <div class="edit-account-submit">
                 <a href="{{ route('account.show') }}" class="edit-account-button secondary">
                     Cancel

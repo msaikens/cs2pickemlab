@@ -242,6 +242,33 @@
                         </form>
                     </details>
 
+<details>
+    <summary>Delete User</summary>
+
+    <form
+        method="POST"
+        action="{{ route('admin.crackdown.users.delete', $user) }}"
+        onsubmit="return confirm('Extreme action: delete this user account? This should only be used when ban/suspension is not enough.');"
+    >
+        @csrf
+        @method('DELETE')
+
+        <label>Deletion reason</label>
+
+        <textarea
+            name="delete_reason"
+            required
+            minlength="10"
+            maxlength="5000"
+            placeholder="Explain why this user is being deleted."
+        ></textarea>
+
+        <button type="submit" class="danger">
+            Delete User
+        </button>
+    </form>
+</details>
+
                     <details>
                         <summary>Remove Marketplace Listings</summary>
 

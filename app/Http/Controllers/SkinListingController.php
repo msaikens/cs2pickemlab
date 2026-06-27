@@ -58,68 +58,59 @@ class SkinListingController extends Controller
     ]);
 }
 
-    public function store(Request $request): RedirectResponse
-    {
-        $validated = $request->validate([
-            'asset_id' => ['required', 'string'],
-            'listing_type' => ['required', 'in:trade,sale'],
-            'asking_price' => ['nullable', 'numeric', 'min:0'],
-        ]);
+public function store(\Illuminate\Http\Request $request): \Illuminate\Http\RedirectResponse
+{
+    $validated = $request->validate([
+        'asset_id' => ['required', 'string', 'max:191'],
+        'listing_type' => ['required', 'string', 'in:trade,sale'],
+        'asking_price_cents' => ['nullable', 'integer', 'min:100'],
+    ]);
 
-        if ($validated['listing_type'] === 'sale' && ! config('marketplace.paid_sales_enabled')) {
-            return back()
-                ->with('error', 'Paid skin sales are not enabled yet. Use trade-only listings for now.')
-                ->withInput();
-        }
+    $inventoryItem = \App\Models\SteamInventoryItem::query()
+        ->where('user_id', $request->user()->id)
+        ->where('asset_id', $validated['asset_id'])
+        ->where('tradable', true)
+        ->firstOrFail();
 
-        $item = SteamInventoryItem::where('user_id', $request->user()->id)
-            ->where('asset_id', $validated['asset_id'])
-            ->where('tradable', true)
-            ->firstOrFail();
+    $alreadyListed = SkinListing::query()
+        ->where('user_id', $request->user()->id)
+        ->where('steam_asset_id', $inventoryItem->asset_id)
+        ->whereIn('status', ['draft', 'active', 'pending'])
+        ->exists();
 
-        $alreadyListed = SkinListing::where('user_id', $request->user()->id)
-            ->where('steam_asset_id', $item->asset_id)
-            ->whereIn('status', ['draft', 'active', 'pending'])
-            ->exists();
-
-        if ($alreadyListed) {
-            return back()
-                ->with('error', 'That item is already listed.')
-                ->withInput();
-        }
-
-        $askingPriceCents = null;
-
-        if ($validated['listing_type'] === 'sale') {
-            if (! $request->filled('asking_price')) {
-                return back()
-                    ->with('error', 'Sale listings require an asking price.')
-                    ->withInput();
-            }
-
-            $askingPriceCents = (int) round(((float) $validated['asking_price']) * 100);
-        }
-
-        SkinListing::create([
-            'user_id' => $request->user()->id,
-            'steam_asset_id' => $item->asset_id,
-            'market_hash_name' => $item->market_hash_name,
-            'item_name' => $item->name ?? $item->market_hash_name,
-            'weapon_type' => $item->type,
-            'rarity' => $item->rarity,
-            'wear_name' => $item->exterior,
-            'float_value' => null,
-            'image_url' => $item->image_url,
-            'listing_type' => $validated['listing_type'],
-            'asking_price_cents' => $askingPriceCents,
-            'currency' => 'USD',
-            'status' => 'active',
-        ]);
-
-        return redirect()
-            ->route('marketplace.listings.index')
-            ->with('success', 'Listing created.');
+    if ($alreadyListed) {
+        return back()
+            ->withInput()
+            ->with('error', 'This item is already listed.');
     }
+
+    $listing = SkinListing::create([
+        'user_id' => $request->user()->id,
+        'steam_asset_id' => $inventoryItem->asset_id,
+        'market_hash_name' => $inventoryItem->market_hash_name,
+        'item_name' => $inventoryItem->name,
+        'weapon_type' => $inventoryItem->weapon_type,
+        'rarity' => $inventoryItem->rarity,
+        'wear_name' => $inventoryItem->wear_name,
+        'float_value' => $inventoryItem->float_value,
+        'image_url' => $inventoryItem->image_url,
+        'listing_type' => $validated['listing_type'],
+        'asking_price_cents' => $validated['listing_type'] === 'sale'
+            ? ($validated['asking_price_cents'] ?? null)
+            : null,
+        'currency' => 'USD',
+        'status' => 'active',
+    ]);
+
+    if (class_exists(\App\Services\MarketplaceSupervisorService::class)) {
+        app(\App\Services\MarketplaceSupervisorService::class)
+            ->assignSupervisor($listing);
+    }
+
+    return redirect()
+        ->route('marketplace.listings.index')
+        ->with('success', 'Listing created.');
+}
 
     public function cancel(Request $request, SkinListing $listing): RedirectResponse
     {

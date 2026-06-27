@@ -75,8 +75,11 @@ class TradeRequestController extends Controller
                 'message' => $validated['message'] ?? null,
                 'status' => 'pending',
             ]);
-
-            $this->logTradeEvent(
+            
+            app(\App\Services\MarketplaceSupervisorService::class)
+                ->assignSupervisor($tradeRequest);
+            
+                $this->logTradeEvent(
                 $tradeRequest,
                 $request->user()->id,
                 'requested',

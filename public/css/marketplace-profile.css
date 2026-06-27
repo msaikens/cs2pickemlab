@@ -259,3 +259,80 @@
     color: #cffafe;
     text-decoration: underline;
 }
+
+.marketplace-profile-page {
+    width: min(980px, calc(100% - 32px));
+    margin: 0 auto;
+    padding: 36px 0 64px;
+}
+
+.marketplace-profile-hero,
+.marketplace-profile-card,
+.marketplace-profile-rating {
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    border-radius: 24px;
+    background: rgba(15, 23, 42, 0.84);
+    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.22);
+}
+
+.marketplace-profile-hero {
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    align-items: flex-start;
+    padding: 28px;
+}
+
+.marketplace-profile-kicker {
+    margin: 0 0 8px;
+    color: #67e8f9;
+    font-size: 0.78rem;
+    font-weight: 950;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.marketplace-profile-hero h1,
+.marketplace-profile-card h2 {
+    margin: 0;
+    color: #f8fafc;
+}
+
+.marketplace-profile-hero p,
+.marketplace-profile-card p,
+.marketplace-profile-rating p {
+    color: #cbd5e1;
+    line-height: 1.7;
+}
+
+.marketplace-profile-rating-summary {
+    display: grid;
+    justify-items: end;
+    gap: 4px;
+}
+
+.marketplace-profile-rating-summary strong {
+    color: #fde68a;
+    font-size: 2.4rem;
+}
+
+.marketplace-profile-rating-summary span {
+    color: #94a3b8;
+    font-weight: 900;
+}
+
+.marketplace-profile-card {
+    display: grid;
+    gap: 14px;
+    margin-top: 18px;
+    padding: 22px;
+}
+
+.marketplace-profile-rating {
+    padding: 16px;
+    background: rgba(2, 6, 23, 0.42);
+}
+
+.marketplace-profile-rating strong {
+    color: #fde68a;
+}

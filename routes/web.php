@@ -57,6 +57,9 @@ use App\Http\Controllers\Public\ShopStripeWebhookController;
 use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
 use App\Http\Controllers\Account\ShopOrderController as AccountShopOrderController;
 use App\Http\Controllers\Admin\ShopOrderController as AdminShopOrderController;
+use App\Http\Controllers\Account\PrivacyController;
+use App\Http\Controllers\Marketplace\UserProfileController as MarketplaceUserProfileController;
+use App\Http\Controllers\Marketplace\MarketplaceRatingController;
 /*
 |--------------------------------------------------------------------------
 | Public routes
@@ -360,9 +363,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile/steam', [SteamProfileController::class, 'show'])
         ->name('profile.steam');
 
-    Route::get('/users/search', [UserSearchController::class, 'index'])
-        ->name('users.search');
-
     Route::get('/profile/steam/callback', [SteamOpenIdController::class, 'callback'])
         ->name('profile.steam.callback');
 
@@ -621,4 +621,10 @@ Route::prefix('admin')
 
         Route::patch('orders/{order:order_number}', [AdminShopOrderController::class, 'update'])
             ->name('orders.update');
+
+        Route::get('/users/search', [UserSearchController::class, 'index'])
+            ->name('users.search');
+
+        Route::delete('crackdown/users/{user}', [AdminCrackdownController::class, 'deleteUser'])
+            ->name('crackdown.users.delete');
     });

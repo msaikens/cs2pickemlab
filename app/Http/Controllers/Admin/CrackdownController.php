@@ -179,4 +179,20 @@ class CrackdownController extends Controller
             "Appeal #{$appeal->id} denied."
         );
     }
+    public function deleteUser(Request $request, User $user): RedirectResponse
+{
+    $validated = $request->validate([
+        'delete_reason' => ['required', 'string', 'min:10', 'max:5000'],
+    ]);
+
+    $this->crackdown->deleteUser(
+        subjectUser: $user,
+        adminUser: $request->user(),
+        reason: $validated['delete_reason'],
+    );
+
+    return redirect()
+        ->route('admin.crackdown.index')
+        ->with('status', "User #{$user->id} deleted.");
+}
 }

@@ -20,7 +20,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
-
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable implements CanResetPasswordContract, MustVerifyEmail
 {
@@ -28,6 +28,7 @@ class User extends Authenticatable implements CanResetPasswordContract, MustVeri
     use HasFactory;
     use Notifiable;
     use CanResetPassword;
+    use SoftDeletes;
 
     protected $fillable = [
         'name',
@@ -54,6 +55,8 @@ class User extends Authenticatable implements CanResetPasswordContract, MustVeri
             'marketplace_terms_accepted_at' => 'datetime',
             'password' => 'hashed',
             'subscription_ends_at' => 'datetime',
+            'show_real_name_publicly' => 'boolean',
+            'deleted_at' => 'datetime',
         ];
     }
 
@@ -304,5 +307,60 @@ public function moderationAppeals()
 public function reviewedModerationAppeals()
 {
     return $this->hasMany(ModerationAppeal::class, 'reviewed_by_user_id');
+}
+public function ratingsReceived(): HasMany
+{
+    return $this->hasMany(MarketplaceRating::class, 'rated_user_id');
+}
+
+public function ratingsGiven(): HasMany
+{
+    return $this->hasMany(MarketplaceRating::class, 'rater_user_id');
+}
+
+public function canShowRealNameTo(?User $viewer): bool
+{
+    if (! $viewer) {
+        return (bool) $this->show_real_name_publicly;
+    }
+
+    if ($viewer->id === $this->id) {
+        return true;
+    }
+
+    if (method_exists($viewer, 'isAdmin') && $viewer->isAdmin()) {
+        return true;
+    }
+
+    return (bool) $this->show_real_name_publicly;
+}
+
+public function publicDisplayName(?User $viewer = null): string
+{
+    if ($this->canShowRealNameTo($viewer)) {
+        return $this->displayName();
+    }
+
+    if ($this->relationLoaded('steamAccount') && $this->steamAccount?->persona_name) {
+        return $this->steamAccount->persona_name;
+    }
+
+    if ($this->relationLoaded('profile') && $this->profile?->display_name) {
+        return $this->profile->display_name;
+    }
+
+    return 'User #' . $this->id;
+}
+
+public function averageMarketplaceRating(): ?float
+{
+    $average = $this->ratingsReceived()->avg('rating');
+
+    return $average ? round((float) $average, 2) : null;
+}
+
+public function marketplaceRatingCount(): int
+{
+    return $this->ratingsReceived()->count();
 }
 }

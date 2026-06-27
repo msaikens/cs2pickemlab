@@ -48,6 +48,8 @@ class ProfileController extends Controller
             'last_name' => ['nullable', 'string', 'max:255'],
             'display_name' => ['nullable', 'string', 'max:255'],
             'about' => ['nullable', 'string', 'max:2000'],
+            
+            'show_real_name_publicly' => ['nullable', 'boolean'],
 
             'steam_name' => ['nullable', 'string', 'max:255'],
             'steam_id' => ['nullable', 'string', 'max:255'],

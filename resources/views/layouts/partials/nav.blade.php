@@ -53,13 +53,14 @@
                 >
                     Orders
                 </a>
-                <x-navigation-link
-                    route="users.search"
-                    label="Users"
-                    class="public-main-nav-link"
-                />
 
                 @if($user?->isAdmin())
+                    <x-navigation-link
+                        route="users.search"
+                        label="Users"
+                        class="public-main-nav-link"
+                    />
+
                     <x-navigation-link
                         route="admin.dashboard"
                         label="Admin"
