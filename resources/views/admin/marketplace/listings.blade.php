@@ -95,6 +95,7 @@
                                 'showAccountType' => true,
                                 'showAccountName' => false,
                             ])
+
                         </td>
 
                         <td>
@@ -118,7 +119,7 @@
                                 <a href="{{ route('marketplace.listings.show', $listing) }}" class="btn-small-secondary">
                                     View
                                 </a>
-
+                                @include('admin.marketplace.partials.supervisor-card', ['listing' => $listing])
                                 @if(in_array($listing->status, ['draft', 'active', 'pending'], true))
                                     <form
                                         method="POST"

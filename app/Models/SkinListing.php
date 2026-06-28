@@ -12,6 +12,9 @@ class SkinListing extends Model
         'user_id',
         'steam_asset_id',
         'market_hash_name',
+        'supervisor_user_id',
+        'supervisor_assigned_at',
+        'supervisor_note',
         'item_name',
         'weapon_type',
         'rarity',
@@ -27,6 +30,7 @@ class SkinListing extends Model
     protected $casts = [
         'float_value' => 'decimal:8',
         'asking_price_cents' => 'integer',
+        'supervisor_assigned_at' => 'datetime',
     ];
 
     public function user(): BelongsTo
@@ -47,4 +51,10 @@ class SkinListing extends Model
 
         return '$' . number_format($this->asking_price_cents / 100, 2);
     }
+    
+    public function supervisor(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'supervisor_user_id');
+    }
+
 }

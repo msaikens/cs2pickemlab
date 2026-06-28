@@ -22,6 +22,7 @@ class MarketplaceModerationController extends Controller
                 'user.steamAccount',
                 'tradeRequests.buyer.steamAccount',
                 'tradeRequests.seller.steamAccount',
+                'supervisor',
             ])
             ->when($request->filled('status'), function ($query) use ($request) {
                 $query->where('status', $request->string('status'));

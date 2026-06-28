@@ -166,7 +166,6 @@
                                 <a href="{{ route('marketplace.listings.show', $listing) }}" class="marketplace-button secondary">
                                     View
                                 </a>
-
                                 @if (in_array($listing->status, ['draft', 'active', 'pending'], true))
                                     <form
                                         method="POST"
@@ -178,10 +177,14 @@
                                         <button type="submit" class="marketplace-button danger">
                                             Cancel Listing
                                         </button>
+                                    
                                     </form>
+                                    
                                 @endif
                             </div>
+                             @include('marketplace.partials.supervisor-card', ['listing' => $listing])
                         </div>
+                       
                     </article>
                 @endforeach
             </section>

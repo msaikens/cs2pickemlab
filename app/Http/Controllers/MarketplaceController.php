@@ -68,7 +68,7 @@ class MarketplaceController extends Controller
     {
         abort_unless($listing->status === 'active', 404);
 
-        $listing->load(['user.steamAccount']);
+        $listing->load(['user.steamAccount','supervisor']);
 
         return view('marketplace.show', [
             'listing' => $listing,

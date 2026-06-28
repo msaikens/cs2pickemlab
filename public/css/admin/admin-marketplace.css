@@ -360,3 +360,28 @@
         padding: 1rem;
     }
 }
+.admin-marketplace-supervisor {
+    display: grid;
+    gap: 3px;
+    min-width: 180px;
+    padding: 10px 12px;
+    border-radius: 14px;
+    border: 1px solid rgba(103, 232, 249, 0.18);
+    background: rgba(8, 47, 73, 0.22);
+}
+
+.admin-marketplace-supervisor span {
+    color: #67e8f9;
+    font-size: 0.72rem;
+    font-weight: 950;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.admin-marketplace-supervisor strong {
+    color: #f8fafc;
+}
+
+.admin-marketplace-supervisor small {
+    color: #94a3b8;
+}

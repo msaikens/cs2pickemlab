@@ -19,6 +19,7 @@ class SkinListingController extends Controller
             ->with([
                 'tradeRequests.buyer.steamAccount',
                 'tradeRequests.seller.steamAccount',
+                'supervisor',
             ])
             ->where('user_id', $request->user()->id)
             ->when($request->filled('status'), function ($query) use ($request) {
