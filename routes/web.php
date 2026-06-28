@@ -60,11 +60,14 @@ use App\Http\Controllers\Admin\ShopOrderController as AdminShopOrderController;
 use App\Http\Controllers\Account\PrivacyController;
 use App\Http\Controllers\Marketplace\UserProfileController as MarketplaceUserProfileController;
 use App\Http\Controllers\Marketplace\MarketplaceRatingController;
+use App\Http\Controllers\Public\SitemapController;
 /*
 |--------------------------------------------------------------------------
 | Public routes
 |--------------------------------------------------------------------------
 */
+Route::get('/sitemap.xml', SitemapController::class)
+    ->name('sitemap');
 
 Route::get('/', [HomeController::class, 'index'])
     ->name('home');
@@ -173,7 +176,8 @@ Route::get('/terms-of-service', [LegalPageController::class, 'termsOfService'])
 Route::get('/wallet/terms', [WalletTermsController::class, 'show'])
     ->name('wallet.terms');
 
-
+Route::get('/law-enforcement', [LegalPageController::class, 'lawEnforcement'])
+    ->name('legal.law-enforcement');
 /*
 |--------------------------------------------------------------------------
 | Guest auth routes

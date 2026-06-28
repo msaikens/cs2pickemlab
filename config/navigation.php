@@ -57,6 +57,10 @@ return [
             'label' => 'Contact',
             'route' => 'contact.create',
         ],
+        [
+            'label' => 'Sitemap',
+            'route' => 'sitemap',
+        ],
     ],
 
     'footer_legal' => [
@@ -83,6 +87,28 @@ return [
         [
             'label' => 'Wallet Terms',
             'route' => 'wallet.terms',
+        ],
+    ],
+
+    'footer_law_enforcement' => [
+        [
+            'label' => 'Law Enforcement Requests',
+            'route' => 'legal.law-enforcement',
+        ],
+        [
+            'label' => 'Report Payment Fraud',
+            'route' => 'legal.law-enforcement',
+            'fragment' => 'payment-fraud',
+        ],
+        [
+            'label' => 'Report Marketplace Fraud',
+            'route' => 'legal.law-enforcement',
+            'fragment' => 'marketplace-fraud',
+        ],
+        [
+            'label' => 'Emergency Requests',
+            'route' => 'legal.law-enforcement',
+            'fragment' => 'emergency-requests',
         ],
     ],
 

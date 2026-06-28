@@ -65,5 +65,6 @@ Allow: /terms-of-service
 Allow: /data-usage-collection-policy
 Allow: /affiliate-disclosures
 Allow: /disclaimer
+Allow: /law-enforcement
 
 Sitemap: https://cs2picklabs.com/sitemap.xml

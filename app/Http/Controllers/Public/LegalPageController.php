@@ -31,4 +31,11 @@ class LegalPageController extends Controller
     {
         return view('legal.disclaimer');
     }
+ 
+    public function lawEnforcement(): View
+    {
+        return view('public.legal.law-enforcement');
+    }
+
+
 }
