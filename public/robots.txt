@@ -1,2 +1,69 @@
+# CS2 PickLab robots.txt
+# Public pages are crawlable. Private/account/admin/action pages are blocked.
+
 User-agent: *
-Disallow:
+Allow: /
+
+# Admin / internal areas
+Disallow: /admin
+Disallow: /admin/
+
+# Account / user-private areas
+Disallow: /account
+Disallow: /account/
+Disallow: /profile
+Disallow: /profile/
+Disallow: /wallet
+Disallow: /wallet/
+
+# Auth / session pages
+Disallow: /login
+Disallow: /register
+Disallow: /forgot-password
+Disallow: /reset-password
+Disallow: /confirm-password
+Disallow: /email/verify
+Disallow: /logout
+
+# Cart / checkout / payment flows
+Disallow: /cart
+Disallow: /cart/
+Disallow: /checkout
+Disallow: /checkout/
+Disallow: /stripe
+Disallow: /stripe/
+
+# Marketplace private/action pages
+Disallow: /marketplace/sell
+Disallow: /marketplace/my-listings
+Disallow: /marketplace/trade-requests
+Disallow: /marketplace/terms
+Disallow: /marketplace/users
+
+# Help avoid low-value filtered duplicate pages
+Disallow: /*?search=
+Disallow: /*?sort=
+Disallow: /*?page=
+Disallow: /*?listing_type=
+Disallow: /*?rarity=
+Disallow: /*?wear_name=
+
+# Public pages we want indexed
+Allow: /marketplace
+Allow: /marketplace/listings/
+Allow: /shop
+Allow: /shop/
+Allow: /matches
+Allow: /matches/
+Allow: /pickem
+Allow: /pickem/
+Allow: /teams
+Allow: /teams/
+Allow: /contact
+Allow: /privacy-policy
+Allow: /terms-of-service
+Allow: /data-usage-collection-policy
+Allow: /affiliate-disclosures
+Allow: /disclaimer
+
+Sitemap: https://cs2picklabs.com/sitemap.xml

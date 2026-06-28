@@ -1,56 +1,50 @@
 @php
-    $legalLinks = config('navigation.footer_legal', []);
-    $exploreLinks = config('navigation.footer_explore', []);
+    $exploreLinks = collect(config('navigation.footer_explore', []))
+        ->filter(fn ($item) => isset($item['route']) && Route::has($item['route']));
+
+    $legalLinks = collect(config('navigation.footer_legal', []))
+        ->filter(fn ($item) => isset($item['route']) && Route::has($item['route']));
 @endphp
 
-<footer class="public-footer">
-    <div class="public-footer-inner">
-        <section class="public-footer-grid">
-            <div class="public-footer-column">
-                <h2>Legal</h2>
+<footer class="site-footer">
+    <div class="site-footer-grid">
+        <section class="site-footer-brand">
+            <a href="{{ route('home') }}" class="site-footer-logo">
+                CS2 PickLab
+            </a>
 
-                <nav class="public-footer-nav" aria-label="Legal links">
-                    @foreach($legalLinks as $link)
-                        <x-navigation-link
-                            :route="$link['route']"
-                            :label="$link['label']"
-                        />
-                    @endforeach
-                </nav>
-            </div>
-
-            <div class="public-footer-column">
-                <h2>Explore</h2>
-
-                <nav class="public-footer-nav" aria-label="Explore links">
-                    @foreach($exploreLinks as $link)
-                        <x-navigation-link
-                            :route="$link['route']"
-                            :label="$link['label']"
-                        />
-                    @endforeach
-                </nav>
-            </div>
-
-            <div class="public-footer-column">
-                <h2>CS2 PickLab</h2>
-
-                <div class="public-footer-copy">
-                    <p>
-                        CS2 PickLab is an independent fan project. It is not affiliated with Valve, Steam, Counter-Strike, tournament organizers, or professional teams.
-                    </p>
-
-                    <p>
-                        All content, including match data, team information, and player statistics, is sourced from publicly available information and is intended for entertainment purposes only.
-                    </p>
-                </div>
-            </div>
+            <p>
+                CS2 picks, marketplace tools, shop items, and community features built for smarter Counter-Strike fans.
+            </p>
         </section>
 
-        <div class="public-footer-bottom">
-            <p>
-                &copy; {{ date('Y') }} CS2 PickLab. All rights reserved.
-            </p>
-        </div>
+        <section class="site-footer-column">
+            <h2>Explore</h2>
+
+            <nav class="site-footer-links" aria-label="Explore">
+                @foreach($exploreLinks as $link)
+                    <a href="{{ route($link['route']) }}">
+                        {{ $link['label'] }}
+                    </a>
+                @endforeach
+            </nav>
+        </section>
+
+        <section class="site-footer-column">
+            <h2>Legal</h2>
+
+            <nav class="site-footer-links" aria-label="Legal">
+                @foreach($legalLinks as $link)
+                    <a href="{{ route($link['route']) }}">
+                        {{ $link['label'] }}
+                    </a>
+                @endforeach
+            </nav>
+        </section>
+    </div>
+
+    <div class="site-footer-bottom">
+        <span>&copy; {{ now()->year }} CS2 PickLab. All rights reserved.</span>
+        <span>Not affiliated with Valve Corporation.</span>
     </div>
 </footer>

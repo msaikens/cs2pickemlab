@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     'public' => [
         [
             'label' => 'Home',
@@ -10,7 +9,6 @@ return [
         [
             'label' => 'Marketplace',
             'route' => 'marketplace.index',
-            'class' => 'featured',
         ],
         [
             'label' => 'Matches',
@@ -27,34 +25,6 @@ return [
         [
             'label' => 'Shop',
             'route' => 'shop.index',
-            'class' => 'featured',
-        ],
-    ],
-
-    'footer_legal' => [
-        [
-            'label' => 'Privacy Policy',
-            'route' => 'legal.privacy',
-        ],
-        [
-            'label' => 'Data Usage & Collection',
-            'route' => 'legal.data',
-        ],
-        [
-            'label' => 'Terms of Service',
-            'route' => 'legal.terms',
-        ],
-        [
-            'label' => 'Affiliate Disclosures',
-            'route' => 'legal.affiliate',
-        ],
-        [
-            'label' => 'Disclaimer',
-            'route' => 'legal.disclaimer',
-        ],
-        [
-            'label' => 'Wallet Terms',
-            'route' => 'wallet.terms',
         ],
     ],
 
@@ -84,8 +54,35 @@ return [
             'route' => 'shop.index',
         ],
         [
-            'label' => 'Contact Us',
+            'label' => 'Contact',
             'route' => 'contact.create',
+        ],
+    ],
+
+    'footer_legal' => [
+        [
+            'label' => 'Privacy Policy',
+            'route' => 'legal.privacy',
+        ],
+        [
+            'label' => 'Terms of Service',
+            'route' => 'legal.terms',
+        ],
+        [
+            'label' => 'Data Usage',
+            'route' => 'legal.data',
+        ],
+        [
+            'label' => 'Affiliate Disclosures',
+            'route' => 'legal.affiliate',
+        ],
+        [
+            'label' => 'Disclaimer',
+            'route' => 'legal.disclaimer',
+        ],
+        [
+            'label' => 'Wallet Terms',
+            'route' => 'wallet.terms',
         ],
     ],
 
@@ -97,15 +94,6 @@ return [
         [
             'label' => 'Dashboard',
             'route' => 'admin.dashboard',
-        ],
-
-        [
-            'heading' => 'Moderation',
-        ],
-
-        [
-            'label' => 'Crackdown',
-            'route' => 'admin.crackdown.index',
         ],
 
         [
@@ -148,7 +136,7 @@ return [
             'route' => 'admin.products.index',
         ],
         [
-            'label' => 'Orders',
+            'label' => 'Shop Orders',
             'route' => 'admin.orders.index',
         ],
         [
@@ -163,10 +151,13 @@ return [
             'label' => 'Wallet Terms',
             'route' => 'admin.wallet-terms.acceptances',
         ],
-        
+
         [
-            'label' => 'Shop Orders',
-            'route' => 'admin.orders.index',
+            'heading' => 'Moderation',
+        ],
+        [
+            'label' => 'Crackdown',
+            'route' => 'admin.crackdown.index',
         ],
 
         [
@@ -177,5 +168,4 @@ return [
             'route' => 'admin.content-gates.index',
         ],
     ],
-
 ];

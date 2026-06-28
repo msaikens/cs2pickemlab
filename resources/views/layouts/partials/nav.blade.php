@@ -18,20 +18,19 @@
                     :class="'public-main-nav-link ' . ($link['class'] ?? '')"
                     :active-pattern="$link['active_pattern'] ?? null"
                 />
-            @endforeach
 
+            @endforeach
+                <x-navigation-link
+                        route="marketplace.listings.index"
+                        label="Browse Marketplace"
+                        class="public-main-nav-link"
+                    />
             @auth
                 @if($isMarketplaceReady)
                     <x-navigation-link
                         route="marketplace.listings.index"
                         label="My Listings"
                         class="public-main-nav-link"
-                    />
-
-                    <x-navigation-link
-                        route="marketplace.listings.create"
-                        label="Sell Skins"
-                        class="public-main-nav-link outline"
                     />
 
                     <x-navigation-link

@@ -1,138 +1,202 @@
-@extends('layouts.app')
-
-@section('title', 'Skin Marketplace')
+@extends('layouts.public', [
+    'title' => 'Marketplace | CS2 PickLab',
+    'pageTitle' => 'Marketplace',
+])
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('css/marketplace-shared.css') }}">
     <link rel="stylesheet" href="{{ asset('css/marketplace-browse.css') }}">
 @endpush
 
 @section('content')
-<main class="marketplace-profile-page">
-    <section class="marketplace-profile-shell">
-        <header class="marketplace-profile-hero">
-            <div class="marketplace-profile-kicker">CS2 Marketplace</div>
-            <h1>Skin Marketplace</h1>
-            <p>Browse real listings created from synced Steam inventories.</p>
+<section class="marketplace-browse-page">
+    <header class="marketplace-browse-hero">
+        <div>
+            <p class="marketplace-browse-kicker">CS2 PickLab Marketplace</p>
+            <h1>Browse CS2 Inventory</h1>
+            <p>
+                View active CS2 item listings before creating an account. Sign in only when you are ready to sell, trade, or buy.
+            </p>
+        </div>
 
+        <div class="marketplace-browse-hero-actions">
             @auth
-                @if (auth()->user()->canUseMarketplace() && Route::has('marketplace.listings.create'))
-                    <a href="{{ route('marketplace.listings.create') }}" class="marketplace-button primary">
-                        Sell Skins
-                    </a>
-                @elseif (Route::has('profile.steam'))
-                    <a href="{{ route('profile.steam') }}" class="marketplace-button secondary">
-                        Finish Marketplace Setup
-                    </a>
-                @endif
+                <a href="{{ route('marketplace.listings.create') }}" class="marketplace-browse-button primary">
+                    Sell an Item
+                </a>
+
+                <a href="{{ route('marketplace.listings.index') }}" class="marketplace-browse-button secondary">
+                    My Listings
+                </a>
             @else
-                <a href="{{ route('login') }}" class="marketplace-button secondary">
+                <a href="{{ route('login') }}" class="marketplace-browse-button primary">
                     Sign In to Trade
                 </a>
-            @endauth
-        </header>
 
-        @if (session('success'))
-            <div class="marketplace-alert marketplace-alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
-
-        @if (session('error'))
-            <div class="marketplace-alert marketplace-alert-danger">
-                {{ session('error') }}
-            </div>
-        @endif
-
-        <section class="marketplace-card">
-            <form method="GET" action="{{ route('marketplace.index') }}" class="marketplace-filter-bar">
-                <input
-                    type="search"
-                    name="search"
-                    value="{{ request('search') }}"
-                    placeholder="Search AK-47, Doppler, Gloves, Factory New..."
-                >
-
-                <select name="listing_type">
-                    <option value="">All Types</option>
-                    <option value="trade" @selected(request('listing_type') === 'trade')>Trade</option>
-                    <option value="sale" @selected(request('listing_type') === 'sale')>Sale</option>
-                </select>
-
-                <select name="rarity">
-                    <option value="">All Rarities</option>
-                    @foreach ($rarities as $rarity)
-                        <option value="{{ $rarity }}" @selected(request('rarity') === $rarity)>
-                            {{ $rarity }}
-                        </option>
-                    @endforeach
-                </select>
-
-                <select name="wear_name">
-                    <option value="">All Wear</option>
-                    @foreach ($wears as $wear)
-                        <option value="{{ $wear }}" @selected(request('wear_name') === $wear)>
-                            {{ $wear }}
-                        </option>
-                    @endforeach
-                </select>
-
-                <select name="sort">
-                    <option value="newest" @selected(request('sort', 'newest') === 'newest')>Newest</option>
-                    <option value="oldest" @selected(request('sort') === 'oldest')>Oldest</option>
-                    <option value="price_low" @selected(request('sort') === 'price_low')>Price Low</option>
-                    <option value="price_high" @selected(request('sort') === 'price_high')>Price High</option>
-                </select>
-
-                <button type="submit" class="marketplace-button primary">
-                    Filter
-                </button>
-            </form>
-        </section>
-
-        @if ($listings->count() === 0)
-            <section class="marketplace-card">
-                <div class="marketplace-empty-state">
-                    <strong>No listings found.</strong>
-                    <p>Once users sync inventory and list skins, active listings will appear here.</p>
-                </div>
-            </section>
-        @else
-            <section class="marketplace-listing-grid">
-                @foreach ($listings as $listing)
-                    <a href="{{ route('marketplace.listings.show', $listing) }}" class="marketplace-skin-card">
-                        <div class="marketplace-skin-image-wrap">
-                            @if ($listing->image_url)
-                                <img src="{{ $listing->image_url }}" alt="{{ $listing->market_hash_name }}">
-                            @else
-                                <div class="marketplace-skin-placeholder">CS2</div>
-                            @endif
-                        </div>
-
-                        <div class="marketplace-skin-body">
-                            <h2>{{ $listing->market_hash_name }}</h2>
-
-                            <div class="marketplace-skin-meta">
-                                <span>{{ $listing->rarity ?? 'Unknown rarity' }}</span>
-                                <span>{{ $listing->wear_name ?? 'Unknown wear' }}</span>
-                            </div>
-
-                            <div class="marketplace-skin-footer">
-                                <strong>{{ $listing->display_price }}</strong>
-
-                                <span>
-                                    {{ $listing->user?->steamAccount?->persona_name ?? $listing->user?->displayName() ?? 'Seller' }}
-                                </span>
-                            </div>
-                        </div>
+                @if(Route::has('register'))
+                    <a href="{{ route('register') }}" class="marketplace-browse-button secondary">
+                        Create Account
                     </a>
-                @endforeach
-            </section>
+                @endif
+            @endauth
+        </div>
+    </header>
 
-            <div class="marketplace-pagination">
-                {{ $listings->links() }}
-            </div>
-        @endif
+    <section class="marketplace-browse-card">
+        <form method="GET" action="{{ route('marketplace.index') }}" class="marketplace-browse-filters">
+            <input
+                type="search"
+                name="q"
+                value="{{ request('q') }}"
+                placeholder="Search skins, weapons, rarity, wear..."
+            >
+
+            <select name="type">
+                <option value="">All listing types</option>
+                <option value="sale" @selected(request('type') === 'sale')>For Sale</option>
+                <option value="trade" @selected(request('type') === 'trade')>For Trade</option>
+            </select>
+
+            <select name="rarity">
+                <option value="">All rarities</option>
+
+                @foreach($rarities as $rarity)
+                    <option value="{{ $rarity }}" @selected(request('rarity') === $rarity)>
+                        {{ $rarity }}
+                    </option>
+                @endforeach
+            </select>
+
+            <input
+                type="number"
+                min="0"
+                step="0.01"
+                name="min_price"
+                value="{{ request('min_price') }}"
+                placeholder="Min $"
+            >
+
+            <input
+                type="number"
+                min="0"
+                step="0.01"
+                name="max_price"
+                value="{{ request('max_price') }}"
+                placeholder="Max $"
+            >
+
+            <button type="submit">
+                Filter
+            </button>
+
+            @if(request()->hasAny(['q', 'type', 'rarity', 'min_price', 'max_price']))
+                <a href="{{ route('marketplace.index') }}">
+                    Reset
+                </a>
+            @endif
+        </form>
     </section>
-</main>
+
+    <section class="marketplace-browse-grid">
+        @forelse($listings as $listing)
+            @php
+                $sellerName = 'Marketplace Seller';
+
+                if ($listing->user) {
+                    if (method_exists($listing->user, 'publicDisplayName')) {
+                        $sellerName = $listing->user->publicDisplayName(auth()->user());
+                    } elseif ($listing->user->steamAccount?->persona_name) {
+                        $sellerName = $listing->user->steamAccount->persona_name;
+                    } elseif ($listing->user->profile?->display_name) {
+                        $sellerName = $listing->user->profile->display_name;
+                    }
+                }
+            @endphp
+
+            <article class="marketplace-listing-card">
+                <a href="{{ route('marketplace.listings.show', $listing) }}" class="marketplace-listing-image-wrap">
+                    @if($listing->image_url)
+                        <img src="{{ $listing->image_url }}" alt="{{ $listing->item_name }}">
+                    @else
+                        <div class="marketplace-listing-image-placeholder">
+                            No Image
+                        </div>
+                    @endif
+                </a>
+
+                <div class="marketplace-listing-body">
+                    <div class="marketplace-listing-tags">
+                        <span>{{ ucfirst($listing->listing_type) }}</span>
+
+                        @if($listing->rarity)
+                            <span>{{ $listing->rarity }}</span>
+                        @endif
+                    </div>
+
+                    <h2>
+                        <a href="{{ route('marketplace.listings.show', $listing) }}">
+                            {{ $listing->item_name }}
+                        </a>
+                    </h2>
+
+                    @if($listing->weapon_type)
+                        <p>{{ $listing->weapon_type }}</p>
+                    @endif
+
+                    @if($listing->wear_name)
+                        <p>{{ $listing->wear_name }}</p>
+                    @endif
+
+                    <div class="marketplace-listing-meta">
+                        <span>Seller</span>
+                        <strong>{{ $sellerName }}</strong>
+                    </div>
+
+                    <div class="marketplace-listing-price">
+                        @if($listing->listing_type === 'sale' && $listing->asking_price_cents)
+                            <strong>${{ number_format($listing->asking_price_cents / 100, 2) }}</strong>
+                        @else
+                            <strong>Trade Offers</strong>
+                        @endif
+                    </div>
+
+                    <div class="marketplace-supervisor-card">
+                        <span>Marketplace Supervisor</span>
+
+                        @if($listing->supervisor)
+                            <strong>
+                                {{ method_exists($listing->supervisor, 'publicDisplayName')
+                                    ? $listing->supervisor->publicDisplayName(auth()->user())
+                                    : $listing->supervisor->displayName() }}
+                            </strong>
+
+                            @if($listing->supervisor_assigned_at)
+                                <small>
+                                    Assigned {{ $listing->supervisor_assigned_at->format('M j, Y') }}
+                                </small>
+                            @endif
+                        @else
+                            <strong>Pending assignment</strong>
+                            <small>A site admin will be assigned automatically.</small>
+                        @endif
+                    </div>
+
+                    <a href="{{ route('marketplace.listings.show', $listing) }}" class="marketplace-browse-button full">
+                        View Listing
+                    </a>
+                </div>
+            </article>
+        @empty
+            <section class="marketplace-browse-empty">
+                <h2>No active listings found.</h2>
+                <p>Try changing your filters or check back after more items are listed.</p>
+            </section>
+        @endforelse
+    </section>
+
+    @if($listings->hasPages())
+        <div class="marketplace-browse-pagination">
+            {{ $listings->links() }}
+        </div>
+    @endif
+</section>
 @endsection

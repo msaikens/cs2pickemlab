@@ -130,6 +130,12 @@ Route::get('/teams/{team}', [TeamController::class, 'show'])
 Route::view('/help/steam-trade-url', 'help.steam-trade-url')
     ->name('help.steam-trade-url');
 
+Route::get('/marketplace', [MarketplaceController::class, 'index'])
+    ->name('marketplace.index');
+
+Route::get('/marketplace/listings/{listing}', [MarketplaceController::class, 'show'])
+    ->name('marketplace.listings.show');
+
 /*
 |--------------------------------------------------------------------------
 | Stripe webhook
@@ -167,17 +173,6 @@ Route::get('/terms-of-service', [LegalPageController::class, 'termsOfService'])
 Route::get('/wallet/terms', [WalletTermsController::class, 'show'])
     ->name('wallet.terms');
 
-/*
-|--------------------------------------------------------------------------
-| Public marketplace routes
-|--------------------------------------------------------------------------
-*/
-
-Route::get('/marketplace', [MarketplaceController::class, 'index'])
-    ->name('marketplace.index');
-
-Route::get('/marketplace/listings/{listing}', [MarketplaceController::class, 'show'])
-    ->name('marketplace.listings.show');
 
 /*
 |--------------------------------------------------------------------------

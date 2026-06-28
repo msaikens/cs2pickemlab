@@ -10,7 +10,7 @@
     <title>{{ $title }}</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-
+<link rel="icon" href="{{ asset('favicons/favicon.ico') }}" sizes="any">
     @stack('styles')
 
     @if(config('monetization.adsense.enabled') && config('monetization.adsense.client'))
