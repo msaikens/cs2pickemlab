@@ -124,3 +124,27 @@
         flex-direction: column;
     }
 }
+
+.site-brand-logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex: 0 0 auto;
+    min-width: 0;
+    text-decoration: none;
+}
+
+.site-brand-logo-img {
+    display: block;
+    width: auto;
+    height: 46px;
+    max-width: 220px;
+    object-fit: contain;
+}
+
+@media (max-width: 760px) {
+    .site-brand-logo-img {
+        height: 38px;
+        max-width: 172px;
+    }
+}

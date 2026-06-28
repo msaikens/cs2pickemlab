@@ -6,8 +6,12 @@
 
 <header class="public-nav-header">
     <div class="public-nav-inner">
-        <a href="{{ route('home') }}" class="public-nav-brand" aria-label="CS2 PickLab Home">
-            CS2 <span>PickLab</span>
+        <a href="{{ route('home') }}" class="site-brand-logo" aria-label="CS2 PickLab Home">
+        <img
+            src="{{ asset('images/brand/cs2-picklab-logo-nav.png') }}"
+            alt="CS2 PickLab"
+            class="site-brand-logo-img"
+        >
         </a>
 
         <nav class="public-main-nav" aria-label="Primary navigation">
